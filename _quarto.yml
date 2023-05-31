@@ -3,18 +3,39 @@ project:
   output-dir: docs
 
 website:
-  title: "albert-joonyoung-park.github.io"
+  site-url: "https://albert-joonyoung-park.github.io"
+  title: "Albert Joonyoung Park"
   navbar:
+    title: "Albert Joonyoung Park"
     left:
       - href: index.qmd
-        text: Home
-      - about.qmd
+        text: HOME
+      - file: projects.qmd
+        text: PROJECTS
+      - file: blog.qmd
+        text: BLOG
+      - file: about.qmd
+        text: ABOUT
+    background: primary
+    tools:
+      - icon: github
+        href: https://github.com/albert-joonyoung-park
+      - icon: linkedin
+  page-footer: 
+    left: "Copyright 2023, Albert Joonyoung Park"
+    right: 
+      - icon: github
+        href: https://github.com/
+      - icon: twitter 
+        href: https://twitter.com/ 
+    background: dark
 
 format:
   html:
-    theme: cosmo
+    theme: flatly
     css: styles.css
     toc: true
+    fontsize: 0.9em
 
 editor: visual
 

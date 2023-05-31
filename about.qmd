@@ -1,5 +1,17 @@
 ---
-title: "About"
+title: "Albert Joon Park"
+image: profile.jpg
+about:
+  id: hero-heading
+  template: trestles
+  image-width: 12em
+  links:
+    - icon: twitter
+      text: twitter
+      href: https://twitter.com
+    - icon: github
+      text: Github
+      href: https://github.com
 ---
 
-About this site
+Albert Joonyoung Park is an aspiring and dedicated independent data analyst with a diverse background spanning entrepreneurship, eCommerce, manufacturing operations, and database application development. With a strong focus on delivering valuable insights, he collaborates closely with clients to extract meaningful information from diverse datasets across various industries. Additionally, Albert has recently ventured into mortgage brokering, aiming to leverage his data skills to assist individuals in identifying optimal financial solutions tailored to their specific needs. Beyond his professional pursuits, Albert finds joy in spending quality time with his spouse, continuously expanding his expertise in data science, actively participating in the church choir, and honing his piano-playing skills.

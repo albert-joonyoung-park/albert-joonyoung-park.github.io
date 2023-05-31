@@ -1,0 +1,22 @@
+---
+title: "Projects & Case studies"
+listing:
+  contents:
+    - "projects/*.qmd"
+  type: default
+  sort: "date desc"
+  max-items: 5
+  image-align: right
+  image-height: "100"
+  image-placeholder: "images/placeholder.jpg"
+  max-description-length: 175
+  date-format: long
+  categories: true
+  fields: [image, date, title, subtitle, author, reading-time]
+---
+
+------------------------------------------------------------------------
+
+Explore my recent data analysis projects and case studies, where I extract meaningful insights from various datasets. I uncover valuable patterns, trends, and correlations for informed decision-making.
+
+------------------------------------------------------------------------
