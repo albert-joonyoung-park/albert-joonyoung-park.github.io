@@ -1,20 +1,35 @@
 ---
-title: "Case study - Cyclistic Bike-Share Analysis"
-subtitle: "Google Data Analytics Professional Certificate capstone project"
+title: The Cyclistic Bike-share Analysis Case Study
 author: "Albert Joonyoung Park"
-description: "Data analysis and recommendations for the company Bike-Share to navigate speedy success."
+description: "Data analysis and recommendations for the bike-share company Cyclistic, to navigate speedy success."
 date: "February 5, 2023"
 image: "green-bike-share.jpg"
-categories: [R, data analysis, case study, Google Data Analytics Certificate, data visualization]
+format:
+  html:
+    toc: true
+    toc-title: Table of Contents
+    toc-expand: 2
+    title-block-categories: false
+    categories: true
+    fields: [Data Analysis, Case Study, R, Data Visualization]
 ---
 
-## How Does a Bike-Share Navigate Speedy Success?
+------------------------------------------------------------------------
+
+::: {style="text-align: center; font-size: x-large;"}
+Case Study 1
+:::
+
+# How Does a Bike-Share Navigate Speedy Success?
 
 ![](/images/cyclistic-bikeshare.png){width="182"}
 
+### Introduction
+
+This document has been produced as a case study capstone project for Google Data Analytics Professional Certificate.In this case study, I performed many real-world tasks of a junior data analyst. I work for a fictional company, Cyclistic, and meet different characters and team members. In order to answer the key business questions, the project followed the steps of the data analysis process: **ask**, **prepare**, **process**, **analyze**, **share**, and **act**.
+
 ### Scenario
 
-\
 Cyclistic is a fictional bike-share company based in Chicago, dedicated to optimizing its future success by maximizing the number of annual memberships. As the director of marketing, you recognize the importance of understanding the distinct usage patterns between casual riders and annual members in order to develop an effective marketing strategy. The goal is to convert casual riders into loyal annual members, ultimately driving the company's growth.
 
 ### Characters and teams
@@ -37,13 +52,9 @@ Cyclistic's finance analysts have concluded that annual members are much more pr
 
 Moreno has set a clear goal: Design marketing strategies aimed at converting casual riders into annual members. In order to do that, however, the marketing analyst team needs to better understand how annual members and casual riders differ, why casual riders would buy a membership, and how digital media could affect their marketing tactics. Moreno and her team are interested in analyzing the Cyclistic historical bike trip data to identify trends.
 
-### Project objective and key deliverables
+### Project deliverables
 
-[Key questions to answer:]{.underline}
-
-> 1.  "How do annual members and casual riders use Cyclistic bikes differently?"
-
-[Report requirements:]{.underline}
+Produce a report with the following deliverables:
 
 > 1.  A clear statement of the business task.
 > 2.  A description of all data sources used.
@@ -54,344 +65,409 @@ Moreno has set a clear goal: Design marketing strategies aimed at converting cas
 
 ### Ask
 
+**Key tasks:**
+
+**1. Identify the business task**
+
+  The business objective is to convert occasional riders into annual members, which is crucial for driving   the company's future growth. The primary purpose of this analysis is to identify trends and differences   in riding behavior between casual riders and annual members. The insights derived from this analysis   will serve as a foundation for informing the company's marketing strategies and efforts aimed at   converting casual riders into loyal annual members.
+
+**2. Key stakeholders:**
+
+  Cyclistic executive team, Director of Marketing (Lily Moreno), Marketing Analytics team
+
+[**Statement of the business task**]{.deliverables style="background-color: yellow;"}
+
+Understand how Cyclistic casual riders and annual members ride differ by analyzing the Cyclistic historical bike trip data to identify trends.
+
 ### Prepare
+
+**Key tasks:**
+
+**1. Download data and store it appropriately.**
+
+The previous 12 months of Cyclistic trip data is available for download [here](https://divvy-tripdata.s3.amazonaws.com/index.html). They are made available by Motivate International Inc., under [license](https://ride.divvybikes.com/data-license-agreement). 12 CSV files have been downloaded and saved in the folder C:\\Users\\Joon\\git\\albert-joonyoung-park.github.io\\data.
+
+**2. Identify how it's organized**
+
+The data files are in csv format, and organized into individual month for the past 12 month period.
+
+**3. Sort and filter the data.**
+
+Spreadsheet was used to perform for initial inspection on some data files, and found some issues that require data cleaning and transformation.
+
+-   Manyu columns contain some missing values - started_at, ended_at, start_station_name, end_station_name, end_station_id, start_lat, end_lat
+
+-   ride_id column contains inconsistent data types, mixture of character and number type data.
+
+-   When "ride length was calculated based on" based on started_at, ended_at, some results showed unrealistic large or small numbers, exceeding over 24 hour, 0 or a few minutes of trips.
+
+-   All files have the same column names and same number of columns.
+
+-   Each data file contains large amount of rows ranging 180,000 - 800,000+ rows.
+
+**4. Determine the credibility of the data.**
+
+**ROCCC** measurement was applied to check the credibility of the data.
+
+-   **R**eliable (R): The collection of dataset provide the full 12-month bike trip data. It is partial or biased.
+
+-   **O**riginal (O): The dataset is first party and public data, directly supplied by the the company - Cyclistic.
+
+-   **C**omprehensive (C): The dataset contains enough information to answer the business task in question.
+
+-   **C**urrent (C): The dataset is current, proviing the current full-year bike trip data.
+
+-   **C**ited (C): The dataset is made available as public data by the company and municipality, and is clearly cited online with license information.
+
+[**A description of all data sources used**]{.deliverables}
+
+12 bike trip csv data files for the period from May 2022 to April 2023 were used as data source. The data source was available as first party public data by the company Motivate International Inc. The original files are named below.
+
+| File name                       |
+|---------------------------------|
+| 202205-divvy-tripdata.csv       |
+| 202206-divvy-tripdata.csv       |
+| 202207-divvy-tripdata.csv       |
+| 202208-divvy-tripdata.csv       |
+| 202209-divvy-publictripdata.csv |
+| 202210-divvy-tripdata.csv       |
+| 202211-divvy-tripdata.csv       |
+| 202212-divvy-tripdata.csv       |
+| 202301-divvy-tripdata.csv       |
+| 202302-divvy-tripdata.csv       |
+| 202303-divvy-tripdata.csv       |
+| 202304-divvy-tripdata.csv       |
 
 ### Process
 
-R language and its packages are used for processing the data. It is required to have the following R packages installed prior to further data processing.
+**Key tasks**
 
--   [tidyverse]{.underline} for data import and data wrangling
+1\. Check the data for errors.
 
--   [lubridate]{.underline} for date functions
+2\. Choose your tools.
 
--   [ggplot]{.underline} for visualization
+3\. Transform the data so you can work with it effectively.
 
-```{r}
-#---------------------------------------
-# Load required libraries.
-# Packages must be installed first.
-#---------------------------------------
+4\. Document the cleaning process.
 
-options(warning = FALSE)
+[**Deliverable**]{.delivarable}
 
+R was chosen for data inspection, cleaning and manipulation. The following code blocks are steps of data cleaning and manipulations for future analysis.
+
+```{r Load libraries, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Set up working directory
+setwd("C:/Users/Joon/git/albert-joonyoung-park.github.io/projects")
+
+# Load required libraries to use
 library(tidyverse)
 library(dplyr)
 library(lubridate)
+library(skimr)
 library(ggplot2)
 library(knitr)
 library(scales)
 library(leaflet)
-
-getwd() 
-```
-
-Step 1: Load past 12 month's of data in CSV files into dataframes.
-
-```{r}
-#---------------------------------------
-# Collect data
-#---------------------------------------
-options(warning = FALSE)
-
-trip_05 <- read_csv("../data/202205-divvy-tripdata.csv", show_col_types = FALSE)
-spec(trip_05)
-trip_06 <- read_csv("../data/202206-divvy-tripdata.csv", show_col_types = FALSE)
-spec(trip_06)
-trip_07 <- read_csv("../data/202207-divvy-tripdata.csv", show_col_types = FALSE)
-spec(trip_07)
-trip_08 <- read_csv("../data/202208-divvy-tripdata.csv", show_col_types = FALSE)
-spec(trip_08)
-trip_09 <- read_csv("../data/202209-divvy-publictripdata.csv", show_col_types = FALSE)
-spec(trip_09)
-trip_10 <- read_csv("../data/202210-divvy-tripdata.csv", show_col_types = FALSE)
-spec(trip_10)
-trip_11 <- read_csv("../data/202211-divvy-tripdata.csv", show_col_types = FALSE)
-spec(trip_11)
-trip_12 <- read_csv("../data/202212-divvy-tripdata.csv", show_col_types = FALSE)
-spec(trip_12)
-trip_01 <- read_csv("../data/202301-divvy-tripdata.csv", show_col_types = FALSE)
-spec(trip_01)
-trip_02 <- read_csv("../data/202302-divvy-tripdata.csv", show_col_types = FALSE)
-spec(trip_02)
-trip_03 <- read_csv("../data/202303-divvy-tripdata.csv", show_col_types = FALSE)
-spec(trip_03)
-trip_04 <- read_csv("../data/202304-divvy-tripdata.csv", show_col_types = FALSE)
-spec(trip_04)
+library(kableExtra)
 
 ```
 
-Step 2: Inspect and rename column names, if required, to be more meaningful, and make the column names, if required, to be the same across the multiple data frames.
+```{r Clean dataset, echo=TRUE, message=FALSE, warning=FALSE}
 
-```{r}
-#-------------------------------------------
-# Inspect column names
-#-------------------------------------------
+# List all the CSV data file names to be imported.
+file_names <- list.files(path = "../data/",
+                         pattern = "*.csv", full.names = FALSE,
+                         recursive = FALSE)
+# file_names
 
-colnames(trip_01)
-colnames(trip_02)
-colnames(trip_03)
-colnames(trip_04)
-colnames(trip_05)
-colnames(trip_06)
-colnames(trip_07)
-colnames(trip_08)
-colnames(trip_09)
-colnames(trip_10)
-colnames(trip_11)
-colnames(trip_12)
-```
+# Import csv data files one at time and clean, transform the data
+total_num_rows <- 0
+total_num_rows_dropped <- 0
+total_num_rows_duplicated <- 0
 
-```{r}
-#-------------------------------------------
-# Inspect dataframe structures
-#-------------------------------------------
+for (name in file_names) {
+  
+  # Import a csv file
+  data <- read_csv(paste("../data/", name, sep = ""))
+  num_rows <- nrow(data)
+  #print(paste(num_rows, "rows imported from", name)) # number of rows imported
+  total_num_rows <- total_num_rows + num_rows
+  
+  # Cleaning - drop rows with missing values - NA
+  data_na_dropped <- drop_na(data)
+  num_rows_dropped <- num_rows - nrow(data_na_dropped)
+  #print(paste(num_rows_dropped,"rows with missing value dropped from",name))
+  total_num_rows_dropped <- total_num_rows_dropped + num_rows_dropped
+  
+  # Cleaning - remove duplicates
+  data_unique_na_dropped <- distinct(data_na_dropped)
+  num_rows_duplicated <- nrow(data_unique_na_dropped) - nrow(data_na_dropped)
+  total_num_rows_duplicated <- total_num_rows_duplicated + num_rows_duplicated
+  
+  # Transformation:
+  # add columns to increase aggregation levels for analysis.
+  # lmit ride_length values
+  trip_month_data_clean <- 
+    data_unique_na_dropped |> 
+      mutate(
+        start_date = as.Date(started_at),
+        start_hour = format(started_at, "%H"),
+        start_month = format(start_date, "%m"),
+        start_day = format(start_date, "%d"),
+        start_year = format(start_date, "%Y"),
+        #start_weekday = format(start_date, "%A"),
+        start_weekday = wday(start_date, week_start = 7),
+        ride_length = difftime(ended_at, started_at, units = "secs"),
+        .after = started_at
+      ) |> 
+      filter(ride_length > 0 & ride_length <= 3600) # limit ride_length
 
-str(trip_01)
-str(trip_02)
-str(trip_03)
-str(trip_04)
-str(trip_05)
-str(trip_06)
-str(trip_07)
-str(trip_08)
-str(trip_09)
-str(trip_10)
-str(trip_11)
-str(trip_12)
+  # Save cleaned data files as a CSV file
+  write_csv(trip_month_data_clean, 
+            paste("../data/cleaned_datasets/", name, sep = ""))
+}
 
-```
-
-```{r}
-#-------------------------------------------
-# Merge all dataframes into one
-#-------------------------------------------
-all_trips <- bind_rows(trip_01, trip_02, trip_03,
-                       trip_04, trip_05, trip_06,
-                       trip_07, trip_08, trip_09,
-                       trip_10, trip_11, trip_12,)
-
-glimpse(all_trips)
-
-```
-
-```{r}
-#---------------------------------------------------------------
-# Data inspection, clean-up and manipulation for analysis
-#---------------------------------------------------------------
-head(all_trips)
-tail(all_trips)
-colnames(all_trips)
-nrow(all_trips)
-dim(all_trips)
-summary(all_trips)
-
-```
-
-Step 3: Perform further data transformation for data consistency, and fix any issues prior to analysis.
-
-```{r}
-#-------------------------------------------
-# Address any data issues and fix them
-#-------------------------------------------
-
-# Check columns for aggregation level
-dfs_member_casual <- table(all_trips$member_casual)
-dfs_rideable_type <- table(all_trips$rideable_type)
-dfs_member_casual
-dfs_rideable_type
-
-# Add columns for ride date to increase aggregation level - month, day, year, day of the week
-all_trips <- 
-  all_trips |> 
-    mutate(
-      start_date = as.Date(started_at),
-      start_month = format(start_date, "%m"),
-      start_day = format(start_date, "%d"),
-      start_year = format(start_date, "%Y"),
-      start_weekday = format(start_date, "%A"),
-      .after = started_at
-    )
-
-# Add a column for ride length in seconds for analysis
-all_trips <- 
-  all_trips |> 
-    mutate(
-      ride_length = as.numeric(difftime(ended_at, started_at)),
-      .after = ended_at
-    )
-
-is.numeric(all_trips$ride_length)
-
-# Check structure of the data frame
-str(all_trips)
-
-```
-
-Data exclusion - bad data
-
-```{r}
-#-------------------------------------------
-# Exclude data that are not suitable
-#-------------------------------------------
-
-# Remove data that has negative ride length
-all_trips_tidy <- 
-  all_trips |> 
-    filter(ride_length > 0)
+# print some row number changes and structure of cleaned data being saved
+total_num_rows # 5859061 rows
+total_num_rows_dropped # 1325062 rows
+total_num_rows_duplicated # 0 row
+glimpse(trip_month_data_clean)
 
 ```
 
 ### Analyze
 
-Step 4: Conduct descriptive analysis
+**Key tasks**
 
-```{r}
-# Descriptive analysis on ride_length (all figures in seconds)
+1\. Aggregate your data so it's useful and accessible.
 
-mean(all_trips_tidy$ride_length)
-median(all_trips_tidy$ride_length)
-min(all_trips_tidy$ride_length)
-max(all_trips_tidy$ride_length)
-summary(all_trips_tidy$ride_length)
+2\. Organize and format your data.
+
+3\. Perform calculations.
+
+4\. Identify trends and relationships.
+
+**Deliverable**
+
+A summary of your analysis
+
+```{r Aggregate and format cleaned dataset, echo=TRUE, message=FALSE, warning=FALSE}
+#----------------------------------------------------------------------------
+# Aggregate the cleaned dataset into a single data frame and inspect further
+#----------------------------------------------------------------------------
+
+# Get all the cleaned data file names for aggregation
+file_names <- list.files(path = "../data/cleaned_datasets/",
+                         pattern = "*.csv", full.names = FALSE,
+                         recursive = FALSE)
+
+# Import the first monthly cleaned csv file, so it constructs the data frame
+# for full year aggregation
+full_year_trips <- read_csv(paste("../data/cleaned_datasets/", file_names[1], sep = ""))
+
+# Aggregate the remainig csv files, starting from the second
+for(name in file_names[2:length(file_names)]) {
+  # Read csv file
+  trip_month_data_clean <- read_csv(paste("../data/cleaned_datasets/", 
+                                          name, sep = ""))
+  
+  # Aggregate the monthly data
+  full_year_trips <- rbind(full_year_trips, trip_month_data_clean)
+  
+  # Drop duplicates
+  full_year_trips <- drop_na(full_year_trips)
+  
+  # Save monthly trip data into a aggregated csv file
+  write_csv(trip_month_data_clean, "../data/analyzed_datasets/full_year_trips.csv",
+            append = TRUE)
+}
+
+# Check the overview of the aggregated dataset
+# skim(full_year_trips) # 4393697
 
 ```
 
-```{r}
-# Get insights of ride length info for member or casual riders
+```{r Analysis, echo=TRUE, message=FALSE, warning=FALSE}
+#----------------------------------------------------------------------------
+# Analyze the aggregated data and create summary to find trends
+# Use quesstion, data summary, visualization format
+# Save each summary
+#----------------------------------------------------------------------------
 
-all_trips_tidy |> 
-  group_by(member_casual) |> 
+# !. Basic descriptive ananlysis on ride length per member and casual groups.
+
+ride_length_membership <- 
+full_year_trips |> 
+  group_by(membership = member_casual) |> 
   summarize(
-    mean_ride_length = as.integer(mean(ride_length)),
-    median_ride_length = median(ride_length),
-    min_ride_length = min(ride_length),
-    max_ride_length = max(ride_length)
+    mean = round(mean(ride_length / 60)),
+    median = round(median(ride_length / 60)),
+    max = round(max(ride_length / 60)),
+    min = round(min(ride_length / 60))
   )
+
+p <- 
+ride_length_membership |> 
+    pivot_longer(cols = c(mean, median, max, min),
+               names_to = "statistic",
+               values_to = "ride_length") |> 
+    ggplot(aes(x = statistic, y = ride_length, fill = membership)) + 
+    geom_col(position = "dodge2") +
+    geom_label(
+      aes(label = ride_length),
+      size = 4,
+      color = "white",
+      position = position_dodge(width = 0.9), vjust = 0.2
+    ) +
+    labs(title = "Ride length stats. by membership", size = 14) +
+    labs(x = "Basic statistic", y = "Ride length (mins.)", fill = "Membership") 
+
+p <- p + ylim(min(ride_length_membership$min), max(ride_length_membership$max) + 10)
+
+
+# Save the summary data
+write_csv(ride_length_membership, 
+          "../data/analyzed_datasets/ride_length_membership.csv")
+
+# Save the plot
+plot_name <- deparse(substitute(ride_length_membership))
+ggsave(paste("../data/analyzed_datasets/", plot_name, ".png"), p, width = 6, height = 4, dpi = 300)
+p
 ```
 
-```{r}
-# Average ride_length by each day of the week for members and casual riders
-all_trips_tidy |> 
-  group_by(member_casual, start_weekday) |> 
-  summarize(mean_ride_length = as.integer(mean(ride_length))) |> 
-  arrange(factor(start_weekday, levels = c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")), member_casual)
+```{r Average weekday ride length, echo=TRUE, message=FALSE, warning=FALSE}
+# 2. Average ride length of day of week per casual and member group
+ride_length_weekday_avg <- 
+  full_year_trips |> 
+    group_by(start_weekday, member_casual) |> 
+    summarize(avg_ride_length = round(mean(ride_length) / 60)) |> 
+    arrange(start_weekday) |>
+    mutate(start_weekday = recode(start_weekday, 
+                                  "1" = "Sunday", 
+                                  "2" = "Monday", 
+                                  "3" = "Tuesday", 
+                                  "4" = "Wednesday", 
+                                  "5" = "Thursday", 
+                                  "6" = "Friday", 
+                                  "7" = "Saturday"))
+ride_length_weekday_avg
 
+p <- 
+ride_length_weekday_avg |> 
+ggplot() +
+  geom_col(
+    aes(x = factor(start_weekday, levels=c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")), 
+        y = avg_ride_length, 
+        fill = member_casual),
+    position = "dodge"
+  ) +
+  labs(title = "Average ride length by weekday", size = 14) +
+  labs(x = "Weekday", y = "Ride length (mins.)", fill = "Membership")
+
+
+# Save the summary data
+write_csv(ride_length_weekday_avg, 
+          "../data/analyzed_datasets/ride_length_weekday_avg.csv")
+
+# Save the plot
+plot_name <- deparse(substitute(ride_length_weekday_avg))
+ggsave(paste("../data/analyzed_datasets/", plot_name, ".png"), p, width = 6, height = 4, dpi = 300)
+p
 ```
 
-```{r}
-# Analyze ridership summary data by rider type and weekday
-all_trips_tidy |> 
-  mutate(weekday = wday(started_at, label = TRUE)) |> 
-  group_by(member_casual, weekday) |> 
-  summarise(
-    number_of_rides = n(),
-    average_duration = as.integer(mean(ride_length))
-  ) |> 
-  arrange(member_casual, weekday)
+```{r Ride frequency weekday, echo=TRUE, message=FALSE, warning=FALSE}
+# 3. Ride count for day of week per member vs casual group.
 
-```
-
-Visualization
-
-```{r}
-
-# Construct dataframe for visualization
-
-df_ride_count <- 
-  all_trips_tidy |> 
+ride_count_weekday <- 
+  full_year_trips |> 
     mutate(weekday = wday(started_at, label = TRUE)) |> 
     group_by(member_casual, weekday) |> 
     summarise(
       number_of_rides = n(),
-      average_duration = as.integer(mean(ride_length))
+      avg_ride_length = as.integer(mean(ride_length)/60)
     ) |> 
     arrange(member_casual, weekday)
 
-```
-
-```{r}
+ride_count_weekday
 
 # Visualize the number of rides by rider type
 
-df_ride_count |> 
+p <- 
+ride_count_weekday |> 
   ggplot(aes(x = weekday, y = number_of_rides, fill = member_casual)) +
     geom_col(position = "dodge") +
     labs(title = "Ridership by User Type", size = 14) +
-    labs(x = "Weekday", y = "Number of rides", fill = "User type")
+    labs(x = "Weekday", y = "Number of rides", fill = "User type") +
+    scale_y_continuous(labels = comma)
 
+# Save the summary data
+write_csv(ride_count_weekday, 
+          "../data/analyzed_datasets/ride_count_weekday.csv")
+
+# Save the plot
+plot_name <- deparse(substitute(ride_count_weekday))
+ggsave(paste("../data/analyzed_datasets/", plot_name, ".png"), p, width = 6, height = 4, dpi = 300)
+p
 ```
 
-```{r}
-# Visualize the average ride duration by rider type
-
-df_ride_count |> 
-  ggplot(aes(x = weekday, y = average_duration, fill = member_casual)) +
-    geom_col(position = "dodge") +
-    labs(title = "Average Ride Duration (sec.) by User Type", size = 14) +
-    labs(x = "Weekday", y = "Number of rides", fill = "User type")
-
-```
-
-```{r}
-# Visualize ride duration per weekday
-
-all_trips_tidy |> 
-  ggplot(aes(x = start_weekday, y = ride_length, color = member_casual)) +
-    geom_point() +
-    labs(title = "Ride Duration (sec.) by User Type", size = 14) +
-    labs(x = "Weekday", y = "Ride duration", fill = "User type")
-
-
-```
-
-```{r}
-# Visualize rideable type by rider type
+```{r Rideable type frequency, echo=TRUE, message=FALSE, warning=FALSE}
+# 4. Rideable type frequencies for day of week per member vs casual group.
 
 dfs_rideable_type_member_casual <- 
-  all_trips_tidy |> 
+  full_year_trips |> 
     group_by(member_casual, rideable_type) |> 
     summarize(ride_count = n()) |> 
-    arrange(member_casual, ride_count)
+    arrange(rideable_type, member_casual, ride_count)
 
-```
+dfs_rideable_type_member_casual
 
-```{r}
+p <- 
 dfs_rideable_type_member_casual |> 
   ggplot(aes(x = rideable_type, y = ride_count, fill = member_casual )) +
     geom_bar(stat = "identity") +
     geom_text(
-      aes(label = ride_count), 
-      size = 4,
+      aes(label = comma(ride_count)),
+      size = 3.5,
       position = position_stack(vjust = 0.5),
       colour = "white"
     ) +
-    scale_y_continuous(labels = comma)
+    scale_y_continuous(labels = comma) +
+    labs(title = "Ride frequency by rideable type", size = 16) +
+    labs(subtitle = "Period: 12 months (May 2022 - April 2023)") +
+    labs(x = "Rideable type", y = "Frequency", fill = "Membership")
 
+# Save the summary data
+write_csv(dfs_rideable_type_member_casual, 
+          "../data/analyzed_datasets/dfs_rideable_type_member_casual.csv")
+
+# Save the plot
+plot_name <- deparse(substitute(ride_count_weekday))
+ggsave(paste("../data/analyzed_datasets/", plot_name, ".png"), p, width = 6, height = 4, dpi = 300)
+p
 ```
 
-Geographical mapping of ridership by rider type, using leaflet
+```{r Station map both, echo=TRUE, message=FALSE, warning=FALSE}
+# 5. Display a map marking the start staion that are frequently used by member or casual riders.
 
-```{r}
-
-# Prepare your data in a smaller set for plotting
+# Geographical mapping of ridership by membership, using leaflet
+# Prepare data in a smaller set for plotting - limit to ride frequency over 1200
 
 dfs_ride_start_loc <- 
-  all_trips_tidy |> 
+  full_year_trips |> 
     select(start_station_name, start_lat, start_lng, member_casual) |> 
     group_by(start_station_name, start_lat, start_lng, member_casual) |> 
     summarize(
       ride_frequency = n()
       ) |> 
     filter(ride_frequency >= 1200) # limit the ride_frequency >= 1200
-```
 
-```{r}
+dfs_ride_start_loc
 
 # Create a leaflet map centered on Chicago with map view
 # Display both member and casual ridership information
 
 leaflet(options = leafletOptions(zoomControl = TRUE)) |> 
-  setView(lng = -87.6298, lat = 41.8781, zoom = 12) |> 
+  setView(lng = -87.6298, lat = 41.8781, zoom = 13) |> 
   addTiles() |> 
    addCircleMarkers(
      data = dfs_ride_start_loc,
@@ -405,16 +481,16 @@ leaflet(options = leafletOptions(zoomControl = TRUE)) |>
   )  
 ```
 
-```{r}
+```{r Station map casual, echo=TRUE, message=FALSE, warning=FALSE}
 # Create a leaflet map centered on Chicago with map view
-# Display casual ridership information only
+# Display Casual riders information only
 
 dfs_ride_start_loc_casual <- 
   dfs_ride_start_loc |> 
     filter(member_casual == "casual")
 
 leaflet(options = leafletOptions(zoomControl = TRUE)) |> 
-  setView(lng = -87.6298, lat = 41.8781, zoom = 12) |> 
+  setView(lng = -87.6298, lat = 41.8781, zoom = 13) |> 
   addTiles() |> 
    addCircleMarkers(
      data = dfs_ride_start_loc_casual,
@@ -428,20 +504,40 @@ leaflet(options = leafletOptions(zoomControl = TRUE)) |>
   )  
 ```
 
-Question: What stations are most frequently used by casual riders in the past 12 months?
+```{r Station map Member, echo=TRUE, message=FALSE, warning=FALSE}
+# Create a leaflet map centered on Chicago with map view
+# Display Member ridership information only
 
-```{r}
+dfs_ride_start_loc_member <- 
+  dfs_ride_start_loc |> 
+    filter(member_casual == "member")
+
+leaflet(options = leafletOptions(zoomControl = TRUE)) |> 
+  setView(lng = -87.6298, lat = 41.8781, zoom = 13) |> 
+  addTiles() |> 
+   addCircleMarkers(
+     data = dfs_ride_start_loc_member,
+     lat = ~start_lat,
+     lng = ~start_lng,
+     radius = ~10,
+     color = ~"blue",
+     popup = ~paste(start_station_name, " | ", member_casual, " | ", ride_frequency),
+     stroke = FALSE,
+     fillOpacity = 0.0001 * dfs_ride_start_loc$ride_frequency
+  )  
+```
+
+```{r Top20 stations, echo=TRUE, message=FALSE, warning=FALSE}
+# 6. What stations are most frequently used by casual riders in the past 12 months?
+
 # Retrieve frequent station information used by casual riders in the past 12 months
-library(kableExtra)
-
 dfs_ride_start_loc_casual <- 
-  all_trips_tidy |> 
+  full_year_trips |> 
     filter(member_casual == "casual") |> 
     group_by(start_station_id, start_station_name, member_casual) |> 
     summarize(
       ride_frequency = n(),
-      # need to set "drop" option to assign ranking properly later
-      .groups = "drop" 
+      .groups = "drop" # need to set "drop" option to assign ranking properly later
       )
 
 dfs_ride_start_loc_casual <- 
@@ -459,26 +555,43 @@ dfs_ride_start_loc_casual_ranked <-
       "ride_count" = "ride_frequency"
     )
 
-# Replace NA in station_id and station_name with "*Unknown*"
-dfs_ride_start_loc_casual_ranked <- 
-  dfs_ride_start_loc_casual_ranked |> 
-    mutate_at(c('station_id','station_name'), ~replace_na(.,"*Unknown*"))
-  
 # List top 20 stations
+
 dfs_ride_start_loc_casual_ranked_20 <- dfs_ride_start_loc_casual_ranked[1:20,]
 
-# Create a styled table
-styled_table <- kable(dfs_ride_start_loc_casual_ranked_20, format = "html", align = "c")  |> 
-  kable_styling(bootstrap_options = c("striped", "hover"))
+# Set ordering
+dfs_ride_start_loc_casual_ranked_20$station_name <- factor(dfs_ride_start_loc_casual_ranked_20$station_name, levels = dfs_ride_start_loc_casual_ranked_20$station_name[order(dfs_ride_start_loc_casual_ranked_20$rank, decreasing = TRUE)])
 
-styled_table
+p <- 
+dfs_ride_start_loc_casual_ranked_20 |> 
+  ggplot(aes(x = ride_count, y = station_name)) +
+    geom_bar(stat = "identity") +
+    labs(title = "Top 20 stations by CASUAL riders", size = 14) +
+    labs(x = "Ride frequency", y = "Station name") +
+    scale_x_continuous(labels = comma)
+
+# Save the summary data
+write_csv(dfs_ride_start_loc_casual_ranked_20, 
+          "../data/analyzed_datasets/dfs_ride_start_loc_casual_ranked_20.csv")
+
+# Save the plot
+plot_name <- deparse(substitute(dfs_ride_start_loc_casual_ranked_20))
+ggsave(paste("../data/analyzed_datasets/", plot_name, ".png"), p, width = 6, height = 4, dpi = 300)
+p
 
 ```
 
-Export the summary data that can be used in other tools - SQL, Spreadsheet, Power BI, Tableau
+```{r Top20 stations table, echo=TRUE, message=FALSE, warning=FALSE}
+# Create a styled table with proper number format
 
-```{r}
-write.csv(df_ride_count, file = "../data/summary_df_ride_count.csv")
+dfs_ride_start_loc_casual_ranked_20$ride_count <- format(dfs_ride_start_loc_casual_ranked_20$ride_count, big.mark = ",")
+
+styled_table <- 
+  kable(dfs_ride_start_loc_casual_ranked_20, format = "html", align = "c")  |> 
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+
+styled_table
 ```
 
 ### Share
