@@ -290,27 +290,76 @@ for(name in file_names[2:length(file_names)]) {
 ```{r Analysis, echo=TRUE, message=FALSE, warning=FALSE}
 #----------------------------------------------------------------------------
 # Analyze the aggregated data and create summary to find trends
-# Use quesstion, data summary, visualization format
+# Use question, data summary, visualization format
 # Save each summary
 #----------------------------------------------------------------------------
 
-# !. Basic descriptive ananlysis on ride length per member and casual groups.
+# !. Basic descriptive analysis on ride length per member and casual groups.
 
-ride_length_membership <- 
-full_year_trips |> 
-  group_by(membership = member_casual) |> 
-  summarize(
-    mean = round(mean(ride_length / 60)),
-    median = round(median(ride_length / 60)),
-    max = round(max(ride_length / 60)),
-    min = round(min(ride_length / 60))
-  )
+# Total ride frequency and percentage per member and casual group
+total_ride = nrow(full_year_trips)
+ride_frequency_membership <- 
+  full_year_trips |> 
+    group_by(membership = member_casual) |> 
+    summarize( 
+      ride_frequency = n(),
+      ride_freq_pct = n() / total_ride * 100
+    ) 
+
+
+# visualization of total ride frequency, percentage per member and casual group
 
 p <- 
-ride_length_membership |> 
+ride_frequency_membership |> 
+  ggplot(aes(x = membership, y = ride_frequency, fill = membership)) +
+  geom_col() +
+  geom_text(aes(label = comma(ride_frequency)), size = 6, vjust = -0.3) +
+  geom_text(aes(label = paste(round(ride_freq_pct, digits = 2), "%")), size = 6, vjust = 5.0, color = "white") +
+  labs(title = "Total ride frequency by membership",
+       x = "Membership", y = "Ride Frequency (2022 - 2023)", fill = "Membership" ) + scale_y_continuous(labels = comma)
+
+# Save the summary data
+write_csv(ride_frequency_membership, "../data/analyzed_datasets/ride_frequency_membership.csv")
+
+# Save the plot
+plot_name <- deparse(substitute(ride_frequency_membership))
+ggsave(paste("../data/analyzed_datasets/", plot_name, ".png"), p, width = 6, height = 4, dpi = 300)
+p
+
+
+# ride_frequency by quarter per member and casaul group
+ride_frequency_q_membership <- 
+  full_year_trips |> 
+    group_by(qtr = paste("QTR", quarter(start_date)), 
+             membership = member_casual) |> 
+    summarize( 
+      ride_frequency = n()
+    )
+
+# Save the summary data
+write_csv(ride_frequency_q_membership, 
+          "../data/analyzed_datasets/ride_frequency_q_membership.csv")  
+              
+
+# mean, median, max and min ride length per member and casual groups.
+ride_length_membership <- 
+  full_year_trips |> 
+    group_by(membership = member_casual) |> 
+    summarize(
+      mean = round(mean(ride_length / 60)),
+      median = round(median(ride_length / 60)),
+      max = round(max(ride_length / 60)),
+      min = round(min(ride_length / 60))
+    )
+
+ride_length_membership <- 
+  ride_length_membership |> 
     pivot_longer(cols = c(mean, median, max, min),
                names_to = "statistic",
-               values_to = "ride_length") |> 
+               values_to = "ride_length")
+
+p <- 
+ride_length_membership |>
     ggplot(aes(x = statistic, y = ride_length, fill = membership)) + 
     geom_col(position = "dodge2") +
     geom_label(
@@ -322,9 +371,6 @@ ride_length_membership |>
     labs(title = "Ride length stats. by membership", size = 14) +
     labs(x = "Basic statistic", y = "Ride length (mins.)", fill = "Membership") 
 
-p <- p + ylim(min(ride_length_membership$min), max(ride_length_membership$max) + 10)
-
-
 # Save the summary data
 write_csv(ride_length_membership, 
           "../data/analyzed_datasets/ride_length_membership.csv")
@@ -332,6 +378,7 @@ write_csv(ride_length_membership,
 # Save the plot
 plot_name <- deparse(substitute(ride_length_membership))
 ggsave(paste("../data/analyzed_datasets/", plot_name, ".png"), p, width = 6, height = 4, dpi = 300)
+
 p
 ```
 
@@ -349,7 +396,8 @@ ride_length_weekday_avg <-
                                   "4" = "Wednesday", 
                                   "5" = "Thursday", 
                                   "6" = "Friday", 
-                                  "7" = "Saturday"))
+                                  "7" = "Saturday")
+           )
 ride_length_weekday_avg
 
 p <- 
@@ -595,5 +643,19 @@ styled_table
 ```
 
 ### Share
+
+**The following data visualizations are shared on Tableau Public, accessible through this [link](https://public.tableau.com/app/profile/albert.joonyoung.park/viz/TheCyclisticBike-shareAnalysisCaseStudy/Dashboard1 "Dashboard: For a limited time: Create Sankey and Radial charts directly in Tableau Public web authoring until June 30. Learn more The Cyclistic Bike-share Analysis Case Study").**
+
+[![Ride Frequency: Past 12 mo.](/data/analyzed_datasets/tableau/Ride%20Frequency%2012mo%20Total.png)](https://public.tableau.com/app/profile/albert.joonyoung.park/viz/TheCyclisticBike-shareAnalysisCaseStudy/Dashboard1)
+
+[![Basic Ride Length Stats.](/data/analyzed_datasets/tableau/Ride%20Length%20Basic%20Stats.png)](https://public.tableau.com/app/profile/albert.joonyoung.park/viz/TheCyclisticBike-shareAnalysisCaseStudy/Dashboard1)
+
+[![Average Ride Length per Day of the Week](/data/analyzed_datasets/tableau/Average%20Ride%20Length%20-%20Day%20of%20Wk.png)](https://public.tableau.com/app/profile/albert.joonyoung.park/viz/TheCyclisticBike-shareAnalysisCaseStudy/Dashboard1)
+
+[![](/data/analyzed_datasets/tableau/Weekly%20Ride%20Freq%20and%20Avg%20Ride%20Length.png){fig-alt="Weekly Ride Count/Avg. Length"}](https://public.tableau.com/app/profile/albert.joonyoung.park/viz/TheCyclisticBike-shareAnalysisCaseStudy/Dashboard1)
+
+[![Ride Frequency per Yearly Quarter](/data/analyzed_datasets/tableau/Ride%20Frequency%20per%20Quarter.png)](https://public.tableau.com/app/profile/albert.joonyoung.park/viz/TheCyclisticBike-shareAnalysisCaseStudy/Dashboard1)
+
+[![Top 20 Start Stations by Casual Riders](/data/analyzed_datasets/tableau/Top%2020%20Stations%20by%20Casual.png)](https://public.tableau.com/app/profile/albert.joonyoung.park/viz/TheCyclisticBike-shareAnalysisCaseStudy/Dashboard1)
 
 ### Act
