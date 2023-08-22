@@ -11,7 +11,7 @@
     "href": "blog.html",
     "title": "Blog Posts",
     "section": "",
-    "text": "A Test Blog Post\n\n\nThe first blog post using Quarto.\n\n\n\n\n\n\nJune 1, 2022\n\n\n3 min\n\n\n\n\n\n\nNo matching items"
+    "text": "Exploring Polar Coordinate Plots in Python Using Matplotlib\n\n\n\n\n\n\n\n\n\n3 min\n\n\n\n\n\n\n  \n\n\n\n\nA Test Blog Post\n\n\nThe first blog post using Quarto.\n\n\n\n\n\n\nJune 1, 2022\n\n\n3 min\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html",
@@ -89,5 +89,110 @@
     "title": "Projects",
     "section": "",
     "text": "The Cyclistic Bike-share Analysis Case Study\n\n\n\n\n\n\n\n\n\nFebruary 5, 2023\n\n\nAlbert Joonyoung Park\n\n\n25 min\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/document.html",
+    "href": "posts/document.html",
+    "title": "Exploring Polar Coordinate Plots in Python Using Matplotlib",
+    "section": "",
+    "text": "A polar plot is a type of graph that presents data in a circular format, offering a fresh perspective beyond the conventional Cartesian coordinate system. In a polar plot, data points are represented using radial distance from a central point and angular positions, creating a distinct visual representation that emphasizes patterns and relationships in a unique way. This type of plot is particularly suitable for data that exhibits directional or cyclic patterns, such as time series data, circular data (e.g., wind direction), or any data with inherent periodicity. Polar plots excel at revealing cyclical trends and variations that might go unnoticed on traditional scatter plots. They allow us to easily observe changes in data values as they evolve over angles, providing insights into periodic behaviors, phase shifts, and synchronization. Whether in the realms of engineering, meteorology, or scientific research, polar plots offer a valuable tool for gaining deeper insights from complex datasets that might otherwise remain hidden in a sea of numbers.\nFor a demonstration of a line plot on a polar axis, see Figure 1.\n\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Define an array of values for the radial distance\nr = np.arange(0, 2, 0.01)\n\n# Convert the radial distance into angles\ntheta = 2 * np.pi * r\n\n# Create a figure and axis with polar projection\nfig, ax = plt.subplots(subplot_kw={'projection': 'polar'})\n\n# Plot the data points on the polar axis\nax.plot(theta, r)\n\n# Customize the radial ticks to enhance readability\nax.set_rticks([0.5, 1, 1.5, 2])\n\n# Add grid lines for a clear reference\nax.grid(True)\n\n# Display the enchanting plot\nplt.show()\n\n\n\n\nFigure 1: A line plot on a polar axis"
+  },
+  {
+    "objectID": "projects/bellabeat-analysis.html#characters-and-products",
+    "href": "projects/bellabeat-analysis.html#characters-and-products",
+    "title": "Bellabeat Analysis Case Study",
+    "section": "Characters and products",
+    "text": "Characters and products\n\nCharacters\n\nUrška Sršen: Bellabeat’s cofounder and Chief Creative Officer\nSando Mur: Mathematician and Bellabeat’s cofounder; key member of the Bellabeat executive team\nBellabeat marketing analytics team: A team of data analysts responsible for collecting, analyzing, and reporting data that helps guide Bellabeat’s marketing strategy. You joined this team six months ago and have been busy learning about Bellabeat’’s mission and business goals — as well as how you, as a junior data analyst, can help Bellabeat achieve them.\n\nProducts\n\nBellabeat app: The Bellabeat app provides users with health data related to their activity, sleep, stress, menstrual cycle, and mindfulness habits. This data can help users better understand their current habits and make healthy decisions. The Bellabeat app connects to their line of smart wellness products.\nLeaf: Bellabeat’s classic wellness tracker can be worn as a bracelet, necklace, or clip. The Leaf tracker connects to the Bellabeat app to track activity, sleep, and stress.\nTime: This wellness watch combines the timeless look of a classic timepiece with smart technology to track user activity, sleep, and stress. The Time watch connects to the Bellabeat app to provide you with insights into your daily wellness.\nSpring: This is a water bottle that tracks daily water intake using smart technology to ensure that you are appropriately hydrated throughout the day. The Spring bottle connects to the Bellabeat app to track your hydration levels.\nBellabeat membership: Bellabeat also offers a subscription-based membership program for users. Membership gives users 24/7 access to fully personalized guidance on nutrition, activity, sleep, health and beauty, and mindfulness based on their lifestyle and goals."
+  },
+  {
+    "objectID": "projects/bellabeat-analysis.html#about-the-company",
+    "href": "projects/bellabeat-analysis.html#about-the-company",
+    "title": "Bellabeat Analysis Case Study",
+    "section": "About the company",
+    "text": "About the company\nUrška Sršen and Sando Mur founded Bellabeat, a high-tech company that manufactures health-focused smart products. Sršen used her background as an artist to develop beautifully designed technology that informs and inspires women around the world. Collecting data on activity, sleep, stress, and reproductive health has allowed Bellabeat to empower women with knowledge about their own health and habits. Since it was founded in 2013, Bellabeat has grown rapidly and quickly positioned itself as a tech-driven wellness company for women.\nBy 2016, Bellabeat had opened offices around the world and launched multiple products. Bellabeat products became available through a growing number of online retailers in addition to their own e-commerce channel on their website. The company has invested in traditional advertising media, such as radio, out-of-home billboards, print, and television, but focuses on digital marketing extensively. Bellabeat invests year-round in Google Search, maintaining active Facebook and Instagram pages, and consistently engages consumers on Twitter. Additionally, Bellabeat runs video ads on Youtube and display ads on the Google Display Network to support campaigns around key marketing dates.\nSršen knows that an analysis of Bellabeat’s available consumer data would reveal more opportunities for growth. She has asked the marketing analytics team to focus on a Bellabeat product and analyze smart device usage data in order to gain insight into how people are already using their smart devices. Then, using this information, she would like high-level recommendations for how these trends can inform Bellabeat marketing strategy."
+  },
+  {
+    "objectID": "projects/bellabeat-analysis.html#project-deliverables",
+    "href": "projects/bellabeat-analysis.html#project-deliverables",
+    "title": "Bellabeat Analysis Case Study",
+    "section": "Project deliverables",
+    "text": "Project deliverables\nProduce a report with the following deliverables:\n\n\nA clear statement of the business task.\nA description of all data sources used.\nDocumentation of any cleaning or manipulation of data.\nA summary of your analysis.\nSupporting visualizations and key findings.\nYour top three recommendations based on your analysis."
+  },
+  {
+    "objectID": "projects/bellabeat-analysis.html#key-findings",
+    "href": "projects/bellabeat-analysis.html#key-findings",
+    "title": "Bellabeat Analysis Case Study",
+    "section": "Key findings",
+    "text": "Key findings\n\nThe bikes were used by members more frequently than casual users, with a 24.12% higher usage rate in the last 12 months.\nHowever, casual riders had longer ride duration compared to members, with an average difference of 4-7 minutes.\nFrom a quarterly perspective, the third and second quarters of the year were the most popular seasons for casual riders.\nCasual riders exhibited a preference for riding bikes on Fridays, Saturdays, and Sundays, and they had longer trip duration during these days.\nAmong the rideable types, classic bikes were the most popular choice among casual riders.\nCasual riders were the only user group that utilized docked bikes.\n“Streeter Dr & Grand Ave” and “DuSable Lake Shore Dr & Monroe St” were the most common starting stations for casual users."
+  },
+  {
+    "objectID": "projects/bellabeat-analysis.html#three-recommendations",
+    "href": "projects/bellabeat-analysis.html#three-recommendations",
+    "title": "Bellabeat Analysis Case Study",
+    "section": "Three recommendations",
+    "text": "Three recommendations\n\nCreate a marketing campaign that educates casual riders on their long-ride trips and invites them to a membership that can cater to their riding needs year-round. The campaign can be advertised both online and offline, with a focus on regions where the most popular stations for casual riders are located. This recommendation is supported by the data analysis, which highlights the long ride durations of casual riders and emphasizes the value of a membership that can provide continuous benefits.\nConsider creating a specialty membership specifically designed for docked-bike users. This targeted approach can be an effective way to engage casual riders who prefer docked bikes. However, instead of offering a separate membership, it may be more beneficial to incorporate docked-bike usage as an additional feature within the existing full-scale membership. This way, casual riders can experience the benefits of membership without creating a distinct membership category.\nDevelop a special introductory membership for the months between April and September or for the days of the week (Friday to Sunday). This limited-time membership can serve as a trial period, offering casual riders the opportunity to experience the benefits of a membership during the most popular seasons or days. Following the introductory period, you can then transition these riders to a regular yearly membership."
+  },
+  {
+    "objectID": "posts/document.html#polar-plot",
+    "href": "posts/document.html#polar-plot",
+    "title": "Exploring Polar Coordinate Plots in Python Using Matplotlib",
+    "section": "",
+    "text": "A polar plot is a type of graph that presents data in a circular format, offering a fresh perspective beyond the conventional Cartesian coordinate system. In a polar plot, data points are represented using radial distance from a central point and angular positions, creating a distinct visual representation that emphasizes patterns and relationships in a unique way. This type of plot is particularly suitable for data that exhibits directional or cyclic patterns, such as time series data, circular data (e.g., wind direction), or any data with inherent periodicity. Polar plots excel at revealing cyclical trends and variations that might go unnoticed on traditional scatter plots. They allow us to easily observe changes in data values as they evolve over angles, providing insights into periodic behaviors, phase shifts, and synchronization. Whether in the realms of engineering, meteorology, or scientific research, polar plots offer a valuable tool for gaining deeper insights from complex datasets that might otherwise remain hidden in a sea of numbers.\nFor a demonstration of a line plot on a polar axis, see Figure 1.\n\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Define an array of values for the radial distance\nr = np.arange(0, 2, 0.01)\n\n# Convert the radial distance into angles\ntheta = 2 * np.pi * r\n\n# Create a figure and axis with polar projection\nfig, ax = plt.subplots(subplot_kw={'projection': 'polar'})\n\n# Plot the data points on the polar axis\nax.plot(theta, r)\n\n# Customize the radial ticks to enhance readability\nax.set_rticks([0.5, 1, 1.5, 2])\n\n# Add grid lines for a clear reference\nax.grid(True)\n\n# Display the enchanting plot\nplt.show()\n\n\n\n\nFigure 1: A line plot on a polar axis"
+  },
+  {
+    "objectID": "posts/document.html#decoding-the-code",
+    "href": "posts/document.html#decoding-the-code",
+    "title": "Exploring Polar Coordinate Plots in Python Using Matplotlib",
+    "section": "Decoding the Code",
+    "text": "Decoding the Code\nImporting Libraries: We start by importing the NumPy and Matplotlib libraries. These are our trusty tools for handling numerical calculations and creating visual wonders.\nDefining Radial Values: The r array represents the radial distance from the center. We use NumPy’s arange() function to generate values from 0 to 2 in increments of 0.01. This gives us the varying distances from the center.\nConverting to Angles: Here comes the magic! We calculate the corresponding angles in radians using the formula 2 * pi * r. This establishes the circular motion around the center point.\nCreating the Plotting Canvas: With Matplotlib’s help, we create a figure and axis with a polar projection. This sets the stage for our polar coordinate plot.\nPlotting the Data: Using the plot() function, we unveil our plot to the world! The theta values represent the angles, and the r values dictate the distance from the center. As we connect the dots, a beautiful pattern unfolds.\nRadial Ticks and Grid: To make our plot more user-friendly, we customize the radial ticks to show values of 0.5, 1, 1.5, and 2. We also add grid lines to assist in interpreting the plot.\nShowcasing the Masterpiece: Finally, we display our creation using plt.show(). Behold the captivating polar coordinate plot!"
+  },
+  {
+    "objectID": "posts/document.html#your-voyage-into-polar-coordinates",
+    "href": "posts/document.html#your-voyage-into-polar-coordinates",
+    "title": "Exploring Polar Coordinate Plots in Python Using Matplotlib",
+    "section": "Your Voyage into Polar Coordinates",
+    "text": "Your Voyage into Polar Coordinates\nCongratulations! You’ve just embarked on a visual adventure that combines mathematics and artistry. Through a few lines of Python code, you’ve created a stunning polar coordinate plot using Matplotlib. As you delve deeper into the world of programming and data visualization, remember that every line of code has the potential to bring your imagination to life.\nSo go ahead, experiment with different values, and let your creativity flourish. The world of data visualization is at your fingertips, waiting for you to explore and innovate. Happy coding and plotting!"
+  },
+  {
+    "objectID": "posts/document.html#lets-break-it-down-decoding-the-code",
+    "href": "posts/document.html#lets-break-it-down-decoding-the-code",
+    "title": "Exploring Polar Coordinate Plots in Python Using Matplotlib",
+    "section": "Let’s Break It Down: Decoding the Code",
+    "text": "Let’s Break It Down: Decoding the Code\n1. Importing Libraries: We start by importing the NumPy and Matplotlib libraries. These are our trusty tools for handling numerical calculations and creating visual wonders.\n2. Defining Radial Values: The r array represents the radial distance from the center. We use NumPy’s arange() function to generate values from 0 to 2 in increments of 0.01. This gives us the varying distances from the center.\n3. Converting to Angles: Here comes the magic! We calculate the corresponding angles in radians using the formula 2 * pi * r. This establishes the circular motion around the center point.\n4. Creating the Plotting Canvas: With Matplotlib’s help, we create a figure and axis with a polar projection. This sets the stage for our polar coordinate plot.\n5. Plotting the Data: Using the plot() function, we unveil our plot to the world! The theta values represent the angles, and the r values dictate the distance from the center. As we connect the dots, a beautiful pattern unfolds.\n6. Radial Ticks and Grid: To make our plot more user-friendly, we customize the radial ticks to show values of 0.5, 1, 1.5, and 2. We also add grid lines to assist in interpreting the plot.\n7. Showcasing the Masterpiece: Finally, we display our creation using plt.show(). Behold the captivating polar coordinate plot!"
+  },
+  {
+    "objectID": "posts/document.html#conclusion-your-voyage-into-polar-coordinates",
+    "href": "posts/document.html#conclusion-your-voyage-into-polar-coordinates",
+    "title": "Exploring Polar Coordinate Plots in Python Using Matplotlib",
+    "section": "Conclusion: Your Voyage into Polar Coordinates",
+    "text": "Conclusion: Your Voyage into Polar Coordinates\nCongratulations! You’ve just embarked on a visual adventure that combines mathematics and artistry. Through a few lines of Python code, you’ve created a stunning polar coordinate plot using Matplotlib. As you delve deeper into the world of programming and data visualization, remember that every line of code has the potential to bring your imagination to life.\nSo go ahead, experiment with different values, and let your creativity flourish. The world of data visualization is at your fingertips, waiting for you to explore and innovate. Happy coding and plotting!"
+  },
+  {
+    "objectID": "posts/matplotlib.html",
+    "href": "posts/matplotlib.html",
+    "title": "Exploring Polar Coordinate Plots in Python Using Matplotlib",
+    "section": "",
+    "text": "A polar plot is a type of graph that presents data in a circular format, offering a fresh perspective beyond the conventional Cartesian coordinate system. In a polar plot, data points are represented using radial distance from a central point and angular positions, creating a distinct visual representation that emphasizes patterns and relationships in a unique way. This type of plot is particularly suitable for data that exhibits directional or cyclic patterns, such as time series data, circular data (e.g., wind direction), or any data with inherent periodicity. Polar plots excel at revealing cyclical trends and variations that might go unnoticed on traditional scatter plots. They allow us to easily observe changes in data values as they evolve over angles, providing insights into periodic behaviors, phase shifts, and synchronization. Whether in the realms of engineering, meteorology, or scientific research, polar plots offer a valuable tool for gaining deeper insights from complex datasets that might otherwise remain hidden in a sea of numbers.\nFor a demonstration of a line plot on a polar axis, see Figure 1.\n\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Define an array of values for the radial distance\nr = np.arange(0, 2, 0.01)\n\n# Convert the radial distance into angles\ntheta = 2 * np.pi * r\n\n# Create a figure and axis with polar projection\nfig, ax = plt.subplots(subplot_kw={'projection': 'polar'})\n\n# Plot the data points on the polar axis\nax.plot(theta, r)\n\n# Customize the radial ticks to enhance readability\nax.set_rticks([0.5, 1, 1.5, 2])\n\n# Add grid lines for a clear reference\nax.grid(True)\n\n# Display the enchanting plot\nplt.show()\n\n\n\n\nFigure 1: A line plot on a polar axis"
+  },
+  {
+    "objectID": "posts/matplotlib.html#polar-plot",
+    "href": "posts/matplotlib.html#polar-plot",
+    "title": "Exploring Polar Coordinate Plots in Python Using Matplotlib",
+    "section": "",
+    "text": "A polar plot is a type of graph that presents data in a circular format, offering a fresh perspective beyond the conventional Cartesian coordinate system. In a polar plot, data points are represented using radial distance from a central point and angular positions, creating a distinct visual representation that emphasizes patterns and relationships in a unique way. This type of plot is particularly suitable for data that exhibits directional or cyclic patterns, such as time series data, circular data (e.g., wind direction), or any data with inherent periodicity. Polar plots excel at revealing cyclical trends and variations that might go unnoticed on traditional scatter plots. They allow us to easily observe changes in data values as they evolve over angles, providing insights into periodic behaviors, phase shifts, and synchronization. Whether in the realms of engineering, meteorology, or scientific research, polar plots offer a valuable tool for gaining deeper insights from complex datasets that might otherwise remain hidden in a sea of numbers.\nFor a demonstration of a line plot on a polar axis, see Figure 1.\n\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Define an array of values for the radial distance\nr = np.arange(0, 2, 0.01)\n\n# Convert the radial distance into angles\ntheta = 2 * np.pi * r\n\n# Create a figure and axis with polar projection\nfig, ax = plt.subplots(subplot_kw={'projection': 'polar'})\n\n# Plot the data points on the polar axis\nax.plot(theta, r)\n\n# Customize the radial ticks to enhance readability\nax.set_rticks([0.5, 1, 1.5, 2])\n\n# Add grid lines for a clear reference\nax.grid(True)\n\n# Display the enchanting plot\nplt.show()\n\n\n\n\nFigure 1: A line plot on a polar axis"
+  },
+  {
+    "objectID": "posts/matplotlib.html#lets-break-it-down-decoding-the-code",
+    "href": "posts/matplotlib.html#lets-break-it-down-decoding-the-code",
+    "title": "Exploring Polar Coordinate Plots in Python Using Matplotlib",
+    "section": "Let’s Break It Down: Decoding the Code",
+    "text": "Let’s Break It Down: Decoding the Code\n1. Importing Libraries: We start by importing the NumPy and Matplotlib libraries. These are our trusty tools for handling numerical calculations and creating visual wonders.\n2. Defining Radial Values: The r array represents the radial distance from the center. We use NumPy’s arange() function to generate values from 0 to 2 in increments of 0.01. This gives us the varying distances from the center.\n3. Converting to Angles: Here comes the magic! We calculate the corresponding angles in radians using the formula 2 * pi * r. This establishes the circular motion around the center point.\n4. Creating the Plotting Canvas: With Matplotlib’s help, we create a figure and axis with a polar projection. This sets the stage for our polar coordinate plot.\n5. Plotting the Data: Using the plot() function, we unveil our plot to the world! The theta values represent the angles, and the r values dictate the distance from the center. As we connect the dots, a beautiful pattern unfolds.\n6. Radial Ticks and Grid: To make our plot more user-friendly, we customize the radial ticks to show values of 0.5, 1, 1.5, and 2. We also add grid lines to assist in interpreting the plot.\n7. Showcasing the Masterpiece: Finally, we display our creation using plt.show(). Behold the captivating polar coordinate plot!"
+  },
+  {
+    "objectID": "posts/matplotlib.html#conclusion-your-voyage-into-polar-coordinates",
+    "href": "posts/matplotlib.html#conclusion-your-voyage-into-polar-coordinates",
+    "title": "Exploring Polar Coordinate Plots in Python Using Matplotlib",
+    "section": "Conclusion: Your Voyage into Polar Coordinates",
+    "text": "Conclusion: Your Voyage into Polar Coordinates\nCongratulations! You’ve just embarked on a visual adventure that combines mathematics and artistry. Through a few lines of Python code, you’ve created a stunning polar coordinate plot using Matplotlib. As you delve deeper into the world of programming and data visualization, remember that every line of code has the potential to bring your imagination to life.\nSo go ahead, experiment with different values, and let your creativity flourish. The world of data visualization is at your fingertips, waiting for you to explore and innovate. Happy coding and plotting!"
   }
 ]

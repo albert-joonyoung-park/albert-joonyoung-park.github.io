@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Albert Joonyoung Park - Blog Posts</title>
+<title>Albert Joonyoung Park - Exploring Polar Coordinate Plots in Python Using Matplotlib</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,27 +20,59 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -60,40 +92,9 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-image','listing-date','listing-title','listing-subtitle','listing-author','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -103,7 +104,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Albert Joonyoung Park</span>
     </a>
   </div>
@@ -114,19 +115,19 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html" rel="" target="">
+    <a class="nav-link" href="../index.html" rel="" target="">
  <span class="menu-text">HOME</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./projects.html" rel="" target="">
+    <a class="nav-link" href="../projects.html" rel="" target="">
  <span class="menu-text">PROJECTS</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./blog.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="../blog.html" rel="" target="">
  <span class="menu-text">BLOG</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html" rel="" target="">
+    <a class="nav-link" href="../about.html" rel="" target="">
  <span class="menu-text">ABOUT</span></a>
   </li>  
 </ul>
@@ -143,14 +144,22 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(2)</span></div><div class="category" data-category="123">123 <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Second Tag">Second Tag <span class="quarto-category-count">(1)</span></div></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#polar-plot" id="toc-polar-plot" class="nav-link active" data-scroll-target="#polar-plot">Polar plot:</a></li>
+  <li><a href="#lets-break-it-down-decoding-the-code" id="toc-lets-break-it-down-decoding-the-code" class="nav-link" data-scroll-target="#lets-break-it-down-decoding-the-code">Let’s Break It Down: Decoding the Code</a></li>
+  <li><a href="#conclusion-your-voyage-into-polar-coordinates" id="toc-conclusion-your-voyage-into-polar-coordinates" class="nav-link" data-scroll-target="#conclusion-your-voyage-into-polar-coordinates">Conclusion: Your Voyage into Polar Coordinates</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Blog Posts</h1>
+<h1 class="title">Exploring Polar Coordinate Plots in Python Using Matplotlib</h1>
 </div>
 
 
@@ -165,65 +174,63 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<hr>
+<section id="polar-plot" class="level2">
+<h2 class="anchored" data-anchor-id="polar-plot">Polar plot:</h2>
+<p>A polar plot is a type of graph that presents data in a circular format, offering a fresh perspective beyond the conventional Cartesian coordinate system. In a polar plot, data points are represented using radial distance from a central point and angular positions, creating a distinct visual representation that emphasizes patterns and relationships in a unique way. This type of plot is particularly suitable for data that exhibits directional or cyclic patterns, such as time series data, circular data (e.g., wind direction), or any data with inherent periodicity. Polar plots excel at revealing cyclical trends and variations that might go unnoticed on traditional scatter plots. They allow us to easily observe changes in data values as they evolve over angles, providing insights into periodic behaviors, phase shifts, and synchronization. Whether in the realms of engineering, meteorology, or scientific research, polar plots offer a valuable tool for gaining deeper insights from complex datasets that might otherwise remain hidden in a sea of numbers.</p>
+<p>For a demonstration of a line plot on a polar axis, see <a href="#fig-polar">Figure&nbsp;1</a>.</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define an array of values for the radial distance</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">2</span>, <span class="fl">0.01</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the radial distance into angles</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> r</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a figure and axis with polar projection</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(subplot_kw<span class="op">=</span>{<span class="st">'projection'</span>: <span class="st">'polar'</span>})</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the data points on the polar axis</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>ax.plot(theta, r)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Customize the radial ticks to enhance readability</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>ax.set_rticks([<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="dv">2</span>])</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Add grid lines for a clear reference</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the enchanting plot</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-polar" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="document_files/figure-html/fig-polar-output-1.png" width="450" height="439" class="figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;1: A line plot on a polar axis</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="lets-break-it-down-decoding-the-code" class="level2">
+<h2 class="anchored" data-anchor-id="lets-break-it-down-decoding-the-code">Let’s Break It Down: Decoding the Code</h2>
+<p><strong>1. Importing Libraries</strong>: We start by importing the NumPy and Matplotlib libraries. These are our trusty tools for handling numerical calculations and creating visual wonders.</p>
+<p><strong>2. Defining Radial Values</strong>: The r array represents the radial distance from the center. We use NumPy’s arange() function to generate values from 0 to 2 in increments of 0.01. This gives us the varying distances from the center.</p>
+<p><strong>3. Converting to Angles</strong>: Here comes the magic! We calculate the corresponding angles in radians using the formula 2 * pi * r. This establishes the circular motion around the center point.</p>
+<p><strong>4. Creating the Plotting Canvas</strong>: With Matplotlib’s help, we create a figure and axis with a polar projection. This sets the stage for our polar coordinate plot.</p>
+<p><strong>5. Plotting the Data</strong>: Using the plot() function, we unveil our plot to the world! The theta values represent the angles, and the r values dictate the distance from the center. As we connect the dots, a beautiful pattern unfolds.</p>
+<p><strong>6. Radial Ticks and Grid</strong>: To make our plot more user-friendly, we customize the radial ticks to show values of 0.5, 1, 1.5, and 2. We also add grid lines to assist in interpreting the plot.</p>
+<p><strong>7. Showcasing the Masterpiece</strong>: Finally, we display our creation using plt.show(). Behold the captivating polar coordinate plot!</p>
+</section>
+<section id="conclusion-your-voyage-into-polar-coordinates" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion-your-voyage-into-polar-coordinates">Conclusion: Your Voyage into Polar Coordinates</h2>
+<p>Congratulations! You’ve just embarked on a visual adventure that combines mathematics and artistry. Through a few lines of Python code, you’ve created a stunning polar coordinate plot using Matplotlib. As you delve deeper into the world of programming and data visualization, remember that every line of code has the potential to bring your imagination to life.</p>
+<p>So go ahead, experiment with different values, and let your creativity flourish. The world of data visualization is at your fingertips, waiting for you to explore and innovate. Happy coding and plotting!</p>
 
 
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-file-modified-sort="1692717450165" data-listing-reading-time-sort="3">
-<div class="thumbnail">
-<p><a href="./posts/matplotlib.html"> <img src="images/blog-placeholder.png" class="thumbnail-image" style="height: 50;"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/matplotlib.html">
-<h3 class="no-anchor listing-title">
-Exploring Polar Coordinate Plots in Python Using Matplotlib
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/matplotlib.html">
-<div class="listing-reading-time">
-3 min
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="123,Second Tag" data-listing-date-sort="1654056000000" data-listing-file-modified-sort="1685502114860" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
-<div class="thumbnail">
-<p><a href="./posts/my-first-blog.html"> <img src="./posts/my-first-blog.jpg" class="thumbnail-image" style="height: 50;"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/my-first-blog.html">
-<h3 class="no-anchor listing-title">
-A Test Blog Post
-</h3>
-<div class="listing-subtitle">
-The first blog post using Quarto.
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/my-first-blog.html">
-<div class="listing-date">
-June 1, 2022
-</div>
-<div class="listing-reading-time">
-3 min
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

@@ -235,7 +235,7 @@ for (name in file_names) {
             paste("../data/cleaned_datasets/", name, sep = ""))
 }
 
-# print some row number changes and structure of cleaned data being saved
+# Print some row number changes and structure of cleaned data being saved
 total_num_rows # 5859061 rows
 total_num_rows_dropped # 1325062 rows
 total_num_rows_duplicated # 0 row
