@@ -1,11 +1,18 @@
 ---
-title: "Exploring Polar Coordinate Plots in Python Using Matplotlib"
+title: "Exploring Polar Coordinate Plot in Python Using Matplotlib"
+subtitle: "Metplotlib - Polar coordinate plot."
+date: '2023-08-22'
+categories: ['Matplotlib', 'Polar Coordinate', 'Python']
+description: 'This is a post, demonstrating Matplotlib Polar plot using Python.'
+image: matplotlib.png
 format:
   html:
     code-fold: false
 jupyter: python3
 ---
-## Polar plot: 
+
+## Polar plot:
+
 A polar plot is a type of graph that presents data in a circular format, offering a fresh perspective beyond the conventional Cartesian coordinate system. In a polar plot, data points are represented using radial distance from a central point and angular positions, creating a distinct visual representation that emphasizes patterns and relationships in a unique way. This type of plot is particularly suitable for data that exhibits directional or cyclic patterns, such as time series data, circular data (e.g., wind direction), or any data with inherent periodicity. Polar plots excel at revealing cyclical trends and variations that might go unnoticed on traditional scatter plots. They allow us to easily observe changes in data values as they evolve over angles, providing insights into periodic behaviors, phase shifts, and synchronization. Whether in the realms of engineering, meteorology, or scientific research, polar plots offer a valuable tool for gaining deeper insights from complex datasets that might otherwise remain hidden in a sea of numbers.
 
 For a demonstration of a line plot on a polar axis, see @fig-polar.
@@ -38,13 +45,14 @@ ax.grid(True)
 # Display the enchanting plot
 plt.show()
 ```
+
 ## Let's Break It Down: Decoding the Code
 
 **1. Importing Libraries**: We start by importing the NumPy and Matplotlib libraries. These are our trusty tools for handling numerical calculations and creating visual wonders.
 
 **2. Defining Radial Values**: The r array represents the radial distance from the center. We use NumPy's arange() function to generate values from 0 to 2 in increments of 0.01. This gives us the varying distances from the center.
 
-**3. Converting to Angles**: Here comes the magic! We calculate the corresponding angles in radians using the formula 2 * pi * r. This establishes the circular motion around the center point.
+**3. Converting to Angles**: Here comes the magic! We calculate the corresponding angles in radians using the formula 2 \* pi \* r. This establishes the circular motion around the center point.
 
 **4. Creating the Plotting Canvas**: With Matplotlib's help, we create a figure and axis with a polar projection. This sets the stage for our polar coordinate plot.
 

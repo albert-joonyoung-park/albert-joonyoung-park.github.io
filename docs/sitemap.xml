@@ -2,19 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://albert-joonyoung-park.github.io/about.html</loc>
-    <lastmod>2023-08-22T15:12:16.071Z</lastmod>
+    <lastmod>2023-08-23T03:15:32.382Z</lastmod>
   </url>
   <url>
     <loc>https://albert-joonyoung-park.github.io/blog.html</loc>
-    <lastmod>2023-08-22T15:18:06.701Z</lastmod>
+    <lastmod>2023-08-23T03:14:03.566Z</lastmod>
   </url>
   <url>
     <loc>https://albert-joonyoung-park.github.io/index.html</loc>
-    <lastmod>2023-08-22T13:19:09.804Z</lastmod>
+    <lastmod>2023-08-23T03:15:29.108Z</lastmod>
   </url>
   <url>
     <loc>https://albert-joonyoung-park.github.io/posts/my-first-blog.html</loc>
-    <lastmod>2023-06-16T03:37:32.144Z</lastmod>
+    <lastmod>2023-08-23T03:13:26.542Z</lastmod>
   </url>
   <url>
     <loc>https://albert-joonyoung-park.github.io/projects/cyclistic-bike-share-analysis.html</loc>
@@ -22,7 +22,7 @@
   </url>
   <url>
     <loc>https://albert-joonyoung-park.github.io/projects.html</loc>
-    <lastmod>2023-08-22T15:12:11.241Z</lastmod>
+    <lastmod>2023-08-22T18:19:37.811Z</lastmod>
   </url>
   <url>
     <loc>https://albert-joonyoung-park.github.io/posts/document.html</loc>
@@ -34,6 +34,10 @@
   </url>
   <url>
     <loc>https://albert-joonyoung-park.github.io/posts/matplotlib.html</loc>
-    <lastmod>2023-08-22T15:18:12.549Z</lastmod>
+    <lastmod>2023-08-23T03:11:27.606Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albert-joonyoung-park.github.io/posts/reticulate.html</loc>
+    <lastmod>2023-08-23T03:13:32.805Z</lastmod>
   </url>
 </urlset>

@@ -3,6 +3,7 @@
     "listing": "/blog.html",
     "items": [
       "/posts/matplotlib.html",
+      "/posts/reticulate.html",
       "/posts/my-first-blog.html"
     ]
   },
