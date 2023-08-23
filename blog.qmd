@@ -6,7 +6,7 @@ listing:
   sort: "date desc"
   max-items: 10
   image-align: right
-  image-height: "25"
+  image-height: 50px
   image-placeholder: "images/blog-placeholder.png"
   max-description-length: 175
   date-format: long
