@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/posts/p4da3d-data-types.html",
       "/posts/matplotlib.html",
       "/posts/reticulate.html",
       "/posts/my-first-blog.html"

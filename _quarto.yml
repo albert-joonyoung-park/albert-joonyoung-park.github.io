@@ -35,7 +35,8 @@ format:
     theme: flatly
     css: styles.css
     toc: true
-    fontsize: 0.9em
+    fontsize: 1.2em
+    html-math-method: katex
 
 editor: visual
 

@@ -90,8 +90,22 @@ ul.task-list li input[type="checkbox"] {
   })
   </script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -144,7 +158,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Matplotlib">Matplotlib <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Polar Coordinate">Polar Coordinate <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Python">Python <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Quarto">Quarto <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Reticulate">Reticulate <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Second Tag">Second Tag <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(4)</span></div><div class="category" data-category="Data Structure">Data Structure <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Matplotlib">Matplotlib <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Polar Coordinate">Polar Coordinate <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Python">Python <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Quarto">Quarto <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Reticulate">Reticulate <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Second Tag">Second Tag <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -172,9 +186,34 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="Matplotlib,Polar Coordinate,Python" data-listing-date-sort="1692676800000" data-listing-file-modified-sort="1692760272415" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
+<div class="quarto-post image-right" data-index="0" data-categories="Python,Data Structure" data-listing-date-sort="1694404800000" data-listing-file-modified-sort="1694711571446" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
 <div class="thumbnail">
-<p><a href="./posts/matplotlib.html"> <img src="./posts/matplotlib.png" class="thumbnail-image" style="height: 50px;"> </a></p>
+<p><a href="./posts/p4da3d-data-types.html"> <img src="./posts/data.jpg" class="thumbnail-image" style="height: 120px;"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/p4da3d-data-types.html">
+<h3 class="no-anchor listing-title">
+[3] Built-In Data Structures, Functions, and Files
+</h3>
+<div class="listing-subtitle">
+A series of posts, exploring data analysis using the book - Python for Data Analysis, 3E by Wes McKinney
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/p4da3d-data-types.html">
+<div class="listing-date">
+September 11, 2023
+</div>
+<div class="listing-reading-time">
+4 min
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="Matplotlib,Polar Coordinate,Python" data-listing-date-sort="1692676800000" data-listing-file-modified-sort="1694699771584" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
+<div class="thumbnail">
+<p><a href="./posts/matplotlib.html"> <img src="./posts/polar_coordinate.png" class="thumbnail-image" style="height: 120px;"> </a></p>
 </div>
 <div class="body">
 <a href="./posts/matplotlib.html">
@@ -197,9 +236,9 @@ August 22, 2023
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="Reticulate,R,Python" data-listing-date-sort="1692676800000" data-listing-file-modified-sort="1692760266597" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2">
+<div class="quarto-post image-right" data-index="2" data-categories="Reticulate,R,Python" data-listing-date-sort="1692676800000" data-listing-file-modified-sort="1692760266597" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2">
 <div class="thumbnail">
-<p><a href="./posts/reticulate.html"> <img src="images/blog-placeholder.png" class="thumbnail-image" style="height: 50px;"> </a></p>
+<p><a href="./posts/reticulate.html"> <img src="images/blog-placeholder.jpg" class="thumbnail-image" style="height: 120px;"> </a></p>
 </div>
 <div class="body">
 <a href="./posts/reticulate.html">
@@ -222,9 +261,9 @@ August 22, 2023
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="Quarto,Second Tag,R" data-listing-date-sort="1654056000000" data-listing-file-modified-sort="1692728052094" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
+<div class="quarto-post image-right" data-index="3" data-categories="Quarto,Second Tag,R" data-listing-date-sort="1654056000000" data-listing-file-modified-sort="1694711567422" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
 <div class="thumbnail">
-<p><a href="./posts/my-first-blog.html"> <img src="./posts/my-first-blog.jpg" class="thumbnail-image" style="height: 50px;"> </a></p>
+<p><a href="./posts/my-first-blog.html"> <img src="./posts/my-first-blog.png" class="thumbnail-image" style="height: 120px;"> </a></p>
 </div>
 <div class="body">
 <a href="./posts/my-first-blog.html">

@@ -6,8 +6,8 @@ listing:
   sort: "date desc"
   max-items: 10
   image-align: right
-  image-height: 50px
-  image-placeholder: "images/blog-placeholder.png"
+  image-height: "120px"
+  image-placeholder: "images/blog-placeholder.jpg"
   max-description-length: 175
   date-format: long
   categories: true
