@@ -401,7 +401,108 @@ False</code></pre>
 <h3 class="anchored" data-anchor-id="dictionary">Dictionary</h3>
 <p>Python Dictionaries: Versatile and dynamic data structures that store key-value pairs, allowing for efficient data retrieval and manipulation. Dictionaries are unordered collections that provide a way to map unique keys to associated values, making them invaluable for tasks like data storage, lookup tables, and configuration settings</p>
 <div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create, access and manipulate a Dictionary (aka, hash-map, associative arrays)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a Dictionary (aka, hash-map, associative arrays)</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>empty_dict <span class="op">=</span> {} </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(empty_dict)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>d1 <span class="op">=</span> {<span class="st">"a"</span>: <span class="st">"some value"</span>, <span class="st">"b"</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>]}  <span class="co"># key-value pair</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(d1)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Access, insert and set</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>d1[<span class="dv">7</span>] <span class="op">=</span> <span class="st">"an integer"</span>      <span class="co"># 7:"an integer" pair</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(d1)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(d1[<span class="st">"b"</span>])            <span class="co"># lookup with key</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">#print(d1["address"])     # KeyError</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"address"</span> <span class="kw">in</span> d1)    <span class="co"># key exists?</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span><span class="op">*</span><span class="dv">30</span>)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Delete values</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="kw">del</span> d1[<span class="dv">7</span>]              <span class="co"># delete with key</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="co">#del d1["country"]     # KeyError</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(d1)</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>ret <span class="op">=</span> d1.pop(<span class="st">"b"</span>)      <span class="co"># delete with key and return the value</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ret)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(d1)</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span><span class="op">*</span><span class="dv">30</span>)</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Iteration using keys() values() items()</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>d1 <span class="op">=</span> {<span class="st">'a'</span>: <span class="st">'some value'</span>, <span class="st">'b'</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>], <span class="dv">7</span>: <span class="st">'an integer'</span>}</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(d1.keys()))     <span class="co"># &lt;class 'dict_keys'&gt;</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(d1.values()))   <span class="co"># &lt;class 'dict_values'&gt;</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>d1_keys <span class="op">=</span> <span class="bu">list</span>(d1.keys())   </span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>d1_values <span class="op">=</span> <span class="bu">list</span>(d1.values())</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>d1_items <span class="op">=</span> <span class="bu">list</span>(d1.items())  <span class="co"># Gives a list of tuples in (key, value)</span></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(d1_keys)</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(d1_values)</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(d1_items)  </span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a><span class="co"># iteration</span></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, value <span class="kw">in</span> d1.items():</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(<span class="ss">f'Key: </span><span class="ch">\"</span><span class="sc">{</span>key<span class="sc">}</span><span class="ch">\"</span><span class="ss"> has value of </span><span class="ch">\"</span><span class="sc">{</span>value<span class="sc">}</span><span class="ch">\"</span><span class="ss">.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{}
+{'a': 'some value', 'b': [1, 2, 3, 4]}
+{'a': 'some value', 'b': [1, 2, 3, 4], 7: 'an integer'}
+[1, 2, 3, 4]
+False
+------------------------------
+{'a': 'some value', 'b': [1, 2, 3, 4]}
+[1, 2, 3, 4]
+{'a': 'some value'}
+------------------------------
+&lt;class 'dict_keys'&gt;
+&lt;class 'dict_values'&gt;
+['a', 'b', 7]
+['some value', [1, 2, 3, 4], 'an integer']
+[('a', 'some value'), ('b', [1, 2, 3, 4]), (7, 'an integer')]
+Key: "a" has value of "some value".
+Key: "b" has value of "[1, 2, 3, 4]".
+Key: "7" has value of "an integer".</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Update dictionary with a dictionary of new or changes of key-value pairs</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>d1 <span class="op">=</span> {<span class="st">'a'</span>: <span class="st">'some value'</span>, <span class="st">'b'</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>], <span class="dv">7</span>: <span class="st">'an integer'</span>}</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(d1)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>d1.update({<span class="st">"b"</span>: <span class="st">"foo"</span>, <span class="st">"c"</span>: <span class="dv">12</span>})</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(d1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'a': 'some value', 'b': [1, 2, 3, 4], 7: 'an integer'}
+{'a': 'some value', 'b': 'foo', 7: 'an integer', 'c': 12}</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dictionary from two sequences</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>list_country <span class="op">=</span> [<span class="st">"USA"</span>, <span class="st">"Canada"</span>, <span class="st">"England"</span>, <span class="st">"France"</span>]</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>list_city <span class="op">=</span> [<span class="st">"Washigton"</span>, <span class="st">"Ottawa"</span>, <span class="st">"London"</span>, <span class="st">"Paris"</span>]</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(list_country)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(list_city)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Using for loop - zip and iterate</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">zip</span>(list_country, list_city))</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>mapping <span class="op">=</span> {}</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, value <span class="kw">in</span> <span class="bu">zip</span>(list_country, list_city):</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  mapping[key] <span class="op">=</span> value</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mapping, <span class="bu">type</span>(mapping))</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Using dict() method</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>country_city_tuples <span class="op">=</span> <span class="bu">zip</span>(list_country, list_city)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(country_city_tuples, <span class="bu">type</span>(country_city_tuples))</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>mapping <span class="op">=</span> <span class="bu">dict</span>(country_city_tuples)</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mapping, <span class="bu">type</span>(mapping))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['USA', 'Canada', 'England', 'France']
+['Washigton', 'Ottawa', 'London', 'Paris']
+&lt;zip object at 0x0000022626186D80&gt;
+{'USA': 'Washigton', 'Canada': 'Ottawa', 'England': 'London', 'France': 'Paris'} &lt;class 'dict'&gt;
+&lt;zip object at 0x0000022626186D80&gt; &lt;class 'zip'&gt;
+{'USA': 'Washigton', 'Canada': 'Ottawa', 'England': 'London', 'France': 'Paris'} &lt;class 'dict'&gt;</code></pre>
+</div>
 </div>
 
 

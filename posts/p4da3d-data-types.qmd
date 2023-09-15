@@ -180,6 +180,81 @@ Python Dictionaries: Versatile and dynamic data structures that store key-value 
 
 ```{python}
 
-# Create, access and manipulate a Dictionary (aka, hash-map, associative arrays)
+# Create a Dictionary (aka, hash-map, associative arrays)
+
+empty_dict = {} 
+print(empty_dict)
+d1 = {"a": "some value", "b": [1, 2, 3, 4]}  # key-value pair
+print(d1)
+
+# Access, insert and set
+d1[7] = "an integer"      # 7:"an integer" pair
+print(d1)
+print(d1["b"])            # lookup with key
+#print(d1["address"])     # KeyError
+print("address" in d1)    # key exists?
+
+print("-"*30)
+
+# Delete values
+del d1[7]              # delete with key
+#del d1["country"]     # KeyError
+print(d1)
+ret = d1.pop("b")      # delete with key and return the value
+print(ret)
+print(d1)
+
+print("-"*30)
+
+# Iteration using keys() values() items()
+d1 = {'a': 'some value', 'b': [1, 2, 3, 4], 7: 'an integer'}
+print(type(d1.keys()))     # <class 'dict_keys'>
+print(type(d1.values()))   # <class 'dict_values'>
+
+d1_keys = list(d1.keys())   
+d1_values = list(d1.values())
+d1_items = list(d1.items())  # Gives a list of tuples in (key, value)
+print(d1_keys)
+print(d1_values)
+print(d1_items)  
+
+# iteration
+for key, value in d1.items():
+  print(f'Key: \"{key}\" has value of \"{value}\".')
+
+
+```
+
+```{python}
+
+# Update dictionary with a dictionary of new or changes of key-value pairs
+d1 = {'a': 'some value', 'b': [1, 2, 3, 4], 7: 'an integer'}
+print(d1)
+d1.update({"b": "foo", "c": 12})
+print(d1)
+```
+
+```{python}
+
+# Create a dictionary from two sequences
+
+list_country = ["USA", "Canada", "England", "France"]
+list_city = ["Washigton", "Ottawa", "London", "Paris"]
+print(list_country)
+print(list_city)
+
+# Using for loop - zip and iterate
+print(zip(list_country, list_city))
+
+mapping = {}
+for key, value in zip(list_country, list_city):
+  mapping[key] = value
+print(mapping, type(mapping))
+
+# Using dict() method
+country_city_tuples = zip(list_country, list_city)
+print(country_city_tuples, type(country_city_tuples))
+mapping = dict(country_city_tuples)
+print(mapping, type(mapping))
 
 ```
