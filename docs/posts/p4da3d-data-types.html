@@ -498,12 +498,81 @@ Key: "7" has value of "an integer".</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>['USA', 'Canada', 'England', 'France']
 ['Washigton', 'Ottawa', 'London', 'Paris']
-&lt;zip object at 0x0000022626186D80&gt;
+&lt;zip object at 0x000001C832584040&gt;
 {'USA': 'Washigton', 'Canada': 'Ottawa', 'England': 'London', 'France': 'Paris'} &lt;class 'dict'&gt;
-&lt;zip object at 0x0000022626186D80&gt; &lt;class 'zip'&gt;
+&lt;zip object at 0x000001C8325841C0&gt; &lt;class 'zip'&gt;
 {'USA': 'Washigton', 'Canada': 'Ottawa', 'England': 'London', 'France': 'Paris'} &lt;class 'dict'&gt;</code></pre>
 </div>
 </div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build a dictionary WUTHOUT using setdefault()</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> [<span class="st">"apple"</span>, <span class="st">"bat"</span>, <span class="st">"bar"</span>, <span class="st">"atom"</span>, <span class="st">"book"</span>]</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(words, <span class="bu">type</span>(words))</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>by_letter <span class="op">=</span> {}</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> word <span class="kw">in</span> words:</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  letter <span class="op">=</span> word[<span class="dv">0</span>] <span class="co"># Using the first letter of each word as key</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> letter <span class="kw">not</span> <span class="kw">in</span> by_letter:</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    by_letter[letter] <span class="op">=</span> [word]</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span>:</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    by_letter[letter].append(word)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(by_letter)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span><span class="op">*</span><span class="dv">55</span>)</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Simplified version using setdefault()</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> [<span class="st">"apple"</span>, <span class="st">"bat"</span>, <span class="st">"bar"</span>, <span class="st">"atom"</span>, <span class="st">"book"</span>]</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>by_letter <span class="op">=</span> {}</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> word <span class="kw">in</span> words:</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>  letter <span class="op">=</span> word[<span class="dv">0</span>] <span class="co"># Using the first letter of each word as key</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>  by_letter.setdefault(letter, []).append(word) <span class="co"># If the letter (the first letter of the current word) is already a key in the dictionary, it returns the corresponding value (which is a list) for that key. If the key doesn't exist, it initializes an empty list. The append() method is then used to add the current word to the list associated with the letter key.</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(by_letter)</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span><span class="op">*</span><span class="dv">55</span>)</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Using defaultdict from collections module</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> defaultdict</span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> [<span class="st">"apple"</span>, <span class="st">"bat"</span>, <span class="st">"bar"</span>, <span class="st">"atom"</span>, <span class="st">"book"</span>]</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>by_letter <span class="op">=</span> defaultdict(<span class="bu">list</span>) <span class="co"># if you access a key that doesn't exist, it will automatically create that key with an empty list as the associated value. This is particularly useful when you want to avoid KeyError exceptions when working with dictionaries.</span></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(by_letter, <span class="bu">type</span>(by_letter))</span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> word <span class="kw">in</span> words:</span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>  by_letter[word[<span class="dv">0</span>]].append(word)</span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(by_letter)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['apple', 'bat', 'bar', 'atom', 'book'] &lt;class 'list'&gt;
+{'a': ['apple', 'atom'], 'b': ['bat', 'bar', 'book']}
+-------------------------------------------------------
+{'a': ['apple', 'atom'], 'b': ['bat', 'bar', 'book']}
+-------------------------------------------------------
+defaultdict(&lt;class 'list'&gt;, {}) &lt;class 'collections.defaultdict'&gt;
+defaultdict(&lt;class 'list'&gt;, {'a': ['apple', 'atom'], 'b': ['bat', 'bar', 'book']})</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Valid dictionary key types - Must be hashabletjdtn</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Understanding Dictionary Key Types</strong></p>
+<p>In Python, dictionaries are versatile data structures used for mapping keys to corresponding values. While dictionaries allow flexibility in storing values of any Python data type as their values, there are specific requirements and considerations when it comes to selecting suitable key types. This aspect of dictionary design is crucial to ensure efficient and reliable key-value pair lookups and operations.</p>
+<p><strong>Key Characteristics of Dictionary Keys</strong></p>
+<ol type="1">
+<li><p><strong>Immutability Requirement:</strong></p>
+<p>The primary requirement for dictionary keys is that they should generally be <strong>immutable objects</strong>. Immutability refers to the property of an object that prevents its state from being modified after it is created.</p></li>
+<li><p><strong>Examples of Immutable Key Types:</strong></p>
+<ul>
+<li><p><strong>Scalar Types:</strong> Examples of immutable scalar types suitable as dictionary keys include integers (<strong><code>int</code></strong>), floating-point numbers (<strong><code>float</code></strong>), and strings (<strong><code>str</code></strong>). These types are inherently immutable, which means once you create a key with a specific value, that key-value pair remains consistent.</p></li>
+<li><p><strong>Tuples as Composite Keys:</strong> Tuples can also serve as dictionary keys, but there’s an important condition: all the objects within the tuple must also be immutable. This ensures the stability of the key, as the tuple itself remains unchanged.</p></li>
+</ul></li>
+</ol>
+<p><strong>The Significance of Hashability</strong></p>
+<p>The technical term that ties these requirements together is <strong>“hashability.”</strong> Hashability refers to an object’s ability to be hashed, which involves converting the object into a fixed-size numerical value, known as a hash code. This hash code is used as an index to efficiently store and retrieve key-value pairs in a dictionary. The key feature of hashable objects is that they produce the same hash code consistently.</p>
+<p><strong>The Role of the <code>hash()</code> Function</strong></p>
+<p>You can determine whether an object is hashable and can be used as a dictionary key by utilizing the built-in <strong><code>hash()</code></strong> function. When you apply the <strong><code>hash()</code></strong> function to an object, it returns a hash code if the object is hashable. However, keep in mind that not all Python objects are hashable, particularly mutable objects like lists and dictionaries.</p>
 
 
 </section>
