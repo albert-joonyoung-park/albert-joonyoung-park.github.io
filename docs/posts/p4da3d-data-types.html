@@ -157,6 +157,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#tuple" id="toc-tuple" class="nav-link" data-scroll-target="#tuple">Tuple</a></li>
   <li><a href="#list" id="toc-list" class="nav-link" data-scroll-target="#list">List</a></li>
   <li><a href="#dictionary" id="toc-dictionary" class="nav-link" data-scroll-target="#dictionary">Dictionary</a></li>
+  <li><a href="#set" id="toc-set" class="nav-link" data-scroll-target="#set">Set</a></li>
+  <li><a href="#list-set-and-dictionary-comprehensions" id="toc-list-set-and-dictionary-comprehensions" class="nav-link" data-scroll-target="#list-set-and-dictionary-comprehensions">List, Set and Dictionary Comprehensions</a></li>
+  <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions">Functions</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -498,9 +501,9 @@ Key: "7" has value of "an integer".</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>['USA', 'Canada', 'England', 'France']
 ['Washigton', 'Ottawa', 'London', 'Paris']
-&lt;zip object at 0x000001C832584040&gt;
+&lt;zip object at 0x000001F2F4145E40&gt;
 {'USA': 'Washigton', 'Canada': 'Ottawa', 'England': 'London', 'France': 'Paris'} &lt;class 'dict'&gt;
-&lt;zip object at 0x000001C8325841C0&gt; &lt;class 'zip'&gt;
+&lt;zip object at 0x000001F2F4145D00&gt; &lt;class 'zip'&gt;
 {'USA': 'Washigton', 'Canada': 'Ottawa', 'England': 'London', 'France': 'Paris'} &lt;class 'dict'&gt;</code></pre>
 </div>
 </div>
@@ -554,9 +557,6 @@ defaultdict(&lt;class 'list'&gt;, {}) &lt;class 'collections.defaultdict'&gt;
 defaultdict(&lt;class 'list'&gt;, {'a': ['apple', 'atom'], 'b': ['bat', 'bar', 'book']})</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Valid dictionary key types - Must be hashabletjdtn</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <p><strong>Understanding Dictionary Key Types</strong></p>
 <p>In Python, dictionaries are versatile data structures used for mapping keys to corresponding values. While dictionaries allow flexibility in storing values of any Python data type as their values, there are specific requirements and considerations when it comes to selecting suitable key types. This aspect of dictionary design is crucial to ensure efficient and reliable key-value pair lookups and operations.</p>
 <p><strong>Key Characteristics of Dictionary Keys</strong></p>
@@ -573,6 +573,334 @@ defaultdict(&lt;class 'list'&gt;, {'a': ['apple', 'atom'], 'b': ['bat', 'bar', '
 <p>The technical term that ties these requirements together is <strong>“hashability.”</strong> Hashability refers to an object’s ability to be hashed, which involves converting the object into a fixed-size numerical value, known as a hash code. This hash code is used as an index to efficiently store and retrieve key-value pairs in a dictionary. The key feature of hashable objects is that they produce the same hash code consistently.</p>
 <p><strong>The Role of the <code>hash()</code> Function</strong></p>
 <p>You can determine whether an object is hashable and can be used as a dictionary key by utilizing the built-in <strong><code>hash()</code></strong> function. When you apply the <strong><code>hash()</code></strong> function to an object, it returns a hash code if the object is hashable. However, keep in mind that not all Python objects are hashable, particularly mutable objects like lists and dictionaries.</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using hash() to validate key types in dictionary</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="bu">hash</span>(<span class="st">"string"</span>)           <span class="co"># hashable</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="bu">hash</span>((<span class="dv">1</span>, <span class="dv">2</span>, (<span class="dv">2</span>, <span class="dv">3</span>)))     <span class="co"># hashable</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># hash((1, 2, [2, 3]))     # Not hashable due to mutable element - list of [2, 3]</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># When in need of list for key, convert it tp tuple, hashable</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> {}</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>d[<span class="bu">tuple</span>([<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>])] <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(d)  <span class="co"># dictionary with a tuple as key</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{(1, 2, 3): 5}</code></pre>
+</div>
+</div>
+</section>
+<section id="set" class="level3">
+<h3 class="anchored" data-anchor-id="set">Set</h3>
+<p>Sets in Python: A Set is an essential data structure that represents an unordered collection of unique elements. Unlike lists or tuples, which allow duplicates, sets only store distinct values. This characteristic makes sets ideal for various tasks, such as removing duplicates from a list, checking for membership, and performing set operations like union, intersection, and difference. One of the most common real-world use cases for sets is in data deduplication, where they excel at efficiently eliminating duplicate records from datasets, ensuring data integrity and enhancing the performance of data processing tasks.</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a set</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">set</span>([<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">3</span>]))</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Union, Difference, Intersection and Symmetric Difference</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> {<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>}</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> {<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>}</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span> (<span class="st">"Set a:"</span>, a, <span class="st">" Set b:"</span>, b)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co"># a.union(b) = a | b</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"a union b: "</span>, a.union(b), a <span class="op">|</span> b)</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="co"># a.intersection(b) = a &amp; b</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"a intersection b: "</span>, a.intersection(b), a <span class="op">&amp;</span> b)</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="co"># a.difference(b) = a - b</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"a difference b: "</span>, a.difference(b), a <span class="op">-</span> b)</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="co"># a.symmetric_difference(b)</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"a.symmetric_difference(b): "</span>, a.symmetric_difference(b), a <span class="op">^</span> b)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{1, 2, 3}
+Set a: {1, 2, 3, 4, 5}  Set b: {3, 4, 5, 6, 7, 8}
+a union b:  {1, 2, 3, 4, 5, 6, 7, 8} {1, 2, 3, 4, 5, 6, 7, 8}
+a intersection b:  {3, 4, 5} {3, 4, 5}
+a difference b:  {1, 2} {1, 2}
+a.symmetric_difference(b):  {1, 2, 6, 7, 8} {1, 2, 6, 7, 8}</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Common set operations</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> {<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>}</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># a.add(x) - Add x to the set</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>a.add(<span class="st">"Fox"</span>)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co"># a.remove(x) - Remove x from the set</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>a.remove(<span class="st">"Fox"</span>)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co"># a.pop() - Remove an element arbitrarily, set must not be empty</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>ret <span class="op">=</span> a.pop()</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a, ret)</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="co"># a.clear() - reset to empty</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a.clear())  <span class="co"># None - empty</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{1, 2, 3, 4, 5, 'Fox'}
+{1, 2, 3, 4, 5}
+{2, 3, 4, 5} 1
+None</code></pre>
+</div>
+</div>
+<p>Built-in Sequence Functions</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>a_list <span class="op">=</span> [<span class="dv">7</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">2</span>]</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Very useful, use at every opportunities</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># enumerate() - no need to write code to track index</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> index, value <span class="kw">in</span> <span class="bu">enumerate</span>(a_list):</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(index, <span class="st">" : "</span>, value)  </span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co"># sorted() - a new srted list from the elements of any sequence</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">sorted</span>(a_list))</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">sorted</span>(<span class="st">"horse race"</span>))  <span class="co"># string is a sequence</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="co"># zip() - pairs up sequences element-wise to create a list</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>seq1 <span class="op">=</span> [<span class="st">"foo"</span>, <span class="st">"bar"</span>, <span class="st">"baz"</span>]</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>seq2 <span class="op">=</span> [<span class="st">"one"</span>, <span class="st">"two"</span>, <span class="st">"three"</span>]</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>seq3 <span class="op">=</span> [<span class="st">"BROWN"</span>, <span class="st">"FOX"</span>, <span class="st">"FENCE"</span>, <span class="st">"JUMP"</span>]</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>zipped <span class="op">=</span> <span class="bu">zip</span>(seq1, seq2, seq3)</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">list</span>(zipped))  <span class="co"># "JUMP" ignored for pariing!</span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a><span class="co"># zip() commonly works with enumerate() for iteration - zip and iterate</span></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> index, (a, b) <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>(seq1, seq2)):</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>index<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a><span class="co"># reversed()</span></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a><span class="bu">reversed</span>(<span class="bu">range</span>(<span class="dv">10</span>)) <span class="co"># range_iterator object, it's a generator</span></span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">list</span>(<span class="bu">reversed</span>(<span class="bu">range</span>(<span class="dv">10</span>)))) <span class="co"># list() materializes the generator</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0  :  7
+1  :  1
+2  :  2
+3  :  6
+4  :  0
+5  :  3
+6  :  2
+[0, 1, 2, 2, 3, 6, 7]
+[' ', 'a', 'c', 'e', 'e', 'h', 'o', 'r', 'r', 's']
+[('foo', 'one', 'BROWN'), ('bar', 'two', 'FOX'), ('baz', 'three', 'FENCE')]
+0: foo, one
+1: bar, two
+2: baz, three
+[9, 8, 7, 6, 5, 4, 3, 2, 1, 0]</code></pre>
+</div>
+</div>
+</section>
+<section id="list-set-and-dictionary-comprehensions" class="level3">
+<h3 class="anchored" data-anchor-id="list-set-and-dictionary-comprehensions">List, Set and Dictionary Comprehensions</h3>
+<p>Comprehensions in Python offer concise, readable, and often more efficient ways to create lists, sets, and dictionaries. They reduce code verbosity, enhance readability, and promote a functional programming style, ultimately leading to cleaner and more maintainable code.</p>
+<p><strong>List Comprehension:</strong></p>
+<p>List comprehensions provide a concise way to create lists by applying an expression to each item in an iterable (e.g., a list, tuple, or range) and optionally filtering the items based on a condition.</p>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">## [exp for value in collection if condition]</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create a list of strings in uppercase only if the string has more than two characters.</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>strings <span class="op">=</span> [<span class="st">"a"</span>, <span class="st">"as"</span>, <span class="st">"bat"</span>, <span class="st">"car"</span>, <span class="st">"dove"</span>, <span class="st">"python"</span>]</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>strings_2 <span class="op">=</span> [ <span class="bu">str</span>.upper() <span class="cf">for</span> <span class="bu">str</span> <span class="kw">in</span> strings <span class="cf">if</span> <span class="bu">len</span>(<span class="bu">str</span>) <span class="op">&gt;</span> <span class="dv">2</span> ]</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(strings_2)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co"># create a list of squares of even numbers from 0 to 9</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>even_squares <span class="op">=</span> [ x <span class="op">**</span> <span class="dv">2</span> <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>) <span class="cf">if</span> x <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span> ]</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(even_squares)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['BAT', 'CAR', 'DOVE', 'PYTHON']
+[0, 4, 16, 36, 64]</code></pre>
+</div>
+</div>
+<p><strong>Set Comprehension:</strong></p>
+<p>Set comprehensions allow you to create sets in a similar manner to list comprehensions, but with the guarantee of uniqueness among elements.</p>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">## set_comp = {expr for value in collection if condition}</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a set using strings list above, containing only the lengths of strings.</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>strings <span class="op">=</span> [<span class="st">"a"</span>, <span class="st">"as"</span>, <span class="st">"bat"</span>, <span class="st">"car"</span>, <span class="st">"dove"</span>, <span class="st">"python"</span>]</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>unique_lengths <span class="op">=</span> { <span class="bu">len</span>(<span class="bu">str</span>) <span class="cf">for</span> <span class="bu">str</span> <span class="kw">in</span> strings } <span class="co"># uniqueness guaranted</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(unique_lengths)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="co"># map() - even more powerful</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>strings_map <span class="op">=</span> <span class="bu">set</span>(<span class="bu">map</span>(<span class="bu">len</span>, strings))</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(strings_map)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a set of unique even squares from 0 to 9</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>even_squares_set <span class="op">=</span> {x <span class="op">**</span> <span class="dv">2</span> <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>) <span class="cf">if</span> x <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>}</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(even_squares_set)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{1, 2, 3, 4, 6}
+{1, 2, 3, 4, 6}
+{0, 64, 4, 36, 16}</code></pre>
+</div>
+</div>
+<p><strong>Dictionary Comprehension</strong>:</p>
+<p>Dictionary comprehensions enable the creation of dictionaries by defining key-value pairs based on expressions applied to items in an iterable.</p>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co">## {key_expression: value_expression for item in iterable if condition}</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dictionary, mapping even numbers to their squares from 0 to 9</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>even_squares_dict <span class="op">=</span> { x: x<span class="op">**</span><span class="dv">2</span> <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>) <span class="cf">if</span> x <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span> }</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(even_squares_dict)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dictionary of lookup map of string for the location of each string in the list</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>strings <span class="op">=</span> [<span class="st">"a"</span>, <span class="st">"as"</span>, <span class="st">"bat"</span>, <span class="st">"car"</span>, <span class="st">"dove"</span>, <span class="st">"python"</span>]</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>string_lookup_dict <span class="op">=</span> { <span class="bu">str</span>: index <span class="cf">for</span> index, <span class="bu">str</span> <span class="kw">in</span> <span class="bu">enumerate</span>(strings) }</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(strings)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(string_lookup_dict)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{0: 0, 2: 4, 4: 16, 6: 36, 8: 64}
+['a', 'as', 'bat', 'car', 'dove', 'python']
+{'a': 0, 'as': 1, 'bat': 2, 'car': 3, 'dove': 4, 'python': 5}</code></pre>
+</div>
+</div>
+<p>Nested list comprehensions</p>
+<p>The order of</p>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># List of lists with some English and Spanish names - List nesting lists</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>all_data <span class="op">=</span> [</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"John"</span>, <span class="st">"Emily"</span>, <span class="st">"Michael"</span>, <span class="st">"Mary"</span>, <span class="st">"Steven"</span>],</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"Maria"</span>, <span class="st">"Juan"</span>, <span class="st">"Javier"</span>, <span class="st">"Natalia"</span>, <span class="st">"Pilar"</span>]</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(all_data)</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span><span class="op">*</span><span class="dv">55</span>)</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a list of names contating two of more of 'a'</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="co"># The non-Pythonic apporach using for loop..</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>names_of_interest <span class="op">=</span> []</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> names <span class="kw">in</span> all_data:</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(<span class="st">"Processing:"</span>, names)</span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>  enough_as <span class="op">=</span> [ name <span class="cf">for</span> name <span class="kw">in</span> names <span class="cf">if</span> name.count(<span class="st">"a"</span>) <span class="op">&gt;=</span><span class="dv">2</span> ]</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(enough_as)</span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>  names_of_interest.extend(enough_as)</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Results: "</span>, names_of_interest)</span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Re-writtine in one-liner using nested list comprehension</span></span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>names_of_interest <span class="op">=</span> [ name <span class="cf">for</span> names <span class="kw">in</span> all_data <span class="cf">for</span> name <span class="kw">in</span> names <span class="cf">if</span> name.count(<span class="st">"a"</span>) <span class="op">&gt;=</span><span class="dv">2</span> ]</span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Result using Nested List Comprehension: "</span>, names_of_interest)</span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Flatten a list of tuples of integers into a simple list of integers using nested list comprehension</span></span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a>some_tuples <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), (<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), (<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>)]</span>
+<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(some_tuples, <span class="bu">type</span>(some_tuples)) <span class="co"># list of tuples with integers</span></span>
+<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a>flattened <span class="op">=</span> [ <span class="bu">int</span> <span class="cf">for</span> <span class="bu">tuple</span> <span class="kw">in</span> some_tuples <span class="cf">for</span> <span class="bu">int</span> <span class="kw">in</span> <span class="bu">tuple</span> ]</span>
+<span id="cb35-27"><a href="#cb35-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Flattened: "</span>, flattened, <span class="bu">type</span>(flattened))  <span class="co"># flattend list</span></span>
+<span id="cb35-28"><a href="#cb35-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-29"><a href="#cb35-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Readability and valid forms</span></span>
+<span id="cb35-30"><a href="#cb35-30" aria-hidden="true" tabindex="-1"></a>flattened <span class="op">=</span> []</span>
+<span id="cb35-31"><a href="#cb35-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Init. flattened list: "</span>, flattened)</span>
+<span id="cb35-32"><a href="#cb35-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"some_tuples: "</span>, some_tuples)</span>
+<span id="cb35-33"><a href="#cb35-33" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> tup <span class="kw">in</span> some_tuples:</span>
+<span id="cb35-34"><a href="#cb35-34" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> x <span class="kw">in</span> tup:</span>
+<span id="cb35-35"><a href="#cb35-35" aria-hidden="true" tabindex="-1"></a>    flattened.append(x)</span>
+<span id="cb35-36"><a href="#cb35-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"flattend from some_tuples: "</span>, flattened)</span>
+<span id="cb35-37"><a href="#cb35-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-38"><a href="#cb35-38" aria-hidden="true" tabindex="-1"></a><span class="co"># list comprehenson inside list comprehension</span></span>
+<span id="cb35-39"><a href="#cb35-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Change list of tuples to a list of lists</span></span>
+<span id="cb35-40"><a href="#cb35-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Init. list of some_tuples: "</span>, some_tuples)</span>
+<span id="cb35-41"><a href="#cb35-41" aria-hidden="true" tabindex="-1"></a>new_list_of_lists <span class="op">=</span> [[ x <span class="cf">for</span> x <span class="kw">in</span> tup ] <span class="cf">for</span> tup <span class="kw">in</span> some_tuples ]</span>
+<span id="cb35-42"><a href="#cb35-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"List of lists from some_tuples: "</span>, new_list_of_lists)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[['John', 'Emily', 'Michael', 'Mary', 'Steven'], ['Maria', 'Juan', 'Javier', 'Natalia', 'Pilar']]
+-------------------------------------------------------
+Processing: ['John', 'Emily', 'Michael', 'Mary', 'Steven']
+[]
+Processing: ['Maria', 'Juan', 'Javier', 'Natalia', 'Pilar']
+['Maria', 'Natalia']
+Results:  ['Maria', 'Natalia']
+Result using Nested List Comprehension:  ['Maria', 'Natalia']
+[(1, 2, 3), (4, 5, 6), (7, 8, 9)] &lt;class 'list'&gt;
+Flattened:  [1, 2, 3, 4, 5, 6, 7, 8, 9] &lt;class 'list'&gt;
+Init. flattened list:  []
+some_tuples:  [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
+flattend from some_tuples:  [1, 2, 3, 4, 5, 6, 7, 8, 9]
+Init. list of some_tuples:  [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
+List of lists from some_tuples:  [[1, 2, 3], [4, 5, 6], [7, 8, 9]]</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 6 Practical use caes of nested list comprehension</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Matrix operations:</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Add 1 to each element in a 2D matrix</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> [[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>], [<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>]]</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>matrix_add_1 <span class="op">=</span> [[ element <span class="op">+</span> <span class="dv">1</span> <span class="cf">for</span> element <span class="kw">in</span> row] <span class="cf">for</span> row <span class="kw">in</span> matrix]</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"matrix_add_1: "</span>, matrix_add_1)</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Data transformation:</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter rows with even some from a list of lists</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> [[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>], [<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>]]</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>filtered_data <span class="op">=</span> [ row <span class="cf">for</span> row <span class="kw">in</span> data <span class="cf">if</span> <span class="bu">sum</span>(row) <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span> ]</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"filtered_data: "</span>, filtered_data)</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Flattening lists of lists:</span></span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>nested_lists <span class="op">=</span> [[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">4</span>], [<span class="dv">5</span>, <span class="dv">6</span>]]</span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>flattened_list <span class="op">=</span> [ item <span class="cf">for</span> sublist <span class="kw">in</span> nested_lists <span class="cf">for</span> item <span class="kw">in</span> sublist ]</span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"flattened_list: "</span>, flattened_list)</span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Combining data:</span></span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Create all possible pairs (in tuple) from two lists - Different from element-wise pairing using zip()</span></span>
+<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a>list1 <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a>list2 <span class="op">=</span> [<span class="st">'a'</span>, <span class="st">'b'</span>, <span class="st">'c'</span>]</span>
+<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a>combinations <span class="op">=</span> [ (x, y) <span class="cf">for</span> x <span class="kw">in</span> list1 <span class="cf">for</span> y <span class="kw">in</span> list2 ]</span>
+<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"combinations: "</span>, combinations)</span>
+<span id="cb37-26"><a href="#cb37-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-27"><a href="#cb37-27" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Conditional filtering:</span></span>
+<span id="cb37-28"><a href="#cb37-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter rows containing 'John' from a list of lists</span></span>
+<span id="cb37-29"><a href="#cb37-29" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> [[<span class="st">'Alice'</span>, <span class="dv">25</span>], [<span class="st">'John'</span>, <span class="dv">30</span>], [<span class="st">'Bob'</span>, <span class="dv">35</span>]]</span>
+<span id="cb37-30"><a href="#cb37-30" aria-hidden="true" tabindex="-1"></a>filtered_data <span class="op">=</span> [ <span class="bu">list</span> <span class="cf">for</span> <span class="bu">list</span> <span class="kw">in</span> data <span class="cf">if</span> <span class="st">'John'</span> <span class="kw">in</span> <span class="bu">list</span> ]</span>
+<span id="cb37-31"><a href="#cb37-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"filtered_data: "</span>, filtered_data)</span>
+<span id="cb37-32"><a href="#cb37-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-33"><a href="#cb37-33" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. Transposing data:</span></span>
+<span id="cb37-34"><a href="#cb37-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Transpose a given matrix (switching rows and columns)</span></span>
+<span id="cb37-35"><a href="#cb37-35" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> [[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>], [<span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>], [<span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>]]</span>
+<span id="cb37-36"><a href="#cb37-36" aria-hidden="true" tabindex="-1"></a>transposed_matrix <span class="op">=</span> [[ (row[i], <span class="bu">print</span>(<span class="st">"row[i]: "</span>, row[i]), <span class="bu">print</span>(<span class="st">"processing row: "</span>, row)) <span class="cf">for</span> row <span class="kw">in</span> matrix ] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(matrix[<span class="dv">0</span>]))]</span>
+<span id="cb37-37"><a href="#cb37-37" aria-hidden="true" tabindex="-1"></a><span class="co">#print("transposed_matrix: ", transposed_matrix)</span></span>
+<span id="cb37-38"><a href="#cb37-38" aria-hidden="true" tabindex="-1"></a><span class="co">#print(len(matrix[0]))</span></span>
+<span id="cb37-39"><a href="#cb37-39" aria-hidden="true" tabindex="-1"></a><span class="co">#print(range(len(matrix[0])))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>matrix_add_1:  [[2, 3, 4], [5, 6, 7], [8, 9, 10]]
+filtered_data:  [[1, 2, 3], [7, 8, 9]]
+flattened_list:  [1, 2, 3, 4, 5, 6]
+combinations:  [(1, 'a'), (1, 'b'), (1, 'c'), (2, 'a'), (2, 'b'), (2, 'c'), (3, 'a'), (3, 'b'), (3, 'c')]
+filtered_data:  [['John', 30]]
+row[i]:  1
+processing row:  [1, 2, 3, 4]
+row[i]:  5
+processing row:  [5, 6, 7, 8]
+row[i]:  9
+processing row:  [9, 10, 11, 12]
+row[i]:  2
+processing row:  [1, 2, 3, 4]
+row[i]:  6
+processing row:  [5, 6, 7, 8]
+row[i]:  10
+processing row:  [9, 10, 11, 12]
+row[i]:  3
+processing row:  [1, 2, 3, 4]
+row[i]:  7
+processing row:  [5, 6, 7, 8]
+row[i]:  11
+processing row:  [9, 10, 11, 12]
+row[i]:  4
+processing row:  [1, 2, 3, 4]
+row[i]:  8
+processing row:  [5, 6, 7, 8]
+row[i]:  12
+processing row:  [9, 10, 11, 12]</code></pre>
+</div>
+</div>
+</section>
+<section id="functions" class="level3">
+<h3 class="anchored" data-anchor-id="functions">Functions</h3>
+<p>Functions in Python are a cornerstone of the language, offering powerful tools for structuring and modularizing code. Python functions come with several unique features that distinguish them from functions in other programming languages.</p>
+<ul>
+<li><p><strong>Versatile and Expressive:</strong> Python functions support both positional and keyword arguments, enabling flexible and expressive function calls.</p></li>
+<li><p><strong>Multiple Return Values:</strong> Python functions can return multiple values, simplifying the packaging and unpacking of results.</p></li>
+<li><p><strong>Default Argument Values:</strong> Python functions allow for default argument values, making function usage more straightforward by providing sensible defaults when arguments are omitted.</p></li>
+<li><p><strong>Lambda Functions:</strong> Python features lambda functions for concise and anonymous function definitions, particularly useful for simple operations.</p></li>
+<li><p><strong>First-Class Functions:</strong> Python treats functions as first-class citizens, allowing them to be assigned to variables, passed as arguments, and returned from other functions. This flexibility enhances code modularity, maintainability, and readability.</p></li>
+<li><p><strong>Modular and Reusable:</strong> Python’s function-centric approach encourages the creation of clean, reusable, and modular code, making it a crucial topic for all Python programmers to master.</p></li>
+</ul>
 
 
 </section>
