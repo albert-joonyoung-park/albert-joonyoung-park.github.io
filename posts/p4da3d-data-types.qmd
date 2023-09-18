@@ -84,7 +84,7 @@ print(a.count(2))     # number of occurences
 
 ```
 
-### List 
+### List
 
 Python Lists: Ordered, mutable collections that allow you to store and manipulate sequences of items. Lists are versatile and can hold various data types. They support methods for adding, removing, and modifying elements, making them a fundamental data structure for data analysis and manipulation in Python.
 
@@ -489,3 +489,102 @@ print(strings)
 print(string_lookup_dict)
 
 ```
+
+Nested list comprehensions
+
+The order of
+
+```{python}
+
+# List of lists with some English and Spanish names - List nesting lists
+all_data = [
+  ["John", "Emily", "Michael", "Mary", "Steven"],
+  ["Maria", "Juan", "Javier", "Natalia", "Pilar"]
+]
+print(all_data)
+print("-"*55)
+
+# Create a list of names contating two of more of 'a'
+# The non-Pythonic apporach using for loop..
+names_of_interest = []
+for names in all_data:
+  print("Processing:", names)
+  enough_as = [ name for name in names if name.count("a") >=2 ]
+  print(enough_as)
+  names_of_interest.extend(enough_as)
+print("Results: ", names_of_interest)
+
+# Re-writtine in one-liner using nested list comprehension
+names_of_interest = [ name for names in all_data for name in names if name.count("a") >=2 ]
+print("Result using Nested List Comprehension: ", names_of_interest)
+
+# Flatten a list of tuples of integers into a simple list of integers using nested list comprehension
+some_tuples = [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
+print(some_tuples, type(some_tuples)) # list of tuples with integers
+flattened = [ int for tuple in some_tuples for int in tuple ]
+print("Flattened: ", flattened, type(flattened))  # flattend list
+
+# Readability and valid forms
+flattened = []
+print("Init. flattened list: ", flattened)
+print("some_tuples: ", some_tuples)
+for tup in some_tuples:
+  for x in tup:
+    flattened.append(x)
+print("flattend from some_tuples: ", flattened)
+
+# list comprehenson inside list comprehension
+# Change list of tuples to a list of lists
+print("Init. list of some_tuples: ", some_tuples)
+new_list_of_lists = [[ x for x in tup ] for tup in some_tuples ]
+print("List of lists from some_tuples: ", new_list_of_lists)
+
+
+  
+  
+```
+
+```{python}
+# 6 Practical use caes of nested list comprehension
+
+# 1. Matrix operations:
+# Add 1 to each element in a 2D matrix
+matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+matrix_add_1 = [[ element + 1 for element in row] for row in matrix]
+print("matrix_add_1: ", matrix_add_1)
+
+# 2. Data transformation:
+# Filter rows with even some from a list of lists
+data = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+filtered_data = [ row for row in data if sum(row) % 2 == 0 ]
+print("filtered_data: ", filtered_data)
+
+# 3. Flattening lists of lists:
+nested_lists = [[1, 2], [3, 4], [5, 6]]
+flattened_list = [ item for sublist in nested_lists for item in sublist ]
+print("flattened_list: ", flattened_list)
+
+# 4. Combining data:
+# Create all possible pairs (in tuple) from two lists - Different from element-wise pairing using zip()
+list1 = [1, 2, 3]
+list2 = ['a', 'b', 'c']
+combinations = [ (x, y) for x in list1 for y in list2 ]
+print("combinations: ", combinations)
+
+# 5. Conditional filtering:
+# Filter rows containing 'John' from a list of lists
+data = [['Alice', 25], ['John', 30], ['Bob', 35]]
+filtered_data = [ list for list in data if 'John' in list ]
+print("filtered_data: ", filtered_data)
+
+# 6. Transposing data:
+# Transpose a given matrix (switching rows and columns)
+matrix = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]
+transposed_matrix = [[ (row[i], print("row[i]: ", row[i]), print("processing row: ", row)) for row in matrix ] for i in range(len(matrix[0]))]
+#print("transposed_matrix: ", transposed_matrix)
+#print(len(matrix[0]))
+#print(range(len(matrix[0])))
+
+```
+
+### Functions
