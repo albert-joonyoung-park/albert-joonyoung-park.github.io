@@ -1182,3 +1182,143 @@ with open('file_test.txt', 'r') as file:
   content = file.read()
 print(content)
 ```
+
+### File Navigation and Operations:
+
+```{python}
+
+# Listing files in a directory
+
+import os
+
+files = os.listdir('../') # files in upper directory
+print(files)
+```
+
+```{python}
+
+import os
+
+path = "examples/segismundo.txt"
+
+# open file with given encoding, "r" mode by default
+f = open(path, encoding="utf-8") # default Unicode encoding is platform-specific
+
+# iterate the file object and print line with EOL marker intact
+for line in f:
+  print(line)
+
+# close the file
+f.close()
+```
+
+```{python}
+
+import os
+
+path = "examples/segismundo.txt"
+
+# EOL-free list of lines in a file
+with open(path, encoding="utf-8") as f:
+  lines = [x.rstrip() for x in f]
+print(lines)
+```
+
+```{python}
+
+# read, seek and tell
+
+# read moves the file object position by the number of bytes read after reading character or bytes
+f1 = open(path)
+print(f1.read(10)) # read 10 characters with the encoding used for this file operation
+
+f2 = open(path, mode="rb")  # open with binary mode
+print(f2.read(10)) # read 10 bytes
+
+# tell current file object position
+print(f1.tell())
+print(f2.tell())
+
+import sys
+print(sys.getdefaultencoding())  # this is the default encoding of the platform in use.
+
+# seek changes the file position to the indicated byte in the file
+
+print(f1.seek(3))
+print(f1.read(1))
+print(f1.tell())
+
+print(f2.seek(3))
+print(f2.read(1))
+print(f2.tell())
+
+# close the files
+f1.close()
+f2.close()
+```
+
+```{python}
+
+import os
+
+print(os.getcwd())
+
+path = "examples/segismundo.txt"
+print(path)
+
+# create a new file from path, remove blank lines
+
+with open("examples/tmp.txt", mode="w") as handle:
+  handle.writelines(x for x in open(path) if len(x) > 1)
+
+```
+
+```{python}
+
+# Open the new file and read
+with open("examples/tmp.txt") as f:
+  lines = f.readlines()
+
+lines
+```
+
+### Bytes and Unicode with Files
+
+```{python}
+
+path = "examples/segismundo.txt"
+
+# default file behavior - text mode
+with open(path) as f:
+  chars = f.read(10) # read eough bytes to decode 10 characters, if utf-8 in use by the platform
+
+print(chars)
+print(len(chars))
+
+# binary mode
+with open(path, mode="rb") as f:  # append b to the mode
+  data = f.read(10) # read exact 10 bytes
+print(data)
+
+# try and decode the bytes to a string object
+print(data.decode("utf-8")) # works only if each of the encoded Unicode characters is fully formed
+print(data[:4].decode("utf-8")) # error - not fully formed
+print(data[:5].decode("utf-8")) # worked, fully formed by the given range
+
+```
+
+```{python}
+
+# Use encoding option with open() to covert Unicode encoding to another
+
+# Create a new file converting encoding of segismundo.txt to iso-8859-1
+
+path = "examples/segismundo.txt"
+sink_path = "examples/sink.txt"
+with open(path) as source:
+  with open(sink_path, "x", encoding="iso-8859-1") as target:
+    target.write(source.read())
+
+with open(sink_path, encoding="iso-8859-1") as f:
+  print(f.read(10))
+```
