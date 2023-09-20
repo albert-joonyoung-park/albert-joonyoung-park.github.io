@@ -1,0 +1,5 @@
+Hello, world!Brown fox jumped over the fence.Handling file with text in Python is very straight forward.
+Appended line 1
+Appended line 2
+Appended line 3
+Appended line 4

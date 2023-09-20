@@ -587,7 +587,7 @@ transposed_matrix = [[ (row[i], print("row[i]: ", row[i]), print("processing row
 
 ```
 
-### Functions
+## Functions
 
 Functions in Python are a cornerstone of the language, offering powerful tools for structuring and modularizing code. Python functions come with several unique features that distinguish them from functions in other programming languages.
 
@@ -602,3 +602,583 @@ Functions in Python are a cornerstone of the language, offering powerful tools f
 -   **First-Class Functions:** Python treats functions as first-class citizens, allowing them to be assigned to variables, passed as arguments, and returned from other functions. This flexibility enhances code modularity, maintainability, and readability.
 
 -   **Modular and Reusable:** Python's function-centric approach encourages the creation of clean, reusable, and modular code, making it a crucial topic for all Python programmers to master.
+
+```{python}
+
+# simple declaration and calling
+def my_function(x,y):
+  return x + y
+
+ret = my_function(1, 2)
+print(ret)
+
+# Return None when no retorn statement is encountered
+def funciton_without_return(x):
+  print(x)
+result = funciton_without_return("hello!")
+print(result)
+
+# positional and keyword arguments
+def my_function2(x, y, z=1.5):  # z as keyword argument with default value
+  if z > 1:
+    return z * (x + y)
+  else:
+    return z / (x + y)
+
+# Naespace, scope and local functions
+
+
+print(my_function2(5, 6, z=0.7))  # no need to put arg names, keword arg optional
+print(my_function2(3.14, 7, 3.5))  # no need to specify name for kewoord arguments
+print(my_function2(10, 20))   # keyword arg optional
+
+
+a = []
+def func():
+  for i in range(5):
+    a.append(i)
+
+func()
+```
+
+```{python}
+
+# Assigining variable outside the function's scope
+
+a = None
+def bind_a_variable():
+  global a
+  a = []
+  
+bind_a_variable()
+print(a)
+
+# multiple returns
+def f():
+  a = 5
+  b = 6
+  c = 7
+  return a, b, c
+
+a, b, c = f()
+print(a, b)
+```
+
+### **Functions Are Objects**
+
+In Python, functions are first-class objects, which means they are treated like any other object, such as integers, strings, or lists. This concept is a fundamental part of the Python language and has several implications and practical uses.
+
+1.  **Functions can be assigned to variables**:
+
+```{python}
+
+# Functions can be assigned to variables:
+
+def greet(name):
+    return f"Hello, {name}!"
+
+greeting = greet  # function assigned to variable 
+print(greeting("Alice"))  # calling the function using the assigned variable
+
+print(id(greet), id(greeting)) # both variable and function references the same object
+
+```
+
+2.  **Functions can be passed as arguments**: This is particularly useful for functions that require a *callback* or *custom behavior*.
+
+```{python}
+
+# Functions can be passed as arguments
+
+def apply(func, value):
+  return func(value)
+
+def double(x):
+  return x * 2
+
+result = apply(double, 5)
+print(result)
+
+```
+
+3.  **Functions can be returned from other functions**: This enables dynamic function generation.
+
+```{python}
+
+# Functinos can be returned from other functions
+def create_multiplier(factor):
+  """
+  Returns a FUNCTION that produce the result of given factor * x
+  """
+  def multiplier(x):
+    return x * factor
+  return multiplier    # return the inner function
+
+double = create_multiplier(2)
+print(double(200))  # Result is a function returned by 'created_multiplier'
+print(double(400))
+```
+
+### **Functions can be stored in data structures**
+
+Functions can be stored in data structures like lists, dictionaries, or sets, making it possible to manage and manipulate functions dynamically.
+
+```{python}
+
+# Functinos can be stored in data structures
+
+def square(x):
+  return x**2
+
+def cube(x):
+  return x**3
+
+math_functions = [square, cube]
+result = math_functions[1](3)  # access and call the 'cube' function, give 3 to the parameter
+print(result)
+
+
+# Using a list of functinos for cleaning strings from survey data
+answer_states = ["   alabama ", "georgia!", "Georgia",  \
+          "georgia", "flOrIda", "south   carolina##",   \
+          "West virginia?"]
+print(answer_states)
+          
+def remove_punctuation(value):
+  return re.sub("[!#?]", "", value)
+
+clean_ops = [str.strip, remove_punctuation, str.title] # 3 functinos in list for cleaning operation
+
+import re
+
+def clean_strings(strings, ops):
+    result = []
+    for value in strings:
+        for func in ops:
+            value = func(value)
+        result.append(value)
+    return result
+  
+print("strings_cleaned: ", clean_strings(answer_states, clean_ops))
+
+print("-"*55)
+
+
+# Using map() to apply a function as argument to a sequence
+for x in map(remove_punctuation, answer_states):
+  print(x)
+
+```
+
+### **Anonymous (Lambda) Functions:**
+
+Anonymous functions, often referred to as "lambda functions," are a concise way to create a single line, inline functions without giving them a formal name. In Python, lambda functions are defined using the **`lambda`** keyword, followed by parameters and an expression. While they are limited in scope compared to regular functions, they offer several benefits:lambda arguments: expression
+
+Structure: ***`lambda`** arguments: expression*
+
+**Conciseness:** Lambda functions are compact and allow you to define simple operations in a single line of code, making them particularly useful for short, one-off functions.
+
+**Readability:** When used appropriately, lambda functions can improve code readability by encapsulating a specific operation right where it's needed, reducing the need for named functions or temporary variables.
+
+**Functional Programming:** Lambda functions are a key component of functional programming in Python. They can be used with higher-order functions like **`map()`**, **`filter()`**, and **`reduce()`** to perform operations on collections of data.
+
+```{python}
+
+# sort a list of tuples by the second element:
+data = [(1, 5), (3, 2), (2, 8)]
+sorted_data = sorted(data, key=lambda x: x[1])  # extracts the second element (index 1) of each tuple in the data list
+print(sorted_data)
+```
+
+```{python}
+
+# filter even numbers from a list
+numbers = [1, 2, 3, 4, 5, 6]
+even_numbers = list(filter(lambda x: x % 2 == 0, numbers))  # filtering function, iterables
+print(even_numbers)
+```
+
+```{python}
+
+# Mapping a Function to a List
+
+values = [1, 2, 3, 4, 5]
+squared_values = list(map(lambda x: x**2, values))
+print(squared_values)
+```
+
+```{python}
+
+def short_function(x):
+  return x * 2
+print(short_function(100))
+
+equiv_amon = lambda x: x * 2  # assign a function to variable
+print(type(equiv_amon))
+print(equiv_amon(100))  # produces the same result
+print("-"*55)
+
+# use a lambda function for the second argument
+def apply_to_list(some_list, f):
+  """
+  Apply the given function to the given list
+  """
+  return [f(x) for x in some_list]
+ints = [4, 0, 1, 5, 6]
+
+ret = apply_to_list(ints, lambda x: x*2)
+print(ret)
+
+# sort the list of strings based on the number of unique charaters for each string.
+strings = ["foo", "card", "bar", "aaaa", "abab"]
+strings.sort(key=lambda x: len(set(x))) # sort by number of unique characters per string element
+print(strings)
+
+
+```
+
+### Generators
+
+Generators are a powerful and memory-efficient feature in Python for working with sequences of data. They allow you to create iterators on the fly, enabling the processing of large data sets or infinite sequences without storing them in memory. Generators are defined using functions but use the **`yield`** keyword to produce values one at a time. Many objects in Python support iteration, such as over objects in a list or lines in a file. This is accomplished by means of the *iterator protocol*, a generic way to make objects iterable.
+
+**Creating a Generator:**
+
+-   Generators are defined using functions with the **`yield`** keyword.
+-   A function with **`yield`** becomes a generator function.
+
+```{python}
+
+# create a simple generator function
+def count_up_to(n):
+  i = 1
+  while i <= n:
+    yield i  # yield value and pause execution
+    i += 1
+
+print(count_up_to(7))
+
+for num in count_up_to(7):  # iterate generator with for
+  print(num)
+  
+
+```
+
+**Generator Functions vs. Regular Functions:**
+
+-   Generator functions use **`yield`** to produce values and pause execution.
+-   Regular functions use **`return`** to provide a single result and terminate.
+
+**Iterating Over a Generator:**
+
+-   You can iterate over a generator using a **`for`** loop, just like any other iterable.
+-   The generator produces values one at a time as you iterate.
+
+**Infinite Sequences:**
+
+-   Generators can be used to create infinite sequences without consuming infinite memory.
+-   For example, a generator can produce an infinite stream of numbers.
+
+```{python}
+
+# create a generator of infinite sequences
+
+def infinite_evens():
+  num = 0
+  while True:
+    yield num
+    num +=2
+
+# Using next() with a generator    
+infinite_evens_generator = infinite_evens()
+print(next(infinite_evens_generator))  # the first element yielded by generator
+print(next(infinite_evens_generator))
+print(next(infinite_evens_generator))
+print("-"*55)
+
+# Using for with condition with a generator
+for num in infinite_evens_generator:
+  if num > 10:
+    break
+  print("Gen yielded: ", num)
+print("-"*55)
+  
+# Using next() with a stopping condition
+try:
+  seq_list = []
+  while True:
+    num = next(infinite_evens_generator)
+    if num > 100:
+      break
+    seq_list.append(num)
+except StropIteration:
+  pass
+
+print("Sequence from Gen: ", seq_list)
+print("-"*55)
+```
+
+```{python}
+
+# Both produces the same results
+
+some_dict = {"a": 1, "b": 2, "c": 3}
+for key in some_dict:
+  print(key)
+
+dict_iterator = iter(some_dict)  # get iterator for the given iterable object
+print(dict_iterator)
+for item in dict_iterator:
+  print(item)
+
+```
+
+```{python}
+
+# working with an iterator
+ 
+some_dict = {"a": 1, "b": 2, "c": 3}
+dict_iterator = iter(some_dict)
+print(dict_iterator)
+print(type(dict_iterator))
+print("List created from an iterator: ", list(dict_iterator))
+print("-----------------------------------------------------")
+
+# create a generator producing squares from 1 to (n**2)
+def squares(n=10):
+  print(f"Generator producing squares from 1 to {n**2}")
+  for i in range(1, n+1):
+    yield i**2
+  
+gen = squares()
+print(gen)  # when called, generator itself does not execute any code
+
+for x in gen: # actual code execution through iteration, One at a time, Not all at once
+  print(x, end=" ")
+```
+
+Generator express: **Parentheses** instead of brackets in comprehensions - list, set, dictionary, instead of list comprehension style.
+
+```{python}
+
+# generator expression, one-liner, less verbose than generator function definition
+gen = (x**2 for x in range(100))
+print(gen)
+
+# generator expression as function argument
+print(sum(x**2 for x in range(100))) # argument for sum() function
+print( dict((i, i ** 2) for i in range(5)) )
+```
+
+`itertools` module (standard library), collection of generators for common data algorithms.
+
+**`itertools.groupby(iterable, key=None)`**
+
+This is a function from the itertools module in Python. It's used for grouping elements from an iterable into consecutive keys that share a common characteristic, as determined by a key function. The elements in the iterable are expected to be sorted based on the same key function for groupby() to work effectively.
+
+**iterable**: This is the iterable (e.g., a list, tuple, or iterator) containing the elements you want to group.
+
+**key**: This is an optional argument that specifies a function to extract a key from each element in the iterable. The elements in the iterable are grouped by the values returned by this key function.
+
+The function returns an **iterator** that produces **pairs of a key and an iterator** over the elements in the group.
+
+```{python}
+
+import itertools
+
+words = ["apple", "banana", "bat", "cat", "dog", "elephant"]
+
+# Sort the words by their first letter
+sorted_words = sorted(words, key=lambda x: x[0])
+print(sorted_words)
+
+# Use groupby to group words by their first letter (consecutive words with same first letter)
+groups = itertools.groupby(sorted_words, key=lambda x: x[0])
+print(groups)
+
+# iterate through the groups and print each group, very useful dealing with sorted data
+for key, group in groups:
+  print(f"Words starting with '{key}': {list(group)}") #list() required to convert generator
+```
+
+**`itertools.chain(*iterables)`**:
+
+Generates a sequence by chaining iterators together. Once elements from the first iterator are exhausted, elements form the next iterator are returned, and so on.
+
+```{python}
+
+
+# chain multiple iterators for continuous iteration
+from itertools import chain
+
+# Three lists
+list1 = [1, 2, 3]
+list2 = ['a', 'b', 'c']
+list3 = [10, 20, 30]
+
+# chain them into a single iterable
+combined = chain(list1, list2, list3)
+print(combined, type(combined))
+
+# continuous iteration
+for item in combined:
+  print(item, end=" ")
+```
+
+**itertools.combinations(iterable, k)**:
+
+It generates all possible combinations of 'k' number of elements from an iterable. Each combination is a tuple, and the function returns an iterator. It is very useful when exploring various subsets or combinations of elements from a collection. It generate only unique combination regardless of order of the elements.
+
+```{python}
+
+from itertools import combinations
+
+# generate all possible combinations of 2 elements from a given list
+
+elements = [1, 2, 3, 4]
+combos = combinations(elements, 2)
+
+# iterate the generator
+for combo in combos:
+  print(combo)
+  # or do something else, more...
+
+```
+
+**itertools.permutations(iterable, k)**:
+
+It generates all possible combinations of 'k' number of elements from an iterable. The order of elements in a permuation matters, so different orders are considered distinct. It cna produce more output than 'combinations()' when 'k' is less than the lenght of the iterable since it considers all possible arrangements. The result is an iterator of tuples, each representing a unique permutation of the elements.
+
+```{python}
+
+from itertools import permutations
+
+elements = [1, 2, 3, 4]
+perms = permutations(elements, 2)
+for perm in perms:
+  print(perm)
+```
+
+**`itertools.product(*iterables, repeat=1)`**:
+
+The function is used to generate the Cartesian product of multiple input iterables . The Cartesian product is a set of all possible combinations of elements from the input iterables, where each combination consists of one element from each input iterable.
+
+```{python}
+
+# Cartesian product of iterables
+from itertools import product
+
+iterable1 = [1, 2]
+iterable2 = ['a','b']
+
+# Generate the Cartesian product of the two iterables
+result = product(iterable1, iterable2)
+
+# Iterate through the product and print the combinations
+for combo in result:
+  print(combo)
+print("------------------------")
+
+# set number of times to rpeat the each input iterable
+result = product(iterable1, iterable2, repeat=2) # repeating 2 times
+for combo in result:
+  print(combo)
+```
+
+### **Errors and Exception Handling**
+
+This is an important part of building robust programs. In data applications, many functions work only on certain kinds of input.
+
+```{python}
+
+# function throwing error
+print(float("1.2345"))  # convert proper string input to float value
+print(float("1,2345"))  # throwing error with improper input
+```
+
+```{python}
+
+# Failing gracefully
+def attempt_float(x):
+  try:
+    return float(x)
+  except:
+    return x  # return input value gracefully(?) when 'try' failed, exception raised
+
+print(attempt_float("1,2345"))
+
+```
+
+```{python}
+
+# suppressing a specific error
+def attempt_float(x):
+  try:
+    return float(x)
+  except ValueError:
+    return x
+
+attempt_float((1, 2))  # this caused an error other than ValueError
+```
+
+```{python}
+
+# suppressing multiple errors
+def attempt_float(x):
+  try:
+    return float(x)
+  except (TypeError, ValueError):  # now added TypeError to supress it too.
+    return x
+
+attempt_float((1, 2)) # failed, and gracefully return the input value as defined in try-execept, errors suppressed.
+
+```
+
+```{python}
+
+# 'finally' lets you execute some codes regardless the success of try-block.
+
+f = open("./try-finally.txt", mode="w")
+try:
+  write_to_file(f)
+except:
+  print("Failed")
+else:
+  print("Succeeded")
+finally:
+  f.close()
+```
+
+## Files and the Operating System
+
+Working with files and the operating system is a fundamental aspect of programming in Python. Python provides powerful tools and libraries to manipulate files, read and write data, and interact with the underlying file system
+
+### File handling basics:
+
+```{python}
+
+# writing to a text file
+with open('file_test.txt', 'w') as file:
+  file.write("Hello, world!")
+  file.write("Brown fox jumped over the fence.")
+  file.write("Handling file with text in Python is very straight forward.")
+```
+
+```{python}
+# opening and reading a text file
+with open('file_test.txt', 'r') as file:
+  content = file.read()
+print(content)
+```
+
+```{python}
+# appending to a text file
+with open('file_test.txt', 'a') as file:
+  file.write('\nAppended line 1')
+  file.write('\nAppended line 2')
+  file.write('\nAppended line 3')
+  file.write('\nAppended line 4')
+  
+with open('file_test.txt', 'r') as file:
+  content = file.read()
+print(content)
+```
