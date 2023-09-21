@@ -1092,7 +1092,7 @@ This is an important part of building robust programs. In data applications, man
 
 # function throwing error
 print(float("1.2345"))  # convert proper string input to float value
-print(float("1,2345"))  # throwing error with improper input
+# print(float("1,2345"))  # throwing error with improper input
 ```
 
 ```{python}
@@ -1117,7 +1117,7 @@ def attempt_float(x):
   except ValueError:
     return x
 
-attempt_float((1, 2))  # this caused an error other than ValueError
+# attempt_float((1, 2))  # this caused an error other than ValueError
 ```
 
 ```{python}
@@ -1302,7 +1302,7 @@ print(data)
 
 # try and decode the bytes to a string object
 print(data.decode("utf-8")) # works only if each of the encoded Unicode characters is fully formed
-print(data[:4].decode("utf-8")) # error - not fully formed
+# print(data[:4].decode("utf-8")) # error - not fully formed
 print(data[:5].decode("utf-8")) # worked, fully formed by the given range
 
 ```
@@ -1316,7 +1316,7 @@ print(data[:5].decode("utf-8")) # worked, fully formed by the given range
 path = "examples/segismundo.txt"
 sink_path = "examples/sink.txt"
 with open(path) as source:
-  with open(sink_path, "x", encoding="iso-8859-1") as target:
+  with open(sink_path, "w", encoding="iso-8859-1") as target:
     target.write(source.read())
 
 with open(sink_path, encoding="iso-8859-1") as f:
