@@ -1,0 +1,307 @@
+---
+title: "[4] Arrays and Vectorized Computation"
+subtitle: "A series of posts, exploring data analysis using the book - Python for Data Analysis, 3E by Wes McKinney"
+date: '2023-09-21'
+categories: ['Python', 'NumPy']
+description: "Learning notes - Python for Data Analysis, 3E - Wes McKinney"
+image: data.jpg
+format:
+  html:
+    code-fold: false
+jupyter: python3
+---
+
+------------------------------------------------------------------------
+
+**NumPy** is a fundamental Python library for numerical and scientific computing. It provides support for working with large, multi-dimensional arrays and matrices, along with a vast collection of mathematical functions to operate on these arrays. Here's a must-know summary of NumPy:
+
+-   **Multi-dimensional Arrays:** NumPy's core feature is its **`ndarray`** (n-dimensional array) data structure. It allows you to represent and manipulate data in multiple dimensions (1D, 2D, or higher), making it ideal for scientific and mathematical computations.
+
+-   **Efficient Data Storage:** NumPy arrays are memory-efficient and provide a contiguous block of memory for data storage. This enables fast and efficient numerical operations and makes NumPy an essential tool for handling large datasets.
+
+-   **Element-Wise Operations:** NumPy supports element-wise operations, which means you can perform operations on entire arrays or slices of arrays without the need for explicit loops. This feature greatly simplifies and speeds up mathematical and scientific computations.
+
+-   **Broadcasting:** NumPy allows for broadcasting, which is a powerful mechanism for performing operations on arrays with different shapes. It automatically expands smaller arrays to match the shape of larger arrays, making computations more flexible.
+
+-   **Mathematical Functions:** NumPy provides a wide range of mathematical functions, including basic arithmetic, linear algebra, Fourier analysis, statistical, and more. These functions are optimized for performance and accuracy.
+
+-   **Random Number Generation:** NumPy includes a random module (**`np.random`**) for generating random numbers and random arrays, which is useful for simulations and statistical analysis.
+
+-   **Integration with SciPy:** NumPy is closely integrated with SciPy, another Python library for scientific computing. SciPy builds on NumPy and provides additional functionality for optimization, signal processing, statistics, and more.
+
+-   **Data Input and Output:** NumPy offers functions for reading and writing data to and from files in various formats, including text files, binary files, and NumPy's own binary format.
+
+-   **Interoperability:** NumPy seamlessly interoperates with other libraries and data analysis tools in the Python ecosystem, such as pandas, Matplotlib, and scikit-learn. This makes it a key component in data science workflows.
+
+-   **Open Source and Community:** NumPy is open-source software and enjoys a large and active community of contributors and users. It is continually updated and improved, ensuring its relevance in the rapidly evolving field of data science and numerical computing.
+
+-   **Cross-Platform:** NumPy is cross-platform and can be used on various operating systems, including Windows, macOS, and Linux.
+
+NumPy is the foundation of many scientific and data science libraries in Python and is an essential tool for tasks such as data manipulation, statistical analysis, machine learning, and more. Its ease of use and performance make it a go-to choice for researchers, scientists, engineers, and data analysts working with numerical data in Python.
+
+```{r}
+library(tidyverse)
+Sys.setenv(RETICULATE_PYTHON = "C:\\Users\\Joon\\anaconda3\\envs\\pydata-book/python.exe")
+library(reticulate)
+```
+
+```{r}
+conda_list()
+
+```
+
+```{r}
+use_condaenv("pydata-book", required=TRUE)
+```
+
+```{r}
+py_config()
+```
+
+Idea of performance difference
+
+```{python}
+
+# NumPy array of one-million integers vs Python list
+
+import numpy as np
+import timeit
+
+my_arr = np.arange(1_000_000)
+my_list = list(range(1_000_000))
+
+```
+
+```{python}
+
+# time it
+execution_time = timeit.timeit(lambda: my_arr * 2, number=10)
+print(f"np array multiplication: {execution_time}")
+
+execution_time = timeit.timeit(lambda: [ x*2 for x in my_list * 2 ], number=10)
+print(f"Python list element multiplication: {execution_time}")
+
+```
+
+------------------------------------------------------------------------
+
+## The NumPy ndarray: A Multidimensional Array Object
+
+Batch computation
+
+```{python}
+
+import numpy as np
+
+data = np.array([
+  [1.5, -0.1, 3], 
+  [0, -3, 6.5],
+  [2, 7, 9.9],
+  [23, 9, 21]
+])
+print("data: ", data)
+
+# math operations with the ndarray
+print("data * 10: ", data * 10)
+print("data + data: ", data + data)
+```
+
+```{python}
+
+# shape and type
+print(data.shape)  # tuple 4R x 3C
+print(data.dtype)  # ndarray is for homogeneous data
+```
+
+#### Creating ndarrays
+
+```{python}
+
+# ndarray creation
+
+# np.array()
+data1 = [6, 7.5, 8, 0, 1] # any sequence-like object
+arr1 = np.array(data1)
+print(arr1)
+
+data2 = [[1, 2, 3, 4], [5, 6, 7, 8]] # list of equal length array
+arr2 = np.array(data2)
+print(arr2)
+print(arr2.shape)
+print(arr2.dtype)
+
+# np.zeros() / np.empty()
+print(np.zeros(10))
+print(np.zeros((3, 6)))
+print(np.zeros((2, 3, 5)))
+print(np.empty(((2, 3, 2)))) # uninitialized meory with garbage data
+
+# np.arange()
+print(np.arange(15))
+```
+
+[Some important NumPy array creation functions from Python for Data Analysis 3E by Wes Mckinney](https://wesmckinney.com/book/numpy-basics#numpy_ndarrays "Some important NumPy array creation functions")
+
+#### Data types for ndarrays - `dtype`
+
+```{python}
+
+# dtype
+arr1 = np.array([1, 2, 3], dtype=np.float64)
+arr2 = np.array([1, 2, 3], dtype=np.int32)
+print(arr1, arr1.dtype)
+print(arr2, arr2.dtype)
+```
+
+```{python}
+
+# type casting - astype()
+arr_float = np.array([3.7, -1.2, -2.6, 0.5, 12.9, 10.1])
+print(arr_float)
+arr_int = arr_float.astype(np.int32)  # decimal truncated
+print(arr_int)
+numeric_strings = np.array(["1.25", "-9.6", "42"], dtype=np.string_)
+print(numeric_strings)
+numeric_from_strings = numeric_strings.astype(float) # ValueError when fails
+print(numeric_from_strings)
+# conver to the other array's type
+int_array = np.arange(10)
+calibers = np.array([.22, .270, .357, .380, .44, .50], dtype=np.float64)
+print(int_array.astype(calibers.dtype))
+
+
+```
+
+#### Arithmetic with NumPy Arrays
+
+```{python}
+
+# arrays in shame shape
+print("\nArrays in shame shape\n")
+arr = np.array([[1., 2., 3.], [4., 5., 6.]])
+print(arr)
+print(arr * arr) # element-wise multiplication
+# print(arr * [10, 200]) # broadcast error, not in same shape
+print(arr - arr) # element-wies subraction
+
+# array with salar
+print("\nArray with salar\n")
+print(1 / arr) # applied with each element
+print(arr ** 2)  
+
+# array comparison
+print("\nArray comparison\n")
+arr2 = np.array([[0., 4., 1.], [7., 2., 12.]])
+print(arr2)
+arr_bool = arr < arr2  # element-wise boolean evaluation
+print(arr_bool)
+if arr_bool.all():
+  print("Two arrays are same.") 
+else:
+  print("Two arrays are different.")
+```
+
+#### Basic Indexing and Slicing
+
+```{python}
+
+# Similar to Python lists
+print("\nSimilar to Python lists...\n")
+arr = np.arange(10)
+print(arr)
+print(arr[5]) # element accessing
+print(arr[5:8]) # slicing
+arr[5:8] = 99 # assignment changes broadcasts the new valjue, relfected to the original array - value propagation / broadcast
+print(arr)
+arr_slice = arr[5:8] # check broadcasted value
+print(arr_slice)
+arr_slice[1] = 12345 # value propagation to the original
+print(arr)
+
+# Assignment to all values - bare slice [:]
+print("\nAssignment to all values - bare slice [:]...\n")
+arr_slice[:] = 64
+print(arr)  # value propagation to the original 
+
+# 2d array, each index of 1-d array, not scalar
+print("\n2d array, each index of 1-d array, not scalar...\n")
+arr2d = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+print(arr2d)
+print(arr2d[2], type(arr2d[2]))
+print(arr2d[0][2]) # accessing individual element
+
+# Axis in 2-d array
+print("\narr(r, c) - Axis0 (row), Axis1 (col) in 2-d array...\n")
+print(arr2d[0, 2]) # same as above
+
+```
+
+```{python}
+
+# 3-d -> 2-d -> 1-d 
+arr3d = np.array([[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]])
+print("arr3d: ", arr3d)
+print(arr3d.shape)
+print(arr3d[0]) # arr3d[0] 2x3 array, first row
+old_values = arr3d[0].copy() # save to variable
+print(old_values)
+arr3d[0] = 99 # change with scalar, broadcasting to the whole 2x3
+print(arr3d)
+arr3d[0] = old_values # change with array
+print(arr3d)
+print("arr3d[1, 0]: ", arr3d[1, 0])
+```
+
+```{python}
+
+# Indexing with slices
+
+print("arr: ", arr)
+print("arr[1:6]: ", arr[1:6]) # 1-d array
+print("arr2d: ", arr2d)
+print("arr2d[:2]: ", arr2d[:2]) # 2-d array, slicing rows
+print("arr2d[:2, 1:]: ",arr2d[:2, 1:] ) # 2-d array, slicing rows and columns
+
+# select the second row, and first two cols.
+lower_dim_slice = arr2d[1, :2]  # slicing 1-d array
+print(lower_dim_slice)
+print(lower_dim_slice.shape)
+
+# select the third col, and first two rows
+print(arr2d[:2, 2])
+print(arr)
+
+# select all rows and the first col.
+print(arr2d[:, :1])
+```
+
+```{python}
+
+# Boolean indexing
+
+names = np.array(["Bob", "Joe", "Will", "Bob", "Will", "Joe", "Joe"])
+data = np.array([[4, 7], [0, 2], [-5, 6], [0, 0], [1, 2], [-12, -4], [3, 4]])
+print(names, names.shape)
+print(data, data.shape)
+
+# Suppose each name corresponds to a row in the data array
+
+# row filtering using Boolean indexing, compare names with the string 'Bob' to filter the corresponding rows from data array
+print(names == "Bob")  # array of comparison result for each element
+
+print(data[names == "Bob"])
+
+
+```
+
+## Pseudorandom Number Generation
+
+## Universal Functions: Fast Element-Wise Array Functions
+
+## Array-Oriented Programming with Arrays
+
+## File Input and Output with Arrays
+
+## Linear Algebra
+
+## Example Random Walks

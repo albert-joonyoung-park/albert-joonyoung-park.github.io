@@ -11,7 +11,7 @@ format:
 jupyter: python3
 ---
 
-# Chapter 3: Built-In Data Structures, Functions, and Files
+------------------------------------------------------------------------
 
 ## Data Structures and Sequences
 
