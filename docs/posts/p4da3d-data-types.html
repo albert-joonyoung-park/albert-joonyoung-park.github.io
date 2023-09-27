@@ -150,9 +150,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#chapter-3-built-in-data-structures-functions-and-files" id="toc-chapter-3-built-in-data-structures-functions-and-files" class="nav-link active" data-scroll-target="#chapter-3-built-in-data-structures-functions-and-files">Chapter 3: Built-In Data Structures, Functions, and Files</a>
-  <ul class="collapse">
-  <li><a href="#data-structures-and-sequences" id="toc-data-structures-and-sequences" class="nav-link" data-scroll-target="#data-structures-and-sequences">Data Structures and Sequences</a>
+  <li><a href="#data-structures-and-sequences" id="toc-data-structures-and-sequences" class="nav-link active" data-scroll-target="#data-structures-and-sequences">Data Structures and Sequences</a>
   <ul class="collapse">
   <li><a href="#tuple" id="toc-tuple" class="nav-link" data-scroll-target="#tuple">Tuple</a></li>
   <li><a href="#list" id="toc-list" class="nav-link" data-scroll-target="#list">List</a></li>
@@ -173,7 +171,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#file-handling-basics" id="toc-file-handling-basics" class="nav-link" data-scroll-target="#file-handling-basics">File handling basics:</a></li>
   <li><a href="#file-navigation-and-operations" id="toc-file-navigation-and-operations" class="nav-link" data-scroll-target="#file-navigation-and-operations">File Navigation and Operations:</a></li>
   <li><a href="#bytes-and-unicode-with-files" id="toc-bytes-and-unicode-with-files" class="nav-link" data-scroll-target="#bytes-and-unicode-with-files">Bytes and Unicode with Files</a></li>
-  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -214,8 +211,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="chapter-3-built-in-data-structures-functions-and-files" class="level1">
-<h1>Chapter 3: Built-In Data Structures, Functions, and Files</h1>
+<hr>
 <section id="data-structures-and-sequences" class="level2">
 <h2 class="anchored" data-anchor-id="data-structures-and-sequences">Data Structures and Sequences</h2>
 <section id="tuple" class="level3">
@@ -514,9 +510,9 @@ Key: "7" has value of "an integer".</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>['USA', 'Canada', 'England', 'France']
 ['Washigton', 'Ottawa', 'London', 'Paris']
-&lt;zip object at 0x000001BD9F64EB00&gt;
+&lt;zip object at 0x000002993D9B1640&gt;
 {'USA': 'Washigton', 'Canada': 'Ottawa', 'England': 'London', 'France': 'Paris'} &lt;class 'dict'&gt;
-&lt;zip object at 0x000001BD9F64C2C0&gt; &lt;class 'zip'&gt;
+&lt;zip object at 0x000002993D9B2A40&gt; &lt;class 'zip'&gt;
 {'USA': 'Washigton', 'Canada': 'Ottawa', 'England': 'London', 'France': 'Paris'} &lt;class 'dict'&gt;</code></pre>
 </div>
 </div>
@@ -1002,7 +998,7 @@ None
 <span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">id</span>(greet), <span class="bu">id</span>(greeting)) <span class="co"># both variable and function references the same object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Hello, Alice!
-1913991838304 1913991838304</code></pre>
+2857186802272 2857186802272</code></pre>
 </div>
 </div>
 <ol start="2" type="1">
@@ -1197,7 +1193,7 @@ West virginia</code></pre>
 <span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> num <span class="kw">in</span> count_up_to(<span class="dv">7</span>):  <span class="co"># iterate generator with for</span></span>
 <span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(num)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;generator object count_up_to at 0x000001BD9F67FAC0&gt;
+<pre><code>&lt;generator object count_up_to at 0x000002993A35FAC0&gt;
 1
 2
 3
@@ -1286,7 +1282,7 @@ Sequence from Gen:  [14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42,
 <pre><code>a
 b
 c
-&lt;dict_keyiterator object at 0x000001BD9F6796C0&gt;
+&lt;dict_keyiterator object at 0x000002993D9BA930&gt;
 a
 b
 c</code></pre>
@@ -1314,11 +1310,11 @@ c</code></pre>
 <span id="cb65-19"><a href="#cb65-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> gen: <span class="co"># actual code execution through iteration, One at a time, Not all at once</span></span>
 <span id="cb65-20"><a href="#cb65-20" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(x, end<span class="op">=</span><span class="st">" "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;dict_keyiterator object at 0x000001BD9F67A9D0&gt;
+<pre><code>&lt;dict_keyiterator object at 0x000002993D9D6110&gt;
 &lt;class 'dict_keyiterator'&gt;
 List created from an iterator:  ['a', 'b', 'c']
 -----------------------------------------------------
-&lt;generator object squares at 0x000001BDA2C6FAE0&gt;
+&lt;generator object squares at 0x000002993D93FAE0&gt;
 Generator producing squares from 1 to 100
 1 4 9 16 25 36 49 64 81 100 </code></pre>
 </div>
@@ -1333,7 +1329,7 @@ Generator producing squares from 1 to 100
 <span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">sum</span>(x<span class="op">**</span><span class="dv">2</span> <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>))) <span class="co"># argument for sum() function</span></span>
 <span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>( <span class="bu">dict</span>((i, i <span class="op">**</span> <span class="dv">2</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>)) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;generator object &lt;genexpr&gt; at 0x000001BD9F67F2A0&gt;
+<pre><code>&lt;generator object &lt;genexpr&gt; at 0x000002993A35F2A0&gt;
 328350
 {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}</code></pre>
 </div>
@@ -1362,7 +1358,7 @@ Generator producing squares from 1 to 100
 <span id="cb69-15"><a href="#cb69-15" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(<span class="ss">f"Words starting with '</span><span class="sc">{</span>key<span class="sc">}</span><span class="ss">': </span><span class="sc">{</span><span class="bu">list</span>(group)<span class="sc">}</span><span class="ss">"</span>) <span class="co">#list() required to convert generator</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>['apple', 'banana', 'bat', 'cat', 'dog', 'elephant']
-&lt;itertools.groupby object at 0x000001BDA2CE5DA0&gt;
+&lt;itertools.groupby object at 0x000002993D9BB790&gt;
 Words starting with 'a': ['apple']
 Words starting with 'b': ['banana', 'bat']
 Words starting with 'c': ['cat']
@@ -1389,7 +1385,7 @@ Words starting with 'e': ['elephant']</code></pre>
 <span id="cb71-14"><a href="#cb71-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> combined:</span>
 <span id="cb71-15"><a href="#cb71-15" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(item, end<span class="op">=</span><span class="st">" "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;itertools.chain object at 0x000001BD9F676F20&gt; &lt;class 'itertools.chain'&gt;
+<pre><code>&lt;itertools.chain object at 0x000002993A355780&gt; &lt;class 'itertools.chain'&gt;
 1 2 3 a b c 10 20 30 </code></pre>
 </div>
 </div>
@@ -1792,7 +1788,6 @@ Sueñ</code></pre>
 </div>
 
 
-</section>
 </section>
 </section>
 
