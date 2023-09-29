@@ -39,26 +39,6 @@ jupyter: python3
 
 NumPy is the foundation of many scientific and data science libraries in Python and is an essential tool for tasks such as data manipulation, statistical analysis, machine learning, and more. Its ease of use and performance make it a go-to choice for researchers, scientists, engineers, and data analysts working with numerical data in Python.
 
-```{r}
-library(tidyverse)
-Sys.setenv(RETICULATE_PYTHON = "C:\\Users\\Joon\\anaconda3\\envs\\pydata-book/python.exe")
-RETICULATE_PYTHON="C:\\Users\\Joon\\anaconda3\\envs\\pydata-book/python.exe"
-library(reticulate)
-```
-
-```{r}
-conda_list()
-
-```
-
-```{r}
-use_condaenv("pydata-book", required=TRUE)
-```
-
-```{r}
-py_config()
-```
-
 Idea of performance difference
 
 ```{python}
@@ -320,7 +300,6 @@ print(data[cond])
 
 ```{python}
 
-# 
 print("\n___Setting values with Boolean arrays___\n")
 print(data)
 print(data < 0)
@@ -735,8 +714,348 @@ plt.show()
 
 **`numpy.where`** - vectorized version fo ternary expression `x if condition else y`
 
+```{python}
+
+xarr = np.array([1.1, 1.2, 1.3, 1.4, 1.5])
+yarr = np.array([2.1, 2.2, 2.3, 2.4, 2.5])
+# Boolean arrary to use as conditional value for xarr, yarr
+cond = np.array([True, False, True, True, False])
+
+print("xarr: ", xarr)
+print("yarr: ", yarr)
+print("cond: ", cond)
+
+# Generate an array to take a value for xarr when corresponding boolean array is True, otherwise take the value form yarr.
+print("Generate an array to take a value for xarr when corresponding boolean array is True, otherwise take the value form yarr.")
+
+# Using conventional list conprehension.
+result_list_comprehension = [ (x if c else y)for x, y, c in zip(xarr, yarr, cond) ]
+print("Result using list comprehension: ", result_list_comprehension)
+print("Issues: 1. Slow 2. Won't work with multi-dimensional arrays")
+
+# Using numpy.where(cond, xarr, yarr) - no need to be arrays for the 2nd and 3rd argument
+print("Using numpy.where(cond, xarr, yarr) - no need to be arrays for the 2nd and 3rd argument.")
+result_numpy_where = np.where(cond, xarr, yarr)
+print("result_numpy_where: ", result_numpy_where)
+```
+
+**Write code**: Generate a matrix with random data, and replace all positive values with 2 and all negative values with -2
+
+```{python}
+
+import numpy as np
+
+# create a random number generator
+rng = np.random.default_rng(seed=12345)
+
+# generate an array of random numbers in 4x4, using standard_normal here,
+arr = rng.standard_normal((4, 4))
+print("arr using standard_normal): ", arr)
+
+# generate a conditional boolean array by checking condition
+# generate an array according to the condition and operations
+print("arr > 0: ", arr > 0)
+print("np.where(arr > 0, 2, -2): ", np.where(arr > 0, 2, -2)) # using scalar values
+print("original arr: ", arr)
+
+# generatate an array using boolean condition, scalars and arrays
+# replace all positive values in arr with 2, if not, don't do anything
+print("mix of scalar and array: ", np.where(arr > 0, 2, arr)) # set only positive values to 2, otherwise untouched
+
+```
+
+### Mathematical and Statistical Methods
+
+NumPy provides array methods and functions for statistical computations like sum, mean, and std. These can be applied to entire arrays or along specific axes. Methods are called on array instances, while functions like **`numpy.sum`** take the array as the first argument.
+
+**Write code**: *Generate some normally distributed random data, and apply reduction (aggregation) functions to the array - average, total, standard deviation, standard variance, minimum, maximum, indices of minimum and maximum, cumulative sum, cumulative product.*
+
+```{python}
+
+import numpy as np
+
+# create a random number generator using normal distributionin 5x4 array
+rng = np.random.default_rng(seed=12345)
+arr = rng.standard_normal((5, 4))
+print("Random number array: ", arr)
+print("Average of array - array.mean(): ", arr.mean()) # call on array
+print("Average of array - numpy.mean(): ", np.mean(arr)) # pass array
+
+# compute avearge over columns
+print("Average along columns: ", arr.mean(axis=1)) 
+
+# compute total over rows
+print("Total along the rows: ", arr.sum(axis=0)) 
+
+# standard deviation and variance
+print("Standard variance: ", np.var(arr))
+print("Standard deviation: ", np.std(arr)) # sqrt(standard_variance)
+
+# maximum value
+print("Maximum: ", np.max(arr), "Indice of max element: ", np.argmax(arr))
+
+# minimum value
+print("Minimum: ", np.min(arr),  "Indice of min element: ", np.argmin(arr))
+
+# cumulative sum of elements - flattened
+print("Cumulative sum: ", arr.cumsum())
+
+# cumulative sum of elements (axis=1, columns)
+print("Cumulative sum(cols): ", arr.cumsum(axis=1))
+
+# cumulative sum of elements (axis=0, rows)
+print("Cumulative sum(rows): ", arr.cumsum(axis=0))
+
+# cumulative product of elements
+print("Cumulative product: ", arr.cumprod())
+
+```
+
+### Methods for Boolean Arrays
+
+**`Write code`**: Generate an array of random numbers, them count the positive numbers and negative numbers.
+
+```{python}
+print("sum() can be used as a way of counting Treu/False values in an Boolean array due to its coerced feature to 1 / 0")
+
+import numpy as np
+
+# Get a random number generator
+rng = np.random.default_rng(seed=12345)
+arr = rng.standard_normal(50)
+print("Original arr: ", arr)
+
+# Evaluate the array for positive elements
+arr_bool = arr > 0
+print("Element eval for positiveness: ", arr_bool)
+print("Count the True's: ", sum(arr_bool))
+
+# Evaluate if any or all of the array is True
+print("Is any element in array True? : ", arr_bool.any())
+print("Are all elemtns in array True?: ", arr_bool.all())
+```
+
+### Sorting
+
+**`Write code`**: *Generate an array of random numbers and sort them [in place]{.underline} along the columns and rows*
+
+```{python}
+
+# Create a random number generator and an array of random numbers from it.
+rng = np.random.default_rng(seed=12345)
+arr = rng.standard_normal(6)
+print("Original array: ", arr)
+
+# sort the array in place
+arr.sort()
+print("Array sorted: ", arr)
+
+# Create a 3x3 array and sort them aloing columns and rows
+arr = rng.standard_normal((3,3))
+print("Orginal array: ", arr)
+arr.sort(axis=0)
+print("Array each column sorted in place: ", arr)
+arr.sort(axis=1)
+print("Array each row sorted in place: ", arr)
+
+# Get a copy of sorted array
+arr2 = np.array([5, 10, 7, 1, 0, 3])
+sorted_arr2 = np.sort(arr2)
+print("Sorted copy: ", sorted_arr2)
+print("Original: ", arr2)
+```
+
+### Unique and Other Set Logic
+
+**`Write code`**: *Create a numpy 1-d array with arbitrary names, and create an array with unique elements*
+
+```{python}
+
+# create 1-d array
+names = np.array(["Bob", "Will", "Joe", "Bob", "Will", "Joe", "Joe"])
+print("names: ", names)
+
+# create an array of unique elements
+un = np.unique(names)
+print(un, type(un)) # numpy.ndarray
+
+# equivalent built-in Python funtino, slower
+un = sorted(set(names))
+print(un, type(un))  # list
+
+# test membership
+values = np.array([6, 0, 0, 3, 2, 5, 6])
+test_against = [2, 3, 6]
+print("Values: ", values)
+print("Texting membership of each element in values: ", np.in1d(values, test_against))
+
+```
+
+### More Array set operations
+
+-   unique(x): sorted, unique elemtns in x
+-   intersect1d(x, y): sorted, common elements
+-   union1d(x, y): sorted union of elements
+-   in1d(x, y): Boolean array of membership of each x in y
+-   setdiff1d(x, y): elements that are only in x
+-   setxor1d(x, y): elements that are either in x or y, but not in both
+
+```{python}
+
+import numpy as np
+
+# two arrays for numpy set operations
+x = np.array([1, 2, 3, 4, 4])
+y = np.array([3, 4, 5, 6, 6])
+print("x: ", x)
+print("y: ", y)
+print("unique(x): ", np.unique(x))
+print("intersect1d(x,y):", np.intersect1d(x,y))
+print("union1d(x,y): ", np.union1d(x,y))
+print("in1d(x,y): ", np.in1d(x,y))
+print("setdiff1d(x,y): ", np.setdiff1d(x,y))
+print("setxor1d(x,y): ", np.setxor1d(x,y))
+
+```
+
 ## File Input and Output with Arrays
+
+NumPy is able to save and load data to and from disk in some text or binary formats.
+
+### NumPy built-in binary format
+
+`numpy.save` `numpy.load`
+
+**`Write code`**: *Create some arrays and save to disk, and load from disk using numpy*
+
+```{python}
+
+import numpy as np
+import os
+
+arr = np.arange(10)
+print(arr)
+
+# save
+np.save("some_array", arr) # save in binary format - some_array.npy
+print(os.path.basename('./some_array.npy'))
+
+# load
+data = np.load("some_array.npy")
+print(data, type(data))
+
+# work with multiple arrays, uncompressed / compressed
+# save
+np.savez("array_archive.npz", a=arr, b=arr, c=arr) # save three arrays uncompressed
+#np.savez_compressed("array_archive.npz", a=arr, b=arr, c=arr) # save three arrays compressed
+print(os.path.basename('./array_archive.npz'))
+# load
+arch = np.load("array_archive.npz")
+print(arch)
+print(arch["a"])
+print(arch["b"])
+print(arch["c"])
+```
 
 ## Linear Algebra
 
+Linear algebra operations with NumPy - matrix multiplication, decompositions, determinants, other square matrix math
+
+**`Write code`**: *Create two arrays with random numbers and do matrix operations using NumPy*
+
+```{python}
+
+# create arrays
+x = np.array([[1., 2., 3.], [4., 5., 6.]]) # 2x3
+y = np.array([[6., 23.], [-1, 7], [8, 9]]) # 3x2
+print("x: ", x)
+print("y: ", y)
+
+# array multiplication
+# print(x * y) # element-wise product error, different shapes
+
+# 2-d matrix multiplication
+print("Matrix dot product on array: ", x.dot(y)) # 2x3 dot 3x2 -> 2x2 matrix
+print("Matirx dot product using NumPy: ", np.dot(x, y)) # equivalent to the above
+
+
+# 2-d x 1-d array
+print(x @ np.ones(3)) # using @ symbol (Matrix Multiplication Operator) # 2x3 dot 1-d of (3,)
+
+
+```
+
+**`Write code:`** *Create a random 5x5 matrix and run linear algebra functions from* `numpy.linalg`
+
+```{python}
+
+# Create a random 5x5 matrix
+rng = np.random.default_rng(seed=12345)
+arr = rng.standard_normal((5,5))
+print("# Random 5x5 array")
+print(arr)
+
+# Get diagonal matrix in 1-d
+print("# Get diagonal matrix in 1-d")
+print(np.diag(arr))
+
+# Convert 1-d matrix tp a square matrix with zeros on the off-diagonal
+print("# Convert 1-d matrix tp a square matrix with zeros on the off-diagonal")
+print(np.diag(np.diag(arr)))
+
+# Matrix multiplication
+print("# Matrix multiplication")
+print(np.dot(arr, arr))
+
+# Compute the matrix determinant
+print("# Compute the matrix determinant")
+print(np.linalg.det(arr))
+
+# Compute the inverse of a square matrix
+print("# Compute the inverse of a square matrix")
+print(np.linalg.inv(arr))
+
+```
+
 ## Example Random Walks
+
+Illustrate an application of utilizing array operations - Random Walks, simple random walk starting at 0 with steps of 1 and -1 occurring with equal probability.
+
+Pure Python implementation
+
+```{python}
+
+import random
+
+position = 0
+walk = [position]
+nsteps = 1000
+for _ in range(nsteps):
+  step = 1 if random.randint(0, 1) else -1
+  position += step
+  walk.append(position)
+
+print(walk)
+
+# plot
+plt.clf() # clear any previous figure
+plt.plot(walk[:100]) # positions for first 100 steps
+plt.show()
+```
+
+```{python}
+
+nsteps = 1000
+rng = np.random.default_rng(seed=12345)
+draws = rng.integers(0, 2, size=nsteps) # sequence of 0 or 1, 1000 numbers
+print(draws)
+steps = np.where(draws == 0, 1, -1) # numpy ternary expression to generate sequence of step direction
+print(steps)
+walk = steps.cumsum() # walk is the result of cumulative sum of steps
+print(walk)
+
+# plot the walk
+plt.clf()
+plt.plot(walk[:]) # all steps of walk
+plt.show()
+```
