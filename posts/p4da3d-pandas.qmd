@@ -1,0 +1,492 @@
+---
+title: "[5] Pandas"
+subtitle: "A series of posts, exploring data analysis using the book - Python for Data Analysis, 3E by Wes McKinney"
+date: '2023-10-11'
+categories: ['Python', 'pandas']
+description: "Learning notes - Python for Data Analysis, 3E - Wes McKinney"
+image: data.jpg
+format:
+  html:
+    code-fold: false
+jupyter: python3
+---
+
+------------------------------------------------------------------------
+
+**pandas is ....**
+
+Two workhorse data structures: Series and DataFrame, solid foundation of wide variety of data tasks.
+
+Series - one-dimensional array-like object with a sequence of values and index: array + lables
+
+```{python}
+
+# Simple Series
+import numpy as np
+import pandas as pd
+
+obj = pd.Series([4, 7, -5, 3])
+print(obj)
+print(type(obj))
+print(obj.array)
+print(obj.index)
+
+# A Series with a custom index
+obj2 = pd.Series([4, 7, -5, 3], index=["d", "b", "a", "c"])
+print(obj2)
+print(obj2.index)
+
+# Select, modify array elemtns using index
+obj2["a"]
+obj2["d"] = 6
+obj2[["c", "a", "d"]]  # using a list of 'indices'-like
+
+# Preservation of index-value link
+print(obj2[obj2 > 0])
+print(obj2 * 2)
+print(np.exp(obj2))
+
+# Series and dictionary, the shared context: mapping of index value to data value
+print("b" in obj2)
+print("B" in obj2)
+
+# Convert Python dictionary to/from a Series
+data_dict = {
+    "name": "John Smith",
+    "age": 30,
+    "city": "New York",
+    "email": "john.smith@email.com",
+    "is_student": False
+}
+print(data_dict)
+s_data = pd.Series(data_dict) # dictionary to Series
+print(s_data, type(s_data))
+d_data = s_data.to_dict() # Series to dictionary
+print(d_data, type(d_data))
+
+# Preservation of index-value
+new_index = ["gender", "name", "age", "city", "email"]
+obj4 = pd.Series(data_dict, index=new_index)
+print(obj4)
+
+# Detecting missing data using pd and Series
+print(pd.isna(obj4))
+print(pd.notna(obj4))
+print(obj4.isna())
+print(obj4.notna())
+```
+
+**Q: How to assign a name to a pandas Series and customize its index name?**
+
+```{python}
+
+sdata = {"Ohio": 35000, "Texas": 71000, "Oregon": 16000, "Utah": 5000}
+states = ["California", "Ohio", "Oregon", "Texas"]
+
+obj4 = pd.Series(sdata, index=states)
+print(obj4)
+
+obj4.name = "population"
+obj4.index.name = "state"
+print(obj4)
+```
+
+Q: Change the index of Series in place
+
+```{python}
+
+# change the index using index attribute
+obj.index = ["One", "Two", "Three", "Four"]
+print(obj)
+```
+
+### DataFrame
+
+Rectangular table of data, ordered, named collection of columns. Each column can be a different value type. It has both a row and column index - A dictionary of Series
+
+**Q. Create a DataFrame from a dictionary of equal-length lists or Numpy arrays**
+
+```{python}
+
+# most common way of creating a DataFrame
+data = {"state": ["Ohio", "Ohio", "Ohio", "Nevada", "Nevada", "Nevada"],
+        "year": [2000, 2001, 2002, 2001, 2002, 2003],
+        "pop": [1.5, 1.7, 3.6, 2.4, 2.9, 3.2]}
+frame = pd.DataFrame(data)
+
+print(frame)
+print(frame.head())
+print(frame.tail())
+print(frame.columns.array)
+print(frame.index.array)
+
+```
+
+**Q: Create a DataFrame in a customized sequence of columns**
+
+```{python}
+
+# create a DataFrame in a custom column order - default is by the order of key value
+frame2 = pd.DataFrame(data, columns=["year", "state", "pop", "debt"])
+print(frame2)
+print(frame2.columns)
+```
+
+**Q: Retrieve columns in a DataFrame**
+
+```{python}
+# Retrieve columns using [] or dot notation
+print(frame2["state"])
+print(frame2.state)
+
+```
+
+Q: Retrieve rows using row labels and integer
+
+```{python}
+
+# data source dictionary
+data = {'A': [1, 2, 3, 4, 5],
+        'B': [6, 7, 8, 9, 10]}
+        
+# DataFrame
+df = pd.DataFrame(data, index=['row1', 'row2', 'row3', 'row4', 'row5'])
+print(df)
+
+# Label-based selection
+print(df.loc['row1':'row3'])
+
+# Integer-based selection
+print(df.iloc[0:2])
+
+
+```
+
+**Q: Modify the 'debt' column in the DataFrame with a specific scalar value or an array of values**
+
+```{python}
+
+frame2["debt"] = 16.5
+print(frame2)
+
+frame2["debt"] = np.arange(6.)
+print(frame2)
+```
+
+Q: **Modify the 'debt' column in the DataFrame with a Series object with different number of data**
+
+```{python}
+
+# Series index value is used to match the index of DataFrame, if not presented, it is ignored
+val = pd.Series([-1.2, -1.5, -1.7], index=[2, 4, 32]) 
+frame2["debt"] = val
+print(frame2)
+```
+
+**Q: Create a column called *`eastern`*, and initialize it with Boolean value if the state is *`Ohio`***
+
+```{python}
+frame2["eastern"] = (frame2["state"] == "Ohio")
+print(frame2)
+```
+
+**Q: Delete column *`eastern`* and list all the columns for the DataFrame**
+
+```{python}
+
+del frame2["eastern"]
+frame2.columns
+```
+
+**Q: Create a DataFrame using a nested dictionary data.**
+
+```{python}
+populations = {"Ohio": {2000: 1.5, 2001: 1.7, 2002: 3.6},
+               "Nevada": {2001: 2.4, 2002: 2.9}}
+print(populations)
+
+df_populations = pd.DataFrame(populations) # outer dictionary key - column indices
+print(df_populations)
+```
+
+**Q: Transpose the df_populations DataFrame.**
+
+```{python}
+df_populations.T
+```
+
+**Q: Create a DataFrame using a nested dictionary data, using new column index**
+
+```{python}
+pd.DataFrame(populations, index=[2000, 2001, 2012])
+```
+
+Q. Create a DataFrame using frame3, using a dictionary with a few Series of columns with custom range
+
+```{python}
+
+sub_populations = {
+  "Ohio2": df_populations["Ohio"][:-1],
+  "Nevada2": df_populations["Nevada"][:2]
+}
+df_sub_populations = pd.DataFrame(sub_populations)
+print(df_sub_populations)
+```
+
+```{python}
+populations
+```
+
+**Q: Create a DataFrame using a NumPy 2D-array. Give custom row and column labels**
+
+```{python}
+
+# Create a 2D ndarray as data source
+data = np.array([[1, 2, 3,],
+                [4, 5, 6],
+                [7, 8, 9]])
+
+# Define custom row and column labels
+row_labels = ['Row-1', 'Row-2', 'Row-3']
+column_labels = ['A', 'B', 'C']
+
+# Create a DataFrame with the custom labels
+df = pd.DataFrame(data, index=row_labels, columns=column_labels)
+print(df)
+```
+
+**Q: Create a DataFrame using a dictionary of arrays, lists or tuples.**
+
+```{python}
+
+# DataFrame from a dictionary
+
+# Create a dictionary with arrays
+data_dict = {
+  'Name': np.array(['Alice', 'Bob', 'Charlie']),
+  'Age': np.array([25, 30, 28]),
+  'City': np.array(['Toronto', 'Calgary', 'Ottawa'])
+}
+
+# Create a pandas DataFrame
+df = pd.DataFrame(data_dict)
+
+print(df)
+```
+
+```{python}
+
+# DataFrame from a list
+
+# Create a dictionary with lists
+data_dict = {
+  'Country': ['USA', 'Canada', 'UK'],
+  'Population': [328, 38, 66],
+  'Capital': ['Washington D.C.', 'Ottawa', 'London']
+}
+
+# Create a pandas DataFrame
+df = pd.DataFrame(data_dict)
+
+print(df)
+```
+
+```{python}
+
+# Create a dictionary with tuples
+data_dict = {
+  'Fruit': ('Apple', 'Banana', 'Cherry'),
+  'Color': ('Red', 'Yellow', 'Red'),
+  'Taste': ('Sweet', 'Sweet', 'Tart')
+}
+
+# Create a pandas DataFrame 
+df = pd.DataFrame(data_dict)
+
+print(df)
+```
+
+**Q: Create a DataFrame using a NumPy structured array**
+
+```{python}
+
+import pandas as pd
+import numpy as np
+
+# Create a NumPy structured array
+# Field + Type: (ID, Name, Age) 
+
+data = np.array([(100, 'Alice', 25),
+                 (200, 'Bob', 30),
+                 (300, 'Charlie', 29)],
+                 dtype=[('ID', int), ('Name', 'U10'), ('Age', int)])
+
+# Create a DataFrame from the structued array
+df = pd.DataFrame(data)
+print(df)
+```
+
+**Q:** **Create a DataFrame using a dictionary of Series.**
+
+```{python}
+
+import pandas as pd
+import numpy as np
+
+# Create a dictioinary of Series
+data_dict = {
+  'Name': pd.Series(['Alice', 'Bob', 'Charlie']),
+  'Age': pd.Series([25, 30, 28]),
+  'City': pd.Series(['New York', 'San Francisco', 'Los Angeles', 'Paris'])
+}
+
+# Create a pandas DataFrame from the dictioanry of Series
+df = pd.DataFrame(data_dict)
+print(df)
+```
+
+**Q:** **Create a DataFrame using a list of dictionaries / Series.**
+
+```{python}
+
+import pandas as pd
+import numpy as np
+
+# Create a list of dictionaries
+data_dict = [
+    {'Name': 'Alice', 'Age': 25, 'City': 'New York'},
+    {'Name': 'Bob', 'Age': 30, 'City': 'San Francisco'},
+    {'Name': 'Charlie', 'Age': 28, 'City': 'Los Angeles'}
+]
+
+# Create a list of Series
+name_series = pd.Series(['Alice', 'Bob', 'Charlie'], name='Name')
+age_series = pd.Series([25, 30, 28], name='Age')
+city_series = pd.Series(['New York', 'San Francisco', 'Los Angeles'], name='City')
+
+# Create a DataFrame from the list of dictionaries
+df1 = pd.DataFrame(data_dict)
+print(df1)
+print("-" * 50)
+# Create a DataFrame from the list of Series
+df2 = pd.DataFrame({'Name': name_series,
+                    'Age': age_series,
+                    'City': city_series})
+print(df2)
+
+```
+
+**Q: Create a DataFrame using a list of lists / tuples**
+
+```{python}
+
+import pandas as pd
+import numpy as np
+
+# Create a list of lists
+data_list = [
+  ['Alice', 25, 'New York'],
+  ['Bob', 30, 'San Francisco'],
+  ['Charlie', 28, 'Los Angeles']
+]
+
+# Define column labels
+columns = ['Name', 'Age', 'City']
+
+# Create a DataFrame from the list of lists
+df = pd.DataFrame(data_list, columns=columns)
+print(df)
+
+print("-" * 50)
+
+# Create a list of tuples
+data_tuples = [
+  ('Alice', 25, 'New York'),
+  ('Bob', 30, 'San Francisco'),
+  ('Charlie', 28, 'Los Angeles')
+]
+
+# Define column labels
+columns = ['name', 'age', 'city']
+
+# Create a DataFrame from the list of tuples
+df = pd.DataFrame(data_tuples, columns=columns)
+print(df)
+```
+
+**Q: Create a DataFrame using another DataFrame**
+
+```{python}
+
+import pandas as pd
+import numpy as np
+
+# Create the original DataFrame
+data = {
+  'Name': ['Alice', 'Bob', 'Charlie'],
+  'Age': [25, 30, 28],
+  'City': ['New York', 'San Francisco', 'Los Angeles']
+}
+
+original_df = pd.DataFrame(data)
+print(original_df)
+print("-" * 50)
+
+# Create a new DataFrame based on the original DataFrame
+copy_original_df = original_df.copy()
+copy_original_df.columns = ['_name', '_age', '_city']
+print(copy_original_df)
+print("-" * 50)
+
+new_df = pd.DataFrame(original_df)
+print(new_df)
+print("-" * 50)
+
+print(id(original_df))
+print(id(copy_original_df))
+print(id(new_df))
+```
+
+**Q: Create a DataFrame and update the name attributes for index and columns**
+
+```{python}
+
+# Data source in a idctionary
+populations = {
+  "Ohio": {2000: 1.5, 2001: 1.7, 2002: 3.6},
+  "Nevada": {2001: 2.4, 2002: 2.9}
+}
+
+# Create a DataFrame
+frame3 = pd.DataFrame(populations)
+print(frame3)
+print("-" * 50)
+
+# Update the name attributes for index / columns
+frame3.index.name = "year"
+frame3.columns.name = "state"
+print(frame3)
+
+```
+
+```{python}
+
+# Data source in a dictionary
+data = {
+  "state": ["Ohio", "Ohio", "Ohio", "Nevada", "Nevada", "Nevada"],
+  "year": [2000, 2001, 2002, 2001, 2002, 2003],
+  "pop": [1.5, 1.7, 3.6, 2.4, 2.9, 3.2]
+}
+print(data, type(data))
+print("-"*50)
+# Create a DataFrame and add a column 'debt'
+frame2 = pd.DataFrame(data)
+val = pd.Series([-1.2, -1.5, -1.7], index=[2, 4, 5])
+frame2["debt"] = val
+print(frame2, type(frame2))
+print("-"*50)
+
+# Convert DataFrame to NuPy 2d-ndarray
+frame2_array = frame2.to_numpy()
+print(frame2_array, type(frame2_array))
+```
