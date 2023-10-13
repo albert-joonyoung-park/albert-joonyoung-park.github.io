@@ -154,6 +154,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#dataframe" id="toc-dataframe" class="nav-link active" data-scroll-target="#dataframe">DataFrame</a></li>
+  <li><a href="#index-objects" id="toc-index-objects" class="nav-link" data-scroll-target="#index-objects"><strong>Index Objects</strong></a>
+  <ul class="collapse">
+  <li><a href="#q-create-an-index-object-and-construct-a-series-using-the-object." id="toc-q-create-an-index-object-and-construct-a-series-using-the-object." class="nav-link" data-scroll-target="#q-create-an-index-object-and-construct-a-series-using-the-object.">Q: Create an Index Object and construct a Series using the object.</a></li>
+  <li><a href="#q-create-a-dataframe-and-use-its-index-and-columns-to-test-set-operation-for-element-existence." id="toc-q-create-a-dataframe-and-use-its-index-and-columns-to-test-set-operation-for-element-existence." class="nav-link" data-scroll-target="#q-create-a-dataframe-and-use-its-index-and-columns-to-test-set-operation-for-element-existence.">Q: Create a DataFrame and use its index and columns to test Set operation for element existence.</a></li>
+  <li><a href="#q-concatenate-with-additional-index-objects-producing-a-new-index" id="toc-q-concatenate-with-additional-index-objects-producing-a-new-index" class="nav-link" data-scroll-target="#q-concatenate-with-additional-index-objects-producing-a-new-index">Q: Concatenate with additional Index objects, producing a new index</a></li>
+  <li><a href="#q-compute-set-difference-intersection-and-union-as-an-index-between-two-index-objects" id="toc-q-compute-set-difference-intersection-and-union-as-an-index-between-two-index-objects" class="nav-link" data-scroll-target="#q-compute-set-difference-intersection-and-union-as-an-index-between-two-index-objects">Q: Compute set difference, intersection and union as an index between two index objects</a></li>
+  <li><a href="#q-compute-boolean-array-indicating-whether-each-value-is-contained-in-the-passed-collection" id="toc-q-compute-boolean-array-indicating-whether-each-value-is-contained-in-the-passed-collection" class="nav-link" data-scroll-target="#q-compute-boolean-array-indicating-whether-each-value-is-contained-in-the-passed-collection">Q: Compute Boolean array indicating whether each value is contained in the passed collection</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -904,9 +912,9 @@ Row-3  7  8  9</code></pre>
 1      Bob   30  San Francisco
 2  Charlie   28    Los Angeles
 --------------------------------------------------
-2403132015248
-2403132033424
-2403132033232</code></pre>
+2019667782736
+2019667684368
+2019667808912</code></pre>
 </div>
 </div>
 <p><strong>Q: Create a DataFrame and update the name attributes for index and columns</strong></p>
@@ -939,6 +947,7 @@ year
 2002    3.6     2.9</code></pre>
 </div>
 </div>
+<p><strong>Q. Create a DataFrame from a dictionary, then convert it to a NumPy array.</strong></p>
 <div class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data source in a dictionary</span></span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> {</span>
@@ -948,16 +957,17 @@ year
 <span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(data, <span class="bu">type</span>(data))</span>
 <span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span><span class="op">*</span><span class="dv">50</span>)</span>
-<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a DataFrame and add a column 'debt'</span></span>
-<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>frame2 <span class="op">=</span> pd.DataFrame(data)</span>
-<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>val <span class="op">=</span> pd.Series([<span class="op">-</span><span class="fl">1.2</span>, <span class="op">-</span><span class="fl">1.5</span>, <span class="op">-</span><span class="fl">1.7</span>], index<span class="op">=</span>[<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">5</span>])</span>
-<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>frame2[<span class="st">"debt"</span>] <span class="op">=</span> val</span>
-<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(frame2, <span class="bu">type</span>(frame2))</span>
-<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span><span class="op">*</span><span class="dv">50</span>)</span>
-<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert DataFrame to NuPy 2d-ndarray</span></span>
-<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>frame2_array <span class="op">=</span> frame2.to_numpy()</span>
-<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(frame2_array, <span class="bu">type</span>(frame2_array))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a DataFrame and add a column 'debt'</span></span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>frame2 <span class="op">=</span> pd.DataFrame(data)</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>val <span class="op">=</span> pd.Series([<span class="op">-</span><span class="fl">1.2</span>, <span class="op">-</span><span class="fl">1.5</span>, <span class="op">-</span><span class="fl">1.7</span>], index<span class="op">=</span>[<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">5</span>])</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>frame2[<span class="st">"debt"</span>] <span class="op">=</span> val</span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(frame2, <span class="bu">type</span>(frame2))</span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span><span class="op">*</span><span class="dv">50</span>)</span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert DataFrame to NuPy 2d-ndarray</span></span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>frame2_array <span class="op">=</span> frame2.to_numpy()</span>
+<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(frame2_array, <span class="bu">type</span>(frame2_array))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'state': ['Ohio', 'Ohio', 'Ohio', 'Nevada', 'Nevada', 'Nevada'], 'year': [2000, 2001, 2002, 2001, 2002, 2003], 'pop': [1.5, 1.7, 3.6, 2.4, 2.9, 3.2]} &lt;class 'dict'&gt;
 --------------------------------------------------
@@ -977,8 +987,174 @@ year
  ['Nevada' 2003 3.2 -1.7]] &lt;class 'numpy.ndarray'&gt;</code></pre>
 </div>
 </div>
+</section>
+<section id="index-objects" class="level2">
+<h2 class="anchored" data-anchor-id="index-objects"><strong>Index Objects</strong></h2>
+<p>Index objects holds the information about axis labels (labels assigned to rows and columns in DataFrame and Series) and meta data. Index objects are immutable and it makes it safer to share index objects among data structures.</p>
+<p>Q: Construct a Series object and retrieve index information from it.</p>
+<div class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a Series </span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> pd.Series(np.arange(<span class="dv">3</span>), index<span class="op">=</span>[<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>]) <span class="co"># row labels</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(obj, <span class="bu">type</span>(obj))</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(obj.index)</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(obj.index[<span class="dv">1</span>:]) <span class="co"># slicing the array of index object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>a    0
+b    1
+c    2
+dtype: int32 &lt;class 'pandas.core.series.Series'&gt;
+Index(['a', 'b', 'c'], dtype='object')
+Index(['b', 'c'], dtype='object')</code></pre>
+</div>
+</div>
+<section id="q-create-an-index-object-and-construct-a-series-using-the-object." class="level3">
+<h3 class="anchored" data-anchor-id="q-create-an-index-object-and-construct-a-series-using-the-object.">Q: Create an Index Object and construct a Series using the object.</h3>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an Index object</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> pd.Index(np.arange(<span class="dv">3</span>))</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(labels, <span class="bu">type</span>(labels))</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a Series using the index object</span></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>obj2 <span class="op">=</span> pd.Series([<span class="fl">1.5</span>, <span class="op">-</span><span class="fl">2.5</span>, <span class="dv">0</span>], index<span class="op">=</span>labels)</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(obj2, <span class="bu">type</span>(obj2))</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Test equality of the index object</span></span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(obj2.index <span class="kw">is</span> labels)</span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">id</span>(obj2.index))</span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">id</span>(labels)) <span class="co"># refering to the the same object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Int64Index([0, 1, 2], dtype='int64') &lt;class 'pandas.core.indexes.numeric.Int64Index'&gt;
+0    1.5
+1   -2.5
+2    0.0
+dtype: float64 &lt;class 'pandas.core.series.Series'&gt;
+True
+2019629790544
+2019629790544</code></pre>
+</div>
+</div>
+</section>
+<section id="q-create-a-dataframe-and-use-its-index-and-columns-to-test-set-operation-for-element-existence." class="level3">
+<h3 class="anchored" data-anchor-id="q-create-a-dataframe-and-use-its-index-and-columns-to-test-set-operation-for-element-existence.">Q: Create a DataFrame and use its index and columns to test Set operation for element existence.</h3>
+<div class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data source in a idctionary</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>populations <span class="op">=</span> {</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ohio"</span>: {<span class="dv">2000</span>: <span class="fl">1.5</span>, <span class="dv">2001</span>: <span class="fl">1.7</span>, <span class="dv">2002</span>: <span class="fl">3.6</span>},</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Nevada"</span>: {<span class="dv">2001</span>: <span class="fl">2.4</span>, <span class="dv">2002</span>: <span class="fl">2.9</span>}</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a DataFrame</span></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>frame3 <span class="op">=</span> pd.DataFrame(populations)</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(frame3)</span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Index: Outer keys become column labels, Inner keys become row labels."</span>)</span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Indexes for columns and rows</span></span>
+<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(frame3.columns, <span class="bu">type</span>(frame3.columns))</span>
+<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(frame3.index, <span class="bu">type</span>(frame3.index))</span>
+<span id="cb57-16"><a href="#cb57-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb57-17"><a href="#cb57-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-18"><a href="#cb57-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Check with set operator</span></span>
+<span id="cb57-19"><a href="#cb57-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Ohio is in index for columns: "</span>, <span class="st">"Ohio"</span> <span class="kw">in</span> frame3.columns)</span>
+<span id="cb57-20"><a href="#cb57-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"2003 is in index for rows: "</span>, <span class="st">"2003"</span> <span class="kw">in</span> frame3.index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      Ohio  Nevada
+2000   1.5     NaN
+2001   1.7     2.4
+2002   3.6     2.9
+Index: Outer keys become column labels, Inner keys become row labels.
+--------------------------------------------------
+Index(['Ohio', 'Nevada'], dtype='object') &lt;class 'pandas.core.indexes.base.Index'&gt;
+Int64Index([2000, 2001, 2002], dtype='int64') &lt;class 'pandas.core.indexes.numeric.Int64Index'&gt;
+--------------------------------------------------
+Ohio is in index for columns:  True
+2003 is in index for rows:  False</code></pre>
+</div>
+</div>
+</section>
+<section id="q-concatenate-with-additional-index-objects-producing-a-new-index" class="level3">
+<h3 class="anchored" data-anchor-id="q-concatenate-with-additional-index-objects-producing-a-new-index">Q: Concatenate with additional Index objects, producing a new index</h3>
+<div class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an initial index</span></span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>index1 <span class="op">=</span> pd.Index([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>])</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new index to append</span></span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>index2 <span class="op">=</span> pd.Index([<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>])</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the append() method to concatenate index2 to index1import pandas as pd</span></span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Create two Index objects</span></span>
+<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a>index1 <span class="op">=</span> pd.Index([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>])</span>
+<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a>index2 <span class="op">=</span> pd.Index([<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>])</span>
+<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-15"><a href="#cb59-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the difference() method to find the set difference</span></span>
+<span id="cb59-16"><a href="#cb59-16" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> index1.difference(index2)</span>
+<span id="cb59-17"><a href="#cb59-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-18"><a href="#cb59-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the elements in index1 that are not in index2</span></span>
+<span id="cb59-19"><a href="#cb59-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result)</span>
+<span id="cb59-20"><a href="#cb59-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-21"><a href="#cb59-21" aria-hidden="true" tabindex="-1"></a>new_index <span class="op">=</span> index1.append(index2)</span>
+<span id="cb59-22"><a href="#cb59-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-23"><a href="#cb59-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the new concatenated index</span></span>
+<span id="cb59-24"><a href="#cb59-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(new_index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Int64Index([1, 2], dtype='int64')
+Int64Index([1, 2, 3, 4, 5, 3, 4, 5, 6, 7], dtype='int64')</code></pre>
+</div>
+</div>
+</section>
+<section id="q-compute-set-difference-intersection-and-union-as-an-index-between-two-index-objects" class="level3">
+<h3 class="anchored" data-anchor-id="q-compute-set-difference-intersection-and-union-as-an-index-between-two-index-objects">Q: Compute set difference, intersection and union as an index between two index objects</h3>
+<div class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create two Index objects</span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>index1 <span class="op">=</span> pd.Index([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>])</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>index2 <span class="op">=</span> pd.Index([<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>])</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the difference() method to find the set difference</span></span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> index1.difference(index2)</span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result)</span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a><span class="co"># intersection</span></span>
+<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> index1.intersection(index2)</span>
+<span id="cb61-13"><a href="#cb61-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result)</span>
+<span id="cb61-14"><a href="#cb61-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-15"><a href="#cb61-15" aria-hidden="true" tabindex="-1"></a><span class="co"># union</span></span>
+<span id="cb61-16"><a href="#cb61-16" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> index1.union(index2)</span>
+<span id="cb61-17"><a href="#cb61-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Int64Index([1, 2], dtype='int64')
+Int64Index([3, 4, 5], dtype='int64')
+Int64Index([1, 2, 3, 4, 5, 6, 7], dtype='int64')</code></pre>
+</div>
+</div>
+</section>
+<section id="q-compute-boolean-array-indicating-whether-each-value-is-contained-in-the-passed-collection" class="level3">
+<h3 class="anchored" data-anchor-id="q-compute-boolean-array-indicating-whether-each-value-is-contained-in-the-passed-collection">Q: Compute Boolean array indicating whether each value is contained in the passed collection</h3>
+<div class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an Index object</span></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>index <span class="op">=</span> pd.Index([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>])</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a collection of values to check for containment</span></span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> [<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>]</span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the isin() method to check for containment</span></span>
+<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a>is_in_collection <span class="op">=</span> index.isin(collection)</span>
+<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the Boolean array</span></span>
+<span id="cb63-13"><a href="#cb63-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(is_in_collection)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[False False  True False  True]</code></pre>
+</div>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

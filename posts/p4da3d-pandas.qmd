@@ -469,6 +469,8 @@ print(frame3)
 
 ```
 
+**Q. Create a DataFrame from a dictionary, then convert it to a NumPy array.**
+
 ```{python}
 
 # Data source in a dictionary
@@ -479,6 +481,7 @@ data = {
 }
 print(data, type(data))
 print("-"*50)
+
 # Create a DataFrame and add a column 'debt'
 frame2 = pd.DataFrame(data)
 val = pd.Series([-1.2, -1.5, -1.7], index=[2, 4, 5])
@@ -489,4 +492,139 @@ print("-"*50)
 # Convert DataFrame to NuPy 2d-ndarray
 frame2_array = frame2.to_numpy()
 print(frame2_array, type(frame2_array))
+```
+
+## **Index Objects**
+
+Index objects holds the information about axis labels (labels assigned to rows and columns in DataFrame and Series) and meta data. Index objects are immutable and it makes it safer to share index objects among data structures.
+
+Q: Construct a Series object and retrieve index information from it.
+
+```{python}
+
+# Create a Series 
+obj = pd.Series(np.arange(3), index=["a","b","c"]) # row labels
+print(obj, type(obj))
+print(obj.index)
+print(obj.index[1:]) # slicing the array of index object
+```
+
+### Q: Create an Index Object and construct a Series using the object.
+
+```{python}
+
+# Create an Index object
+labels = pd.Index(np.arange(3))
+print(labels, type(labels))
+
+# Create a Series using the index object
+obj2 = pd.Series([1.5, -2.5, 0], index=labels)
+print(obj2, type(obj2))
+
+# Test equality of the index object
+print(obj2.index is labels)
+print(id(obj2.index))
+print(id(labels)) # refering to the the same object
+
+```
+
+### Q: Create a DataFrame and use its index and columns to test Set operation for element existence.
+
+```{python}
+
+# Data source in a idctionary
+populations = {
+  "Ohio": {2000: 1.5, 2001: 1.7, 2002: 3.6},
+  "Nevada": {2001: 2.4, 2002: 2.9}
+}
+
+# Create a DataFrame
+frame3 = pd.DataFrame(populations)
+print(frame3)
+print("Index: Outer keys become column labels, Inner keys become row labels.")
+print("-" * 50)
+
+# Indexes for columns and rows
+print(frame3.columns, type(frame3.columns))
+print(frame3.index, type(frame3.index))
+print("-" * 50)
+
+# Check with set operator
+print("Ohio is in index for columns: ", "Ohio" in frame3.columns)
+print("2003 is in index for rows: ", "2003" in frame3.index)
+```
+
+### Q: Concatenate with additional Index objects, producing a new index
+
+```{python}
+
+import pandas as pd
+
+# Create an initial index
+index1 = pd.Index([1, 2, 3])
+
+# Create a new index to append
+index2 = pd.Index([4, 5, 6])
+
+# Use the append() method to concatenate index2 to index1import pandas as pd
+
+# Create two Index objects
+index1 = pd.Index([1, 2, 3, 4, 5])
+index2 = pd.Index([3, 4, 5, 6, 7])
+
+# Use the difference() method to find the set difference
+result = index1.difference(index2)
+
+# Display the elements in index1 that are not in index2
+print(result)
+
+new_index = index1.append(index2)
+
+# Display the new concatenated index
+print(new_index)
+
+```
+
+### Q: Compute set difference, intersection and union as an index between two index objects
+
+```{python}
+
+import pandas as pd
+
+# Create two Index objects
+index1 = pd.Index([1, 2, 3, 4, 5])
+index2 = pd.Index([3, 4, 5, 6, 7])
+
+# Use the difference() method to find the set difference
+result = index1.difference(index2)
+print(result)
+
+# intersection
+result = index1.intersection(index2)
+print(result)
+
+# union
+result = index1.union(index2)
+print(result)
+
+```
+
+### Q: Compute Boolean array indicating whether each value is contained in the passed collection
+
+```{python}
+
+import pandas as pd
+
+# Create an Index object
+index = pd.Index([1, 2, 3, 4, 5])
+
+# Create a collection of values to check for containment
+collection = [3, 5, 7]
+
+# Use the isin() method to check for containment
+is_in_collection = index.isin(collection)
+
+# Display the Boolean array
+print(is_in_collection)
+
 ```
