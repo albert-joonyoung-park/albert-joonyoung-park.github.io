@@ -912,9 +912,9 @@ Row-3  7  8  9</code></pre>
 1      Bob   30  San Francisco
 2  Charlie   28    Los Angeles
 --------------------------------------------------
-2019667782736
-2019667684368
-2019667808912</code></pre>
+2373539097168
+2373538878992
+2373539127632</code></pre>
 </div>
 </div>
 <p><strong>Q: Create a DataFrame and update the name attributes for index and columns</strong></p>
@@ -1029,8 +1029,8 @@ Index(['b', 'c'], dtype='object')</code></pre>
 2    0.0
 dtype: float64 &lt;class 'pandas.core.series.Series'&gt;
 True
-2019629790544
-2019629790544</code></pre>
+2373507566224
+2373507566224</code></pre>
 </div>
 </div>
 </section>
@@ -1146,10 +1146,24 @@ Int64Index([1, 2, 3, 4, 5, 6, 7], dtype='int64')</code></pre>
 <span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the isin() method to check for containment</span></span>
 <span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a>is_in_collection <span class="op">=</span> index.isin(collection)</span>
 <span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the Boolean array</span></span>
+<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the Boolean array for each element's containment</span></span>
 <span id="cb63-13"><a href="#cb63-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(is_in_collection)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[False False  True False  True]</code></pre>
+</div>
+</div>
+<p>Q: Delete an element at a specific location in an Index and created a new updated Index.</p>
+<div class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd </span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an INdex</span></span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>index <span class="op">=</span> pd.Index([<span class="st">'A'</span>, <span class="st">'B'</span>, <span class="st">'C'</span>, <span class="st">'D'</span>])</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Delete an element at a specific position</span></span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>new_index <span class="op">=</span> index.delete(<span class="dv">2</span>) <span class="co"># elemnt at position 2 (0-based)</span></span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(new_index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Index(['A', 'B', 'D'], dtype='object')</code></pre>
 </div>
 </div>
 

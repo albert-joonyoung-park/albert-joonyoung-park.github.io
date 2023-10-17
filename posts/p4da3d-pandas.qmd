@@ -606,7 +606,6 @@ print(result)
 # union
 result = index1.union(index2)
 print(result)
-
 ```
 
 ### Q: Compute Boolean array indicating whether each value is contained in the passed collection
@@ -624,7 +623,198 @@ collection = [3, 5, 7]
 # Use the isin() method to check for containment
 is_in_collection = index.isin(collection)
 
-# Display the Boolean array
+# Display the Boolean array for each element's containment
 print(is_in_collection)
 
+```
+
+### Q: Delete an element at a specific location in an Index and created a new updated Index.
+
+```{python}
+
+import pandas as pd 
+
+# Create an INdex
+index = pd.Index(['A', 'B', 'C', 'D'])
+print(index)
+
+# Delete an element at a specific position
+new_index = index.delete(2) # elemnt at position 2 (0-based)
+print(new_index)
+```
+
+### Question: Create a new Index object by deleting passed lables from the index.
+
+```{python}
+
+import pandas as pd
+
+# Create an Index
+index = pd.Index(['A', 'B', 'C', 'D', 'E'])
+print("original Index obj: ", index)
+
+# Drop specific labels from the Index
+labels_to_drop = ['B', 'C']
+new_index = index.drop(labels_to_drop)
+print("new Index obj: ", new_index)
+
+```
+
+### Question: Create a new Index object by inserting new labels to an existing Index object, after the element matching with the first letter of the new label
+
+```{python}
+
+import pandas as pd
+
+# Create a Index object
+original_labels = ['A', 'B', 'C', 'D', 'E']
+index = pd.Index(original_labels)
+print("Original index: ", index)
+
+# additional labels to be inserted
+additional_labels = ['C-3', 'C-5', 'C-1', 'C-2', 'C-4']
+print("Labels to insert: ", additional_labels)
+
+# insert the labels
+new_index = index
+additional_labels.sort(reverse=True)
+#print("reverse-sorted additional labels: ", additional_labels)
+
+for label in additional_labels:
+  first_letter = label[:1]
+  
+  if(first_letter in original_labels):
+    # find the index of the first letter
+    idx = original_labels.index(first_letter)
+    #print(first_letter, label, idx)
+    new_index = new_index.insert(idx+1, label)
+    
+print("New index: ", new_index)
+    
+  
+```
+
+### Question: You have a Pandas Index object, and you want to check if it is monotonically decreasing. Write a Python function that takes an Index object as input and returns **`True`** if the index is monotonically decreasing, and **`False`** otherwise.
+
+```{python}
+
+import pandas as pd
+
+# Function to check if an Index is monotonically  decreasing
+def is_monotonic_decreasing(index):
+  return index.is_monotonic_decreasing
+
+# indexes to test
+index1 = pd.Index([5, 4, 3, 2, 1])
+index2 = pd.Index(['E', 'D', 'C', 'B', 'A'])
+index3 = pd.Index([4, 3, 2, 'D', 'C', 'B'])
+
+list_of_index = [index1, index2, index3]
+for index in list_of_index:
+  print(index, is_monotonic_decreasing(index))
+
+```
+
+### Question: You have a Pandas Index object, and you want to check if it contains unique elements. Write a Python function that takes an Index object as input and returns `True` if all the elements are unique, and `False` otherwise.
+
+```{python}
+
+import pandas as pd
+
+# Create indexes for testing
+index1 = pd.Index(['A', 'B', 'C', 'D', 'E'])
+index2 = pd.Index(['A', 'B', 'C', 'A', 'D'])
+
+# Function to check if an Index contatins unique elements
+def is_unique(index):
+  return index.is_unique
+
+# Test the indexes
+print(index1, is_unique(index1))
+print(index2, is_unique(index2))
+```
+
+### You have a Pandas Index object, and you want to retrieve the unique elements from it. Write a Python function that takes an Index object as input and returns a list of unique elements from the index.
+
+```{python}
+
+import pandas as pd
+
+index = pd.Index(['A', 'B', 'C', 'A', 'D', 'B'])
+
+def get_unique_elements(index):
+  return index.unique()
+  
+
+unique_elements = get_unique_elements(index)
+print("Unique elements: ", unique_elements) # Index object
+print(unique_elements.tolist()) # List object
+
+```
+
+## The mechanics of interacting with data in Series and DataFrame
+
+### Question: You're working with a dataset of daily stock prices for a portfolio of companies. The dataset has missing values for certain days, and you want to reindex it to ensure you have a complete set of daily data for a specified date range. You need to create a Python function that takes several arguments to demonstrate the use of the reindex() method and its optional parameters. Your task is to implement the reindex_stock_data() function, which demonstrates the use of these parameters. The function should reindex the stock price data to the specified date range, filling missing data with the provided fill_value and considering the other optional parameters. 
+
+-   `data`: A DataFrame containing stock price data with a date index.
+-   `start_date`: The start date of the desired date range.
+-   `end_date`: The end date of the desired date range.
+-   `fill_value`: The value to fill missing data points.
+-   `method`: A method to use for filling missing values (e.g., 'ffill', 'bfill').
+-   `limit`: The maximum number of consecutive NaN values to fill.
+-   `tolerance`: The maximum allowed difference in the index value when reindexing.
+-   `level`: The level in case of MultiIndex.
+-   `copy`: Whether to create a copy of the original data or reindex in-place.
+
+```{python}
+
+import pandas as pd
+import numpy as np
+
+# Function to reindex data as the parameters instruct
+def reindex_stock_data(
+  data,
+  start_date,
+  end_date,
+  fill_value,
+  method=None,
+  limit=None,
+  tolerance=None,
+  level=None,
+  copy=False
+):
+  # print("fill_value passed in: " + str(fill_value))
+  # Fill NaN values with the specified fill_value
+  data_filled = data.fillna(fill_value)
+  #print("data_filled:\n", data_filled)
+  
+  # Generate fixed-frequency Datetime index - index of dates and times
+  date_range = pd.date_range(start=start_date, end=end_date, freq='D')
+  
+  # Reindex the filled data
+  result = data_filled.reindex(date_range, method=method, tolerance=tolerance, limit=limit, fill_value=fill_value, level=level, copy=copy)
+  
+  return result
+
+# Create an incomplete initial data for testing
+data = pd.DataFrame({
+  'AAPL': [150, 151, np.nan, 153, np.nan],
+  'GOOGL': [2000, np.nan, 2020, 2030, 2040]
+}, index=pd.date_range(start='2022-01-01', periods=5, freq='D'))
+print("Original data:\n", data)
+
+# Set parameters and values for the function - reindexing
+start_date = '2022-01-01'
+end_date = '2022-01-05'
+fill_value = 0
+method = 'bfill'  # Backward fill
+limit = 1
+tolerance = '1D'  # Tolerance of 1 day
+level = None
+copy = True
+
+#print("fill_value is: ", str(fill_value))
+# Call the function and reindex the data
+result = reindex_stock_data(data, start_date, end_date, fill_value, method, limit, tolerance, level, copy)
+print("Result re-indexed data:\n", result)
 ```
