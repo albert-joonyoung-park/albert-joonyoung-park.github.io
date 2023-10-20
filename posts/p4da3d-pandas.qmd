@@ -59,9 +59,9 @@ data_dict = {
     "is_student": False
 }
 print(data_dict)
-s_data = pd.Series(data_dict) # dictionary to Series
+s_data = pd.Series(data_dict)  # dictionary to Series
 print(s_data, type(s_data))
-d_data = s_data.to_dict() # Series to dictionary
+d_data = s_data.to_dict()  # Series to dictionary
 print(d_data, type(d_data))
 
 # Preservation of index-value
@@ -148,7 +148,7 @@ Q: Retrieve rows using row labels and integer
 # data source dictionary
 data = {'A': [1, 2, 3, 4, 5],
         'B': [6, 7, 8, 9, 10]}
-        
+
 # DataFrame
 df = pd.DataFrame(data, index=['row1', 'row2', 'row3', 'row4', 'row5'])
 print(df)
@@ -178,7 +178,7 @@ Q: **Modify the 'debt' column in the DataFrame with a Series object with differe
 ```{python}
 
 # Series index value is used to match the index of DataFrame, if not presented, it is ignored
-val = pd.Series([-1.2, -1.5, -1.7], index=[2, 4, 32]) 
+val = pd.Series([-1.2, -1.5, -1.7], index=[2, 4, 32])
 frame2["debt"] = val
 print(frame2)
 ```
@@ -205,7 +205,8 @@ populations = {"Ohio": {2000: 1.5, 2001: 1.7, 2002: 3.6},
                "Nevada": {2001: 2.4, 2002: 2.9}}
 print(populations)
 
-df_populations = pd.DataFrame(populations) # outer dictionary key - column indices
+# outer dictionary key - column indices
+df_populations = pd.DataFrame(populations)
 print(df_populations)
 ```
 
@@ -226,8 +227,8 @@ Q. Create a DataFrame using frame3, using a dictionary with a few Series of colu
 ```{python}
 
 sub_populations = {
-  "Ohio2": df_populations["Ohio"][:-1],
-  "Nevada2": df_populations["Nevada"][:2]
+    "Ohio2": df_populations["Ohio"][:-1],
+    "Nevada2": df_populations["Nevada"][:2]
 }
 df_sub_populations = pd.DataFrame(sub_populations)
 print(df_sub_populations)
@@ -263,9 +264,9 @@ print(df)
 
 # Create a dictionary with arrays
 data_dict = {
-  'Name': np.array(['Alice', 'Bob', 'Charlie']),
-  'Age': np.array([25, 30, 28]),
-  'City': np.array(['Toronto', 'Calgary', 'Ottawa'])
+    'Name': np.array(['Alice', 'Bob', 'Charlie']),
+    'Age': np.array([25, 30, 28]),
+    'City': np.array(['Toronto', 'Calgary', 'Ottawa'])
 }
 
 # Create a pandas DataFrame
@@ -280,9 +281,9 @@ print(df)
 
 # Create a dictionary with lists
 data_dict = {
-  'Country': ['USA', 'Canada', 'UK'],
-  'Population': [328, 38, 66],
-  'Capital': ['Washington D.C.', 'Ottawa', 'London']
+    'Country': ['USA', 'Canada', 'UK'],
+    'Population': [328, 38, 66],
+    'Capital': ['Washington D.C.', 'Ottawa', 'London']
 }
 
 # Create a pandas DataFrame
@@ -295,12 +296,12 @@ print(df)
 
 # Create a dictionary with tuples
 data_dict = {
-  'Fruit': ('Apple', 'Banana', 'Cherry'),
-  'Color': ('Red', 'Yellow', 'Red'),
-  'Taste': ('Sweet', 'Sweet', 'Tart')
+    'Fruit': ('Apple', 'Banana', 'Cherry'),
+    'Color': ('Red', 'Yellow', 'Red'),
+    'Taste': ('Sweet', 'Sweet', 'Tart')
 }
 
-# Create a pandas DataFrame 
+# Create a pandas DataFrame
 df = pd.DataFrame(data_dict)
 
 print(df)
@@ -308,18 +309,16 @@ print(df)
 
 **Q: Create a DataFrame using a NumPy structured array**
 
-```{python}
+`
 
-import pandas as pd
-import numpy as np
 
 # Create a NumPy structured array
-# Field + Type: (ID, Name, Age) 
+# Field + Type: (ID, Name, Age)
 
 data = np.array([(100, 'Alice', 25),
                  (200, 'Bob', 30),
                  (300, 'Charlie', 29)],
-                 dtype=[('ID', int), ('Name', 'U10'), ('Age', int)])
+                dtype=[('ID', int), ('Name', 'U10'), ('Age', int)])
 
 # Create a DataFrame from the structued array
 df = pd.DataFrame(data)
@@ -330,14 +329,12 @@ print(df)
 
 ```{python}
 
-import pandas as pd
-import numpy as np
 
 # Create a dictioinary of Series
 data_dict = {
-  'Name': pd.Series(['Alice', 'Bob', 'Charlie']),
-  'Age': pd.Series([25, 30, 28]),
-  'City': pd.Series(['New York', 'San Francisco', 'Los Angeles', 'Paris'])
+    'Name': pd.Series(['Alice', 'Bob', 'Charlie']),
+    'Age': pd.Series([25, 30, 28]),
+    'City': pd.Series(['New York', 'San Francisco', 'Los Angeles', 'Paris'])
 }
 
 # Create a pandas DataFrame from the dictioanry of Series
@@ -347,10 +344,8 @@ print(df)
 
 **Q:** **Create a DataFrame using a list of dictionaries / Series.**
 
-```{python}
+`
 
-import pandas as pd
-import numpy as np
 
 # Create a list of dictionaries
 data_dict = [
@@ -362,7 +357,8 @@ data_dict = [
 # Create a list of Series
 name_series = pd.Series(['Alice', 'Bob', 'Charlie'], name='Name')
 age_series = pd.Series([25, 30, 28], name='Age')
-city_series = pd.Series(['New York', 'San Francisco', 'Los Angeles'], name='City')
+city_series = pd.Series(
+    ['New York', 'San Francisco', 'Los Angeles'], name='City')
 
 # Create a DataFrame from the list of dictionaries
 df1 = pd.DataFrame(data_dict)
@@ -378,16 +374,14 @@ print(df2)
 
 **Q: Create a DataFrame using a list of lists / tuples**
 
-```{python}
+`
 
-import pandas as pd
-import numpy as np
 
 # Create a list of lists
 data_list = [
-  ['Alice', 25, 'New York'],
-  ['Bob', 30, 'San Francisco'],
-  ['Charlie', 28, 'Los Angeles']
+    ['Alice', 25, 'New York'],
+    ['Bob', 30, 'San Francisco'],
+    ['Charlie', 28, 'Los Angeles']
 ]
 
 # Define column labels
@@ -401,9 +395,9 @@ print("-" * 50)
 
 # Create a list of tuples
 data_tuples = [
-  ('Alice', 25, 'New York'),
-  ('Bob', 30, 'San Francisco'),
-  ('Charlie', 28, 'Los Angeles')
+    ('Alice', 25, 'New York'),
+    ('Bob', 30, 'San Francisco'),
+    ('Charlie', 28, 'Los Angeles')
 ]
 
 # Define column labels
@@ -416,16 +410,14 @@ print(df)
 
 **Q: Create a DataFrame using another DataFrame**
 
-```{python}
+`
 
-import pandas as pd
-import numpy as np
 
 # Create the original DataFrame
 data = {
-  'Name': ['Alice', 'Bob', 'Charlie'],
-  'Age': [25, 30, 28],
-  'City': ['New York', 'San Francisco', 'Los Angeles']
+    'Name': ['Alice', 'Bob', 'Charlie'],
+    'Age': [25, 30, 28],
+    'City': ['New York', 'San Francisco', 'Los Angeles']
 }
 
 original_df = pd.DataFrame(data)
@@ -453,8 +445,8 @@ print(id(new_df))
 
 # Data source in a idctionary
 populations = {
-  "Ohio": {2000: 1.5, 2001: 1.7, 2002: 3.6},
-  "Nevada": {2001: 2.4, 2002: 2.9}
+    "Ohio": {2000: 1.5, 2001: 1.7, 2002: 3.6},
+    "Nevada": {2001: 2.4, 2002: 2.9}
 }
 
 # Create a DataFrame
@@ -475,9 +467,9 @@ print(frame3)
 
 # Data source in a dictionary
 data = {
-  "state": ["Ohio", "Ohio", "Ohio", "Nevada", "Nevada", "Nevada"],
-  "year": [2000, 2001, 2002, 2001, 2002, 2003],
-  "pop": [1.5, 1.7, 3.6, 2.4, 2.9, 3.2]
+    "state": ["Ohio", "Ohio", "Ohio", "Nevada", "Nevada", "Nevada"],
+    "year": [2000, 2001, 2002, 2001, 2002, 2003],
+    "pop": [1.5, 1.7, 3.6, 2.4, 2.9, 3.2]
 }
 print(data, type(data))
 print("-"*50)
@@ -502,11 +494,11 @@ Q: Construct a Series object and retrieve index information from it.
 
 ```{python}
 
-# Create a Series 
-obj = pd.Series(np.arange(3), index=["a","b","c"]) # row labels
+# Create a Series
+obj = pd.Series(np.arange(3), index=["a", "b", "c"])  # row labels
 print(obj, type(obj))
 print(obj.index)
-print(obj.index[1:]) # slicing the array of index object
+print(obj.index[1:])  # slicing the array of index object
 ```
 
 ### Q: Create an Index Object and construct a Series using the object.
@@ -524,7 +516,7 @@ print(obj2, type(obj2))
 # Test equality of the index object
 print(obj2.index is labels)
 print(id(obj2.index))
-print(id(labels)) # refering to the the same object
+print(id(labels))  # refering to the the same object
 
 ```
 
@@ -534,8 +526,8 @@ print(id(labels)) # refering to the the same object
 
 # Data source in a idctionary
 populations = {
-  "Ohio": {2000: 1.5, 2001: 1.7, 2002: 3.6},
-  "Nevada": {2001: 2.4, 2002: 2.9}
+    "Ohio": {2000: 1.5, 2001: 1.7, 2002: 3.6},
+    "Nevada": {2001: 2.4, 2002: 2.9}
 }
 
 # Create a DataFrame
@@ -558,7 +550,6 @@ print("2003 is in index for rows: ", "2003" in frame3.index)
 
 ```{python}
 
-import pandas as pd
 
 # Create an initial index
 index1 = pd.Index([1, 2, 3])
@@ -589,7 +580,6 @@ print(new_index)
 
 ```{python}
 
-import pandas as pd
 
 # Create two Index objects
 index1 = pd.Index([1, 2, 3, 4, 5])
@@ -610,9 +600,8 @@ print(result)
 
 ### Q: Compute Boolean array indicating whether each value is contained in the passed collection
 
-```{python}
+`
 
-import pandas as pd
 
 # Create an Index object
 index = pd.Index([1, 2, 3, 4, 5])
@@ -632,14 +621,13 @@ print(is_in_collection)
 
 ```{python}
 
-import pandas as pd 
 
 # Create an INdex
 index = pd.Index(['A', 'B', 'C', 'D'])
 print(index)
 
 # Delete an element at a specific position
-new_index = index.delete(2) # elemnt at position 2 (0-based)
+new_index = index.delete(2)  # elemnt at position 2 (0-based)
 print(new_index)
 ```
 
@@ -647,7 +635,6 @@ print(new_index)
 
 ```{python}
 
-import pandas as pd
 
 # Create an Index
 index = pd.Index(['A', 'B', 'C', 'D', 'E'])
@@ -664,7 +651,6 @@ print("new Index obj: ", new_index)
 
 ```{python}
 
-import pandas as pd
 
 # Create a Index object
 original_labels = ['A', 'B', 'C', 'D', 'E']
@@ -678,31 +664,32 @@ print("Labels to insert: ", additional_labels)
 # insert the labels
 new_index = index
 additional_labels.sort(reverse=True)
-#print("reverse-sorted additional labels: ", additional_labels)
+# print("reverse-sorted additional labels: ", additional_labels)
 
 for label in additional_labels:
-  first_letter = label[:1]
-  
-  if(first_letter in original_labels):
-    # find the index of the first letter
-    idx = original_labels.index(first_letter)
-    #print(first_letter, label, idx)
-    new_index = new_index.insert(idx+1, label)
-    
+    first_letter = label[:1]
+
+    if (first_letter in original_labels):
+        # find the index of the first letter
+        idx = original_labels.index(first_letter)
+        # print(first_letter, label, idx)
+        new_index = new_index.insert(idx+1, label)
+
 print("New index: ", new_index)
-    
-  
+
+
 ```
 
 ### Question: You have a Pandas Index object, and you want to check if it is monotonically decreasing. Write a Python function that takes an Index object as input and returns **`True`** if the index is monotonically decreasing, and **`False`** otherwise.
 
 ```{python}
 
-import pandas as pd
 
 # Function to check if an Index is monotonically  decreasing
+
 def is_monotonic_decreasing(index):
-  return index.is_monotonic_decreasing
+    return index.is_monotonic_decreasing
+
 
 # indexes to test
 index1 = pd.Index([5, 4, 3, 2, 1])
@@ -711,7 +698,7 @@ index3 = pd.Index([4, 3, 2, 'D', 'C', 'B'])
 
 list_of_index = [index1, index2, index3]
 for index in list_of_index:
-  print(index, is_monotonic_decreasing(index))
+    print(index, is_monotonic_decreasing(index))
 
 ```
 
@@ -719,15 +706,17 @@ for index in list_of_index:
 
 ```{python}
 
-import pandas as pd
 
 # Create indexes for testing
 index1 = pd.Index(['A', 'B', 'C', 'D', 'E'])
 index2 = pd.Index(['A', 'B', 'C', 'A', 'D'])
 
 # Function to check if an Index contatins unique elements
+
+
 def is_unique(index):
-  return index.is_unique
+    return index.is_unique
+
 
 # Test the indexes
 print(index1, is_unique(index1))
@@ -738,23 +727,23 @@ print(index2, is_unique(index2))
 
 ```{python}
 
-import pandas as pd
 
 index = pd.Index(['A', 'B', 'C', 'A', 'D', 'B'])
 
+
 def get_unique_elements(index):
-  return index.unique()
-  
+    return index.unique()
+
 
 unique_elements = get_unique_elements(index)
-print("Unique elements: ", unique_elements) # Index object
-print(unique_elements.tolist()) # List object
+print("Unique elements: ", unique_elements)  # Index object
+print(unique_elements.tolist())  # List object
 
 ```
 
 ## The mechanics of interacting with data in Series and DataFrame
 
-### Question: You're working with a dataset of daily stock prices for a portfolio of companies. The dataset has missing values for certain days, and you want to reindex it to ensure you have a complete set of daily data for a specified date range. You need to create a Python function that takes several arguments to demonstrate the use of the reindex() method and its optional parameters. Your task is to implement the reindex_stock_data() function, which demonstrates the use of these parameters. The function should reindex the stock price data to the specified date range, filling missing data with the provided fill_value and considering the other optional parameters. 
+### Question: You're working with a dataset of daily stock prices for a portfolio of companies. The dataset has missing values for certain days, and you want to reindex it to ensure you have a complete set of daily data for a specified date range. You need to create a Python function that takes several arguments to demonstrate the use of the reindex() method and its optional parameters. Your task is to implement the reindex_stock_data() function, which demonstrates the use of these parameters. The function should reindex the stock price data to the specified date range, filling missing data with the provided fill_value and considering the other optional parameters.
 
 -   `data`: A DataFrame containing stock price data with a date index.
 -   `start_date`: The start date of the desired date range.
@@ -767,39 +756,38 @@ print(unique_elements.tolist()) # List object
 -   `copy`: Whether to create a copy of the original data or reindex in-place.
 
 ```{python}
-
-import pandas as pd
-import numpy as np
-
 # Function to reindex data as the parameters instruct
 def reindex_stock_data(
-  data,
-  start_date,
-  end_date,
-  fill_value,
-  method=None,
-  limit=None,
-  tolerance=None,
-  level=None,
-  copy=False
+    data,
+    start_date,
+    end_date,
+    fill_value,
+    method=None,
+    limit=None,
+    tolerance=None,
+    level=None,
+    copy=False
 ):
-  # print("fill_value passed in: " + str(fill_value))
-  # Fill NaN values with the specified fill_value
-  data_filled = data.fillna(fill_value)
-  #print("data_filled:\n", data_filled)
-  
-  # Generate fixed-frequency Datetime index - index of dates and times
-  date_range = pd.date_range(start=start_date, end=end_date, freq='D')
-  
-  # Reindex the filled data
-  result = data_filled.reindex(date_range, method=method, tolerance=tolerance, limit=limit, fill_value=fill_value, level=level, copy=copy)
-  
-  return result
+    # print("fill_value passed in: " + str(fill_value))
+    # Fill NaN values with the specified fill_value
+    data_filled = data.fillna(fill_value)
+    # print("data_filled:\n", data_filled)
+
+    # Generate fixed-frequency Datetime index - index of dates and times
+    date_range = pd.date_range(start=start_date, end=end_date, freq='D')
+
+    # Reindex the filled data
+    result = data_filled.reindex(date_range, method=method, tolerance=tolerance,
+                                 limit=limit, fill_value=fill_value, level=level, copy=copy)
+    return result
 
 # Create an incomplete initial data for testing
 data = pd.DataFrame({
-  'AAPL': [150, 151, np.nan, 153, np.nan],
-  'GOOGL': [2000, np.nan, 2020, 2030, 2040]
+    'AAPL': [150, 151, np.nan, 153, np.nan],
+    'GOOGL': [2000, np.nan, 2020, 2030, 2040],
+    'MSFT': [300, np.nan, 302, np.nan, 304],
+    'AMZN': [3500, 3510, np.nan, np.nan, 3540],
+    'TSLA': [np.nan, 701, 702, 703, np.nan]
 }, index=pd.date_range(start='2022-01-01', periods=5, freq='D'))
 print("Original data:\n", data)
 
@@ -813,8 +801,42 @@ tolerance = '1D'  # Tolerance of 1 day
 level = None
 copy = True
 
-#print("fill_value is: ", str(fill_value))
+# print("fill_value is: ", str(fill_value))
 # Call the function and reindex the data
-result = reindex_stock_data(data, start_date, end_date, fill_value, method, limit, tolerance, level, copy)
+result = reindex_stock_data(
+    data, start_date, end_date, fill_value, method, limit, tolerance, level, copy)
 print("Result re-indexed data:\n", result)
 ```
+
+Question: Create a DataFrame called 'sales_data' that contains sales data for various products in different stores. Use the 'sales_data' and create DataFrames below.
+- 
+```{python}
+import pandas as pd
+
+# Create a dictionary of store sales data and a DataFrmae
+data = {
+    'Store': ['A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C'],
+    'Products': ['X', 'Y', 'Z', 'X', 'Y', 'Z', 'X', 'Y', 'Z'],
+    'Sales': [1000, 1500, 1200, 2000, 1800, 2200, 1200, 1400, 1100]
+}
+
+sales_data = pd.DataFrame(data)
+print(sales_data)
+```
+```{python}
+# Create a DataFrame called 'store_A_sales', 
+# by selecting all the products sold in Store A
+
+cond = sales_data['Store'] == 'A'
+store_A_sales = sales_data[cond]
+print(store_A_sales)
+```
+
+Create a DataFrame called 'high_sales_products' for rows where 'Sales' is greater than or equal to 1500. Use the DataFrame 'sales_data'. Display only 'Products' and 'Sales' columns.
+```{python}
+# Create a DataFrame indexing with Boolean values meeting the sales condition
+high_sales_products = sales_data.loc[sales_data['Sales'] >= 1500, ['Products', 'Sales']]
+print("High sales products from store 'A'\n", high_sales_products)
+```
+
+
