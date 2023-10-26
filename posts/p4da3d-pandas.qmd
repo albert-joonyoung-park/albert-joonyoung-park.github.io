@@ -309,74 +309,41 @@ print(df)
 
 **Q: Create a DataFrame using a NumPy structured array**
 
-`
-
-
-# Create a NumPy structured array
-# Field + Type: (ID, Name, Age)
-
-data = np.array([(100, 'Alice', 25),
-                 (200, 'Bob', 30),
-                 (300, 'Charlie', 29)],
-                dtype=[('ID', int), ('Name', 'U10'), ('Age', int)])
-
-# Create a DataFrame from the structued array
-df = pd.DataFrame(data)
-print(df)
-```
-
-**Q:** **Create a DataFrame using a dictionary of Series.**
-
 ```{python}
 
+# Create a NumPy structured array
 
-# Create a dictioinary of Series
-data_dict = {
-    'Name': pd.Series(['Alice', 'Bob', 'Charlie']),
-    'Age': pd.Series([25, 30, 28]),
-    'City': pd.Series(['New York', 'San Francisco', 'Los Angeles', 'Paris'])
-}
+# Field + Type: (ID, Name, Age)
 
-# Create a pandas DataFrame from the dictioanry of Series
-df = pd.DataFrame(data_dict)
-print(df)
+data = np.array(\[(100, 'Alice', 25), (200, 'Bob', 30), (300, 'Charlie', 29)\], dtype=\[('ID', int), ('Name', 'U10'), ('Age', int)\])
+
+# Create a DataFrame from the structued array
+
+df = pd.DataFrame(data) print(df)
+
 ```
 
 **Q:** **Create a DataFrame using a list of dictionaries / Series.**
 
-`
-
+```{python}
 
 # Create a list of dictionaries
-data_dict = [
-    {'Name': 'Alice', 'Age': 25, 'City': 'New York'},
-    {'Name': 'Bob', 'Age': 30, 'City': 'San Francisco'},
-    {'Name': 'Charlie', 'Age': 28, 'City': 'Los Angeles'}
-]
+
+data_dict = \[ {'Name': 'Alice', 'Age': 25, 'City': 'New York'}, {'Name': 'Bob', 'Age': 30, 'City': 'San Francisco'}, {'Name': 'Charlie', 'Age': 28, 'City': 'Los Angeles'}\]
 
 # Create a list of Series
-name_series = pd.Series(['Alice', 'Bob', 'Charlie'], name='Name')
-age_series = pd.Series([25, 30, 28], name='Age')
-city_series = pd.Series(
-    ['New York', 'San Francisco', 'Los Angeles'], name='City')
+
+name_series = pd.Series(\['Alice', 'Bob', 'Charlie'\], name='Name') age_series = pd.Series(\[25, 30, 28\], name='Age') city_series = pd.Series( \['New York', 'San Francisco', 'Los Angeles'\], name='City')
 
 # Create a DataFrame from the list of dictionaries
-df1 = pd.DataFrame(data_dict)
-print(df1)
-print("-" * 50)
-# Create a DataFrame from the list of Series
-df2 = pd.DataFrame({'Name': name_series,
-                    'Age': age_series,
-                    'City': city_series})
-print(df2)
+
+df1 = pd.DataFrame(data_dict) print(df1) print("-" \* 50) \# Create a DataFrame from the list of Series df2 = pd.DataFrame({'Name': name_series, 'Age': age_series, 'City': city_series}) print(df2)
 
 ```
 
 **Q: Create a DataFrame using a list of lists / tuples**
 
-`
-
-
+```{python}
 # Create a list of lists
 data_list = [
     ['Alice', 25, 'New York'],
@@ -408,63 +375,27 @@ df = pd.DataFrame(data_tuples, columns=columns)
 print(df)
 ```
 
-**Q: Create a DataFrame using another DataFrame**
-
-`
-
-
-# Create the original DataFrame
-data = {
-    'Name': ['Alice', 'Bob', 'Charlie'],
-    'Age': [25, 30, 28],
-    'City': ['New York', 'San Francisco', 'Los Angeles']
-}
-
-original_df = pd.DataFrame(data)
-print(original_df)
-print("-" * 50)
-
-# Create a new DataFrame based on the original DataFrame
-copy_original_df = original_df.copy()
-copy_original_df.columns = ['_name', '_age', '_city']
-print(copy_original_df)
-print("-" * 50)
-
-new_df = pd.DataFrame(original_df)
-print(new_df)
-print("-" * 50)
-
-print(id(original_df))
-print(id(copy_original_df))
-print(id(new_df))
-```
-
-**Q: Create a DataFrame and update the name attributes for index and columns**
+**Q: Create a DataFrame using another DataFrame** \`
 
 ```{python}
+# Create the original DataFrame
 
-# Data source in a idctionary
-populations = {
-    "Ohio": {2000: 1.5, 2001: 1.7, 2002: 3.6},
-    "Nevada": {2001: 2.4, 2002: 2.9}
-}
+data = { 'Name': \['Alice', 'Bob', 'Charlie'\], 'Age': \[25, 30, 28\], 'City': \['New York', 'San Francisco', 'Los Angeles'\] }
 
-# Create a DataFrame
-frame3 = pd.DataFrame(populations)
-print(frame3)
-print("-" * 50)
+original_df = pd.DataFrame(data) print(original_df) print("-" \* 50)
 
-# Update the name attributes for index / columns
-frame3.index.name = "year"
-frame3.columns.name = "state"
-print(frame3)
+# Create a new DataFrame based on the original DataFrame
 
+copy_original_df = original_df.copy() copy_original_df.columns = \['\_name', '\_age', '\_city'\] print(copy_original_df) print("-" \* 50)
+
+new_df = pd.DataFrame(original_df) print(new_df) print("-" \* 50)
+
+print(id(original_df)) print(id(copy_original_df)) print(id(new_df))
 ```
 
 **Q. Create a DataFrame from a dictionary, then convert it to a NumPy array.**
 
 ```{python}
-
 # Data source in a dictionary
 data = {
     "state": ["Ohio", "Ohio", "Ohio", "Nevada", "Nevada", "Nevada"],
@@ -493,7 +424,6 @@ Index objects holds the information about axis labels (labels assigned to rows a
 Q: Construct a Series object and retrieve index information from it.
 
 ```{python}
-
 # Create a Series
 obj = pd.Series(np.arange(3), index=["a", "b", "c"])  # row labels
 print(obj, type(obj))
@@ -504,7 +434,6 @@ print(obj.index[1:])  # slicing the array of index object
 ### Q: Create an Index Object and construct a Series using the object.
 
 ```{python}
-
 # Create an Index object
 labels = pd.Index(np.arange(3))
 print(labels, type(labels))
@@ -517,13 +446,11 @@ print(obj2, type(obj2))
 print(obj2.index is labels)
 print(id(obj2.index))
 print(id(labels))  # refering to the the same object
-
 ```
 
 ### Q: Create a DataFrame and use its index and columns to test Set operation for element existence.
 
 ```{python}
-
 # Data source in a idctionary
 populations = {
     "Ohio": {2000: 1.5, 2001: 1.7, 2002: 3.6},
@@ -549,8 +476,6 @@ print("2003 is in index for rows: ", "2003" in frame3.index)
 ### Q: Concatenate with additional Index objects, producing a new index
 
 ```{python}
-
-
 # Create an initial index
 index1 = pd.Index([1, 2, 3])
 
@@ -573,14 +498,11 @@ new_index = index1.append(index2)
 
 # Display the new concatenated index
 print(new_index)
-
 ```
 
 ### Q: Compute set difference, intersection and union as an index between two index objects
 
 ```{python}
-
-
 # Create two Index objects
 index1 = pd.Index([1, 2, 3, 4, 5])
 index2 = pd.Index([3, 4, 5, 6, 7])
@@ -600,42 +522,27 @@ print(result)
 
 ### Q: Compute Boolean array indicating whether each value is contained in the passed collection
 
-`
-
-
+```{python}
 # Create an Index object
-index = pd.Index([1, 2, 3, 4, 5])
+
+index = pd.Index(\[1, 2, 3, 4, 5\])
 
 # Create a collection of values to check for containment
-collection = [3, 5, 7]
+
+collection = \[3, 5, 7\]
 
 # Use the isin() method to check for containment
+
 is_in_collection = index.isin(collection)
 
 # Display the Boolean array for each element's containment
+
 print(is_in_collection)
-
-```
-
-### Q: Delete an element at a specific location in an Index and created a new updated Index.
-
-```{python}
-
-
-# Create an INdex
-index = pd.Index(['A', 'B', 'C', 'D'])
-print(index)
-
-# Delete an element at a specific position
-new_index = index.delete(2)  # elemnt at position 2 (0-based)
-print(new_index)
 ```
 
 ### Question: Create a new Index object by deleting passed lables from the index.
 
 ```{python}
-
-
 # Create an Index
 index = pd.Index(['A', 'B', 'C', 'D', 'E'])
 print("original Index obj: ", index)
@@ -644,14 +551,11 @@ print("original Index obj: ", index)
 labels_to_drop = ['B', 'C']
 new_index = index.drop(labels_to_drop)
 print("new Index obj: ", new_index)
-
 ```
 
 ### Question: Create a new Index object by inserting new labels to an existing Index object, after the element matching with the first letter of the new label
 
 ```{python}
-
-
 # Create a Index object
 original_labels = ['A', 'B', 'C', 'D', 'E']
 index = pd.Index(original_labels)
@@ -676,21 +580,15 @@ for label in additional_labels:
         new_index = new_index.insert(idx+1, label)
 
 print("New index: ", new_index)
-
-
 ```
 
 ### Question: You have a Pandas Index object, and you want to check if it is monotonically decreasing. Write a Python function that takes an Index object as input and returns **`True`** if the index is monotonically decreasing, and **`False`** otherwise.
 
 ```{python}
-
-
 # Function to check if an Index is monotonically  decreasing
-
 def is_monotonic_decreasing(index):
     return index.is_monotonic_decreasing
-
-
+  
 # indexes to test
 index1 = pd.Index([5, 4, 3, 2, 1])
 index2 = pd.Index(['E', 'D', 'C', 'B', 'A'])
@@ -699,24 +597,18 @@ index3 = pd.Index([4, 3, 2, 'D', 'C', 'B'])
 list_of_index = [index1, index2, index3]
 for index in list_of_index:
     print(index, is_monotonic_decreasing(index))
-
 ```
 
 ### Question: You have a Pandas Index object, and you want to check if it contains unique elements. Write a Python function that takes an Index object as input and returns `True` if all the elements are unique, and `False` otherwise.
 
 ```{python}
-
-
 # Create indexes for testing
 index1 = pd.Index(['A', 'B', 'C', 'D', 'E'])
 index2 = pd.Index(['A', 'B', 'C', 'A', 'D'])
 
 # Function to check if an Index contatins unique elements
-
-
 def is_unique(index):
     return index.is_unique
-
 
 # Test the indexes
 print(index1, is_unique(index1))
@@ -726,14 +618,10 @@ print(index2, is_unique(index2))
 ### You have a Pandas Index object, and you want to retrieve the unique elements from it. Write a Python function that takes an Index object as input and returns a list of unique elements from the index.
 
 ```{python}
-
-
 index = pd.Index(['A', 'B', 'C', 'A', 'D', 'B'])
-
 
 def get_unique_elements(index):
     return index.unique()
-
 
 unique_elements = get_unique_elements(index)
 print("Unique elements: ", unique_elements)  # Index object
@@ -808,8 +696,8 @@ result = reindex_stock_data(
 print("Result re-indexed data:\n", result)
 ```
 
-Question: Create a DataFrame called 'sales_data' that contains sales data for various products in different stores. Use the 'sales_data' and create DataFrames below.
-- 
+## Question: Create a DataFrame called 'sales_data' that contains sales data for various products in different stores. Use the 'sales_data' and create DataFrames below.
+
 ```{python}
 import pandas as pd
 
@@ -823,6 +711,7 @@ data = {
 sales_data = pd.DataFrame(data)
 print(sales_data)
 ```
+
 ```{python}
 # Create a DataFrame called 'store_A_sales', 
 # by selecting all the products sold in Store A
@@ -833,10 +722,354 @@ print(store_A_sales)
 ```
 
 Create a DataFrame called 'high_sales_products' for rows where 'Sales' is greater than or equal to 1500. Use the DataFrame 'sales_data'. Display only 'Products' and 'Sales' columns.
+
 ```{python}
 # Create a DataFrame indexing with Boolean values meeting the sales condition
 high_sales_products = sales_data.loc[sales_data['Sales'] >= 1500, ['Products', 'Sales']]
 print("High sales products from store 'A'\n", high_sales_products)
 ```
 
+### Dropping Entries from an Axis
 
+Create a Series for the questions.
+
+```{python}
+import pandas as pd
+import numpy as np
+
+obj = pd.Series(np.arange(5.), index=list("abcde"))
+print(obj)
+```
+
+###### **Question:** Drop single or multiple indexes - 'c' or 'c' and 'd' both from the Series.
+
+```{python}
+new_obj = obj.drop('c')
+print(new_obj)
+new_obj = obj.drop(['c','d'])
+print(new_obj)
+```
+
+###### Indexing and retrieving from DataFrame with a single value of sequence
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Create a DataFrame
+data = pd.DataFrame(np.arange(16).reshape((4, 4)),
+                    index=["Ohio", "Colorado", "Utah", "New York"],
+                    columns=["one", "two", "three", "four"]
+)
+print(data)
+
+# Drop 'Colorado' and 'Ohio', with a sequence of labels from the row labels (axis=0)
+data2 = data.drop(index=['Colorado', 'Ohio'])
+print(data2)
+
+# Drop the column 'two'
+data2 = data.drop(columns = 'two')
+print(data2)
+
+# Drop column(s) using axis parameter
+data2 = data.drop("one", axis=1)
+print(data2)
+data2 = data.drop(["two", "four"], axis=1)
+print(data2)
+```
+
+###### Indexing, Selection, and Filtering
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Create a Seriese
+obj = pd.Series(np.arange(4.), index=["a","b","c","d"])
+print(obj)
+
+# Select using a label
+print(obj["b"])
+
+# Select using a integer index (like NumPy)
+print(obj[1])
+
+# Select using a slice of integers (like NumPy)
+print(obj[2:4])
+
+# Select using a sequence of labels
+print(obj[["b", "a" , "d"]])
+
+# Select using a list of integers
+print(obj[[1, 3]])
+
+# Select using an array of Boolean values, condition
+cond = obj < 2
+print(obj[cond]) # equivalent to obj[[obj < 2]]
+
+# Create Serieses
+obj1 = pd.Series([1, 2, 3], index=[2, 0, 1])
+obj2 = pd.Series([1, 2, 3], index=["a", "b", "c"])
+print("obj1\n:", obj1)
+print("obj2\n:", obj2)
+
+# Prefer to use loc when selecting using labels
+print(obj2.loc[["b", "a", "c"]])
+#print(obj2.loc[[0, 1, 2]]) # error, not all indexes have matching labels
+print(obj1.loc[[0, 1, 2]])
+
+# Use iloc for indexing with integers
+print(obj1.iloc[[0, 1, 2]])
+print(obj2.iloc[[0, 1, 2]]) # iloc always work with integer indexing
+
+# Slicing inclusive of endpoint
+print(obj2.loc["b":"c"]) # "c" label included for selection
+obj2.loc["b":"c"] = 99 # modify values using label slicing
+print(obj2)
+```
+
+###### Indexing into a DataFrame retriving one or more columns with single value or sequence
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Create some state index and columns with random integer value, 4x4
+data = pd.DataFrame(np.arange(16).reshape(4, 4), 
+                    index=["Ohio", "Colorado", "Utah", "New York"],
+                    columns=["one", "two", "three", "four"]
+)
+print(data)
+print(data.index)
+print(data.columns)
+
+# Select with a single or sequence
+print(data["one"]) # single column "one"
+print(data[["three", "two"]]) # multiple columns - three, 
+
+# Select with slicing
+print(data[:2])  # select row index at 0, 1
+
+# Select / assign using Boolean array
+cond = data["three"] > 5
+print("cond:\n", cond, type(cond)) # return a Series
+print(data[cond])
+cond = data < 5
+print("cond\n", cond, type(cond)) # return a DF
+print(data[cond])
+```
+
+###### Selection on DataFrame with `loc` and `iloc`
+
+```{python}
+print(data)
+
+# loc with labels
+print(data.loc["Colorado"]) # Series
+print(data.loc[["Colorado", "New York"]]) # DF
+sel = data.loc["Colorado", ["two", "three"]] # Series
+print(sel)
+print(type(sel))
+
+# iloc with integers
+print(data.iloc[2]) # Series
+print(data.iloc[[2, 1]]) # two rows, DF
+print(data.iloc[2, [2, 1]]) # row + columns, Series
+print(data.iloc[[1, 2], [3, 0, 1]]) # rows + columns, DF
+
+# Slicing
+print(data.loc[:"Utah", "two"]) # slicing using row and colum labels at once
+print(data.iloc[:, :3][data.three >= 2])
+```
+
+###### Arithmetic and Data Alignment with Series and DataFrame
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Create two Serieses with different number of data and labels
+s1 = pd.Series([7.3, -2.5, 3.4, 1.5], index=["a", "c", "d", "e"])
+s2 = pd.Series([-2.1, 3.6, -1.5, 4, 3.1], index=["a", "c", "e", "f", "g"])
+print("s1: ", s1)
+print("s2: ", s2)
+
+# s1 + s2, result with the union of the index pairs and data alignment
+print(s1 + s2)
+
+# Create two DataFrames - 3x3 / 4x3
+df1 = pd.DataFrame(np.arange(9.).reshape((3, 3)), columns=list("bcd"), index=["Ohio", "Texas", "Colorado"])
+df2 = pd.DataFrame(np.arange(12.).reshape((4, 3)), columns=list("bde"), index=["Utah", "Ohio", "Texas", "Oregon"])
+print(df1)
+print(df2)
+
+# df1 + df2 , Union of index pairs and data alignment
+print(df1+df2)
+
+# Case of DataFrames with no rows or columns in common
+df1 = pd.DataFrame({"A": [1, 2]})
+df2 = pd.DataFrame({"B": [3, 4]})
+print(df1)
+print(df2)
+print(df1+df2)
+
+# Practice to fill missing value(NaN, null) with sepcific value during arithmetic operations
+
+# Create DataFrames with different shapes, with data not in common and null
+df1 = pd.DataFrame(np.arange(12.).reshape((3, 4)), columns=list("abcd"))
+df2 = pd.DataFrame(np.arange(20.).reshape((4, 5)), columns=list("abcde"))
+
+# Set null for the value at 1, "b" in df2
+df2.loc[1, "b"] = np.nan
+
+print("df1:\n", df1)
+print("df2:\n", df2)
+
+# addtion and missing values
+print("df1+df2:\n", df1 + df2)
+
+# add() method and fill_value argument to substitute missing values during arithmetic operations.
+print(df1.add(df2, fill_value=0))
+```
+
+###### Series and DataFrame method for [arithmetic]{.underline}
+
+```{python}
+print(df1)
+print(1 / df1) # division
+print(df1.rdiv(1)) # same as above
+```
+
+##### Question: Change column labels of df1 with df2, and fill null values with 0.
+
+```{python}
+print(df1)
+print(df2)
+# reindexing the columns with df2, filling 0 for not-in-commons
+df1.reindex(columns=df2.columns, fill_value=0)
+```
+
+##### Operations between DataFrame and Series - Broadcasting
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Operation between N-d array and 1-d array
+
+# Create an 3x4 array
+arr = np.arange(12.).reshape((3,4))
+print(arr, type(arr))
+print(arr[0], type(arr[0])) # 1-d array
+
+# N-d operator 1-d = broadcasting to each row of N-d
+print(arr - arr[0])
+
+# Operation between DataFrame and Series, similar
+
+# Create a 4x3 DataFrame
+frame = pd.DataFrame(np.arange(12.).reshape((4, 3)),
+                     columns=list("bde"),
+                     index=["Utah", "Ohio", "Texas", "Oregon"])
+print("frame:\n", frame, type(frame))
+series = frame.iloc[0] # first row
+print("series:\n", series, type(series))
+# frame - series
+print("frame-series:\n", frame-series) # both with matching indexes
+
+# Create another Series without matching indexes
+series2 = pd.Series(np.arange(3), index=list("bef"))
+print(series2)
+# frame - series2
+print("frame-serires2:\n", frame-series2) # result reindexed to form the union, and do operations for the matching indexes
+```
+
+```{python}
+# broadcast over columns
+series3 = frame["d"]
+print(frame)
+print(series3)
+frame.sub(series3, axis="index") # over columns
+```
+
+#### Function Application and Mapping
+
+Numpy ufuncs(element-wise array methods) also work with pandas objects
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Create a 4x3 random standard normal DataFrame
+frame = pd.DataFrame(np.random.standard_normal((4,3)), columns=list("bed"), index=["Utah", "Ohio", "Texas", "Oregon"])
+print(frame,"\n"+"-"*40)
+print(np.abs(frame,),"\n"+"-"*40)
+```
+
+```{python}
+# apply() to apply a function to each column / row
+
+# Function to max - min of Series
+def f1(x):
+  return x.max() - x.min()
+
+
+frame.apply(f1) # apply f1 function to each column of DF
+print("-"*40)
+frame.apply(f1,  axis="columns") # apply f1 function to each row - across the columns
+
+
+```
+
+apply() can return a Series
+
+```{python}
+# apply() can return a Series
+
+# Create a function to return a Series
+def f2(x):
+  return pd.Series([x.min(), x.max()], index=["min", "max"])
+result = frame.apply(f2)
+print(result, type(result)) # return a df with multiple Series from f2
+```
+
+Element-wise Python functions with DataFrame
+
+```{python}
+# Create a function to return a formatted string
+def my_format(x):
+  return f"{x:.2f}"
+frame.applymap(my_format)  # applymap() for DF
+print("-"*40)
+frame["e"].map(my_format) # map() for Series
+
+
+
+```
+
+##### Sorting and Ranking
+
+`sort_index` with a Series and DataFrame
+
+```{python}
+# Create a Series
+obj = pd.Series(np.arange(4), index=list("dabc"))
+obj
+print("-"*40)
+obj.sort_index()
+print("-"*40)
+obj.sort_values()
+
+# Create a 2x4 DataFrame
+frame = pd.DataFrame(np.arange(8).reshape((2,4)),
+                     index=["three", "one"],
+                     columns=list("dabc"))
+frame
+print("-"*40)
+frame.sort_index()
+print("-"*40)
+frame.sort_index(axis="columns", ascending=False)
+
+
+
+```

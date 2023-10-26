@@ -1,0 +1,265 @@
+---
+title: "Bilty Data from 1.USA.gov"
+subtitle: "Analysis techniques using pandas - Python for Data Analysis, 3E by Wes McKinney"
+date: '2023-10-25'
+categories: ['Python', 'pandas', 'analaysis']
+description: "Learning notes - Python for Data Analysis, 3E - Wes McKinney"
+image: data.jpg
+format:
+  html:
+    code-fold: false
+jupyter: python3
+---
+
+------------------------------------------------------------------------
+
+```{python}
+import json
+
+# Set path to data file and check data content
+path = "../data/bitly_usagov/example.txt"
+with open(path) as f:
+  print(f.readline())
+  
+# Convert json data to a list of dictionaries
+with open(path) as f:
+  records = [json.loads(line) for line in f]
+records[0]
+```
+
+###### Count Time Zones - '`tz`' field using Standard libraries
+
+```{python}
+# Number of dictionary items in the list
+print("Number of entries from records: " + str(len(records)))
+
+# Unique time zones (tz) from the list
+#time_zones = [rec["tz"] for rec in records] # KeyError, Not all record has 'tz' field
+time_zones = [rec["tz"] for rec in records if "tz" in rec]
+time_zones[:10]
+```
+
+```{python}
+
+# Get count of time zone using a function
+def get_counts(sequence):
+  counts = {}
+  for x in sequence:
+    if x in counts:
+      counts[x] += 1
+    else:
+      counts[x] = 1
+  return counts
+
+# Get count of time zone using tools in Python standard library
+from collections import defaultdict
+
+def get_counts2(sequence):
+  counts = defaultdict(int) # init to 0 by default for new key
+  for x in sequence:
+    counts[x] += 1
+  return counts
+```
+
+```{python}
+# Get 'tz' count using the functions
+counts = get_counts(time_zones)
+#counts
+counts["America/New_York"]
+len(time_zones)
+```
+
+```{python}
+# Create a function to list of top 10 time zones in tuples by (count, timezone) and sort it
+
+def top_counts(count_dict, n=10):
+  value_key_pairs = [(count, tz) for tz, count in count_dict.items()]
+  value_key_pairs.sort()
+  return value_key_pairs[-n:]
+```
+
+```{python}
+#counts
+top_counts(counts)
+```
+
+```{python}
+# Simpler using collections.Counter class
+from collections import Counter
+
+#time_zones
+counts = Counter(time_zones)
+counts.most_common(10) # top 10 occurences
+```
+
+###### Count Time Zones - '`tz`' field using pandas
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Create a DataFrame with the json data amd summary view
+frame = pd.DataFrame(records)
+frame.info()
+
+# First 5 of 'tz'
+frame["tz"].head()
+```
+
+```{python}
+# counts using value_counts()
+tz_counts = frame["tz"].value_counts()
+tz_counts.head()
+```
+
+```{python}
+# Substitue empty strings or missing data in "tz", get ready for visualization
+clean_tz = frame["tz"].fillna("Missing") # substitue missing data
+clean_tz[clean_tz == ""] = "Unknown"
+tz_counts = clean_tz.value_counts()
+tz_counts.head(12)
+tz_counts.tail(12)
+```
+
+```{python}
+# Plot the tz count data
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+plt.clf()
+
+subset = tz_counts.head(7)
+sns.barplot(y=subset.index, x=subset.to_numpy())
+
+for i, v in enumerate(subset.to_numpy()):
+    plt.text(v, i, str(v), va='center', fontsize=10, color='black')
+  
+plt.show()
+```
+
+##### The "a" field, the user agent string: Information about the browser, device, or application used to perform the URL shortening service with Bitly
+
+```{python}
+frame.info()
+frame["a"]     # all entries under "a" field
+frame["a"][1]  # second entry in "a" field
+frame["a"][50] # 51th entry in "a" field
+frame["a"][51] # 52nd very long entry in "a" field
+frame["a"][51][:50]  # 50 characters only for the 52nd entry
+```
+
+##### Effective parsing and new dataset for analysis
+
+```{python}
+
+# Split off the first token of the string to the use agent information and make another summary of the new dataset
+
+# Create a Series with first tokens only from the target string
+results = pd.Series([x.split()[0] for x in frame["a"].dropna()], name="user_agents")
+results.head(12)
+print("-"*40)
+results.value_counts().head(12)
+
+```
+
+##### Further decompostiion
+
+```{python}
+# Decompose the top time zones into Windows and non-Windws users
+
+# Create a new DF by excluding the entries missing agents info.
+cframe = frame[frame["a"].notna()].copy()
+cframe.info()
+cframe.head()
+
+# Compute on each entry for the containment of string "Windows", and create a column 'os' to identify the result.
+cframe["os"] = np.where(cframe["a"].str.contains("Windows"), "Windows", "Not Windows")
+cframe["os"].head(5) 
+
+# Group the data by "tz" and "os", and get counts
+by_tz_os = cframe.groupby(["tz", "os"])
+
+agg_counts = by_tz_os.size().unstack().fillna(0) # anlogous to value_counts()
+agg_counts.head()
+```
+
+```{python}
+# Select top overall time zones
+
+# Get counts on across columns and sorted indices for the rows
+sorted_indices = agg_counts.sum("columns").argsort()  # total across columns and get sorted indices for sorting later
+sorted_indices.values[:10]  # check the first 10 sorted indices in an array
+
+# Get the largest 10 rows in total of Not Windows + Windows
+count_subset = agg_counts.take(sorted_indices[-10:])  # Extract using indices
+
+# Or use pandas nlargest
+agg_counts.sum(axis="columns").nlargest(10)
+```
+
+##### Plot the result with grouped barplot using seaborn
+
+```{python}
+def print_tl(x):
+  print(x, "\n", type(x), "\"\n--------------------------------")
+
+# Reset the index for the final DF to rearrange the data for better compatibility with seabon
+count_subset = count_subset.stack()  # Series by reshaping DF from wide to long format, pivoting the columns, also creating multiindex
+print_tl(count_subset)
+count_subset.name = "total"  # Name the Series obj
+print_tl(count_subset)
+count_subset = count_subset.reset_index()  # 'tz' not an index anymore, Series to DF
+print_tl(count_subset)
+count_subset.head(10)
+count_subset.info()
+
+# plot stacked barplot
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+plt.clf()
+sns.barplot(x="total", y="tz", hue="os",  data=count_subset)
+plt.show()
+```
+
+##### Improve the plot for better comparison in relative percentage of Windows users in the smaller groups
+
+```{python}
+# Change the plot to improve the visuals for easier comparison in samller groups of Windows users
+
+def print_tl(x=None):
+  if x is None:
+    print("\n -----------------------------")
+  else:
+    print(x, "\n", type(x), "\n -----------------------------")
+
+# Funcion to calculate and add normalize the group percentage, group sum to 1
+def norm_total(group):
+  group["normed_total"] = group["total"] / group["total"].sum()
+  return group
+
+# Create a Df normalized by the function
+print_tl(count_subset)
+grouped_by_tz = count_subset.groupby("tz")
+
+# Iterate the grouped data
+for group_name, group_data in grouped_by_tz:
+  print(f"Group Name: {group_name}")
+  print(group_data)
+  
+print_tl()
+
+# Apply normalization to each group in tz (time zone)
+results = count_subset.groupby("tz", group_keys=False).apply(norm_total)
+print_tl(results)
+
+# Another approach using pandas aggregation and broadcasting method
+g = count_subset.groupby("tz")
+results2 = count_subset["total"] / g["total"].transform("sum")
+print_tl(results2)
+
+# Plot barplot with normalized count data
+plt.clf()
+sns.barplot(x="normed_total", y="tz", hue="os", data=results)
+plt.show()
+```
