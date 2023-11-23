@@ -1,0 +1,206 @@
+---
+title: "MovieLens 1M Dataset"
+subtitle: "Analysis techniques using pandas - Python for Data Analysis, 3E by Wes McKinney"
+date: '2023-10-26'
+categories: ['Python', 'pandas', 'analaysis', 'MovieLens']
+description: "Learning notes - Python for Data Analysis, 3E - Wes McKinney"
+image: data.jpg
+format:
+  html:
+    code-fold: false
+jupyter: python3
+---
+
+------------------------------------------------------------------------
+
+##### MovieLens 1M Dataset
+
+A number of collections of movie ratings data collected from users of MovieLens in the late 1990s and early 2000s.
+
+Movie metadata
+
+recommendation systems
+
+Machine learning algorithms
+
+Data slice and dice to processing need
+
+One million ratings from 6000 users on 4000 movies
+
+Three tables: ratings, user information, movie information
+
+##### Read data files into pandas DataFrame
+
+```{python}
+# Helper function to print object, type and divider line together
+def print_tl(x=None):
+  if x is None:
+    print("\n -----------------------------")
+  else:
+    print(x, "\n", type(x), "\n -----------------------------")
+```
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Read 3 table data into Df, with custom column names
+
+# - users table data
+unames = ["user_id", "gender", "age", "occupation", "zip"] 
+users = pd.read_table("../data/movielens/users.dat", sep="::",
+                      header=None, names=unames, engine="python")
+                    
+# - ratings table data
+rnames = ["user_id", "movie_id", "rating", "timestamp"] 
+ratings = pd.read_table("../data/movielens/ratings.dat", sep="::",
+                      header=None, names=rnames, engine="python")
+                      
+# - movies table data
+mnames = ["movie_id", "title", "genres"] 
+movies = pd.read_table("../data/movielens/movies.dat", sep="::",
+                      header=None, names=mnames, engine="python")
+```
+
+```{python}
+# Check loaded data
+users.head(5)
+ratings.head(5)
+movies.head(5)
+ratings # 1M+ rows
+```
+
+##### Merge data files into one DataFrame
+
+```{python}
+# Merge three data files: (raings + users) + movies
+data = pd.merge(pd.merge(ratings, users), movies)
+data.info()
+print("Data >>>>>>>>>>>>")
+print_tl(data)
+print("First row >>>>>>>>>>>>>>")
+print_tl(data.iloc[0])
+```
+
+##### Analysis: Get mean movie ratings for each film grouped by gender
+
+```{python}
+
+# Required fields for grouping
+#print_tl(data.info())
+print_tl(data["rating"].head(5))
+print_tl(data["gender"].head(5))
+print_tl(data["movie_id"].head(5))
+
+# df.pivot_table: gender to columns and movie title for index, mean on rating for aggregate function, spread-sheet style pivot table
+mean_ratings = data.pivot_table("rating", index="title", columns="gender", aggfunc="mean")
+print_tl(mean_ratings.head(5))
+
+# More stats with rating field
+stats_ratings = data.pivot_table("rating", index="title", columns="gender", aggfunc=["mean", "sum", "count"])
+print_tl(stats_ratings.head(5))
+```
+
+##### Filter data to have movie titles with more than 250 ratings
+
+```{python}
+# Group df by movie title and its group size (= number of ratings per title)
+
+ratings_by_title = data.groupby("title").size()
+type(ratings_by_title)
+ratings_by_title.head(5)
+print("----------------------------------------")
+active_titles = ratings_by_title.index[ratings_by_title >= 250] # filter data with index with value of True to the evaluating condition
+active_titles
+type(active_titles)
+```
+
+```{python}
+# Access rows of df using the index of titles (df index obj)
+
+# Filter df to have only rows with ratings >= 250 
+mean_ratings = mean_ratings.loc[active_titles]
+print("Movies with 250 ratins or more per gender: ")
+mean_ratings
+
+# Top movies among female viewers
+top_female_ratings = mean_ratings.sort_values("F", ascending=False)
+print("Top movies among female viewers: ")
+top_female_ratings.head()
+
+# What movies are most divisive between male and female?
+mean_ratings["diff"] = mean_ratings["M"] - mean_ratings["F"] # column for rating difference
+sorted_by_diff = mean_ratings.sort_values("diff") # sort by diff
+sorted_by_diff.head(5)
+
+# What movies are preferred by men but not by women as much?
+sorted_by_diff[::-1].head()
+
+# Regardless of gender, what movies elicited the most disagreement among viewers?
+# - Disagreement measured by the variance or standard deviation of the ratings.
+# - Standard Deviation: Quantify how much individual data points in a dataset deviate from the mean (average) of the dataset. In other words, it measures the spread or dispersion of data points around the mean.
+
+# rating standard deviation by title
+data.info()
+rating_std_by_title = data.groupby("title")["rating"].std()
+rating_std_by_title
+rating_std_by_title = rating_std_by_title.loc[active_titles] # filter with Index obj
+rating_std_by_title
+rating_std_by_title.sort_values(ascending=False)[:10] # Top 10 movies mostly divisively rated movies
+
+```
+
+```{python}
+
+# Pipe-separated string on movie genres data, single movie can belong to multiple genres.
+# - Group the ratings data by genre using explode() on df
+
+movies.head(7)
+movies["genres"].head(7)
+movies["genres"].head().str.split("|")
+# remove and rebuild "genres" column with list of splitted genre strings
+movies["genre"] = movies.pop("genres").str.split("|")
+movies.head(7)
+# now, build a new df by exploding on each genre in the list of genres
+movies_exploded = movies.explode("genre")
+movies_exploded[:10]
+
+# Merge all three tables and group by genre
+ratings_with_genre = pd.merge(pd.merge(movies_exploded, ratings), users)
+ratings_with_genre.iloc[0]
+ratings_with_genre.head(5)
+```
+
+```{python}
+ratings_with_genre.info()
+ratings_with_genre.head(20)
+ratings_with_genre.groupby(["genre","age"])["rating"].mean()
+# unstack on age >> age groups in columns
+genre_ratings_by_age = ratings_with_genre.groupby(["genre","age"])["rating"].mean().unstack("age")
+genre_ratings_by_age[:10]
+# unstack on genre >> genre goups in columns
+age_ratings_by_genre = ratings_with_genre.groupby(["genre","age"])["rating"].mean().unstack("genre")
+age_ratings_by_genre[:10]
+```
+
+```{python}
+movies.pop
+```
+
+```{python}
+
+# Save dataframe to file - excel, json, csv
+def save_df_to(df, file_type="csv"):
+  f_type = str.lower(file_type)
+  if f_type == "excel":
+    df.to_excel("save_df_to.xlsx", index=True, sheet_name="Sheet1") # save without index name
+  elif f_type == "json":
+    df.to_json("save_df_to.json")
+  else: 
+    df.to_csv("save_df_to.csv", index=False) # save without index name
+  
+#save_df_to(mean_ratings, file_type="EXCEL")  # Use lowercase "excel"
+save_df_to(stats_ratings, file_type='EXCEL')
+save_df_to(stats_ratings, file_type='JSON')
+save_df_to(stats_ratings, file_type='CSV')
+```

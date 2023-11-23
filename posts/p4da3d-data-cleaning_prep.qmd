@@ -1,0 +1,649 @@
+---
+title: "Data Cleaning and Preparation"
+subtitle: "Analysis techniques using pandas - Python for Data Analysis, 3E by Wes McKinney"
+date: '2023-11-10'
+categories: ['Python', 'pandas', 'data cleaning', 'data preparation']
+description: "Learning notes - Python for Data Analysis, 3E - Wes McKinney"
+image: data.jpg
+format:
+  html:
+    code-fold: false
+jupyter: python3
+---
+
+------------------------------------------------------------------------
+
+# Data Cleaning and Preparation
+
+## 1. Handling Missing Data
+
+`NaN` as sentinel value for missing data
+
+`isna` to generate a Series of Boolean for null
+
+`None` from Python built-in for missing data
+
+When data cleaning, consider running analysis on missing data itself for data collection issues or potential biaes in the data caused by missing data
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# NaN in float64
+float_data = pd.Series([1.2, -3.5, np.nan, 0])
+float_data
+print("\n")
+float_data.isna()
+```
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# None, Python built-in null
+string_data = pd.Series(["aardvark", np.nan, None, "avocado"])
+string_data
+string_data.isna()
+print("\n")
+
+float_data = pd.Series([1, 2, None], dtype="float64")
+float_data
+float_data.isna()
+
+```
+
+> *"You have a dataset containing information about users and their scores in an online game. The dataset has missing values, and you need to clean it by addressing the missing values using pandas functions."*
+>
+> 1.  Remove rows with missing values.
+> 2.  Fill missing values in the 'score' column with the mean score.
+> 3.  Identify rows with missing values in the 'username' column.
+> 4.  Identify rows without missing values in the 'level' column.
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Dataset
+data = {
+  'username': ['user1', 'user2', np.nan, 'user4', 'user5'],
+  'score': [100, np.nan, 150, 200, np.nan],
+  'level': [1, 2, 3, np.nan, 5]
+}
+
+df = pd.DataFrame(data)
+print("Original data:")
+print(df, "\n")
+
+# 1. Remove rows with missing values.
+df_cleaned1 = df.dropna()
+print("Remove rows with missing values:")
+print(df_cleaned1, "\n")
+
+# 2. Fill missing values in the 'score' column with the mean score.
+mean_score = df['score'].mean()
+df_cleaned2 = df.fillna(value={'score': mean_score})
+print("Fill missing scores with mean score:")
+print(df_cleaned2, "\n")
+
+# 3. Identify rows with missing values in the 'username' column.
+is_missing_username = df.isna()["username"]
+df_rows_with_missing_username = df[is_missing_username]
+print("Rows with missing username:")
+print(df_rows_with_missing_username, "\n")
+
+# 4. Identify rows without missing values in the 'level' column.
+is_without_missing_level = df.notna()["level"]
+df_rows_without_missing_level = df[is_without_missing_level]
+print("Rows without missing level:")
+print(df_rows_without_missing_level, "\n")
+```
+
+### 1.1 Filtering Out Missing Data
+
+Filtering out missing data in Series
+
+```{python}
+data = pd.Series([1, np.nan, 3.5, np.nan, 7])
+print("Data: ")
+print(data, type(data), "\n")
+
+# Equvalency of dropna() and notna()
+print("Equivalency of dropna() and notna(): ")
+print(data.dropna())
+print(data[data.notna()], "\n")
+
+
+```
+
+```{python}
+import pandas as pd
+import numpy as np
+
+data = pd.DataFrame([[1., 6.5, 3.],
+                    [1., np.nan, np.nan],
+                    [np.nan, np.nan, np.nan],
+                    [np.nan, 6.5, 3.]])
+print("Original data: ")
+print(data, "\n")
+
+# Drop any ROWS with missing values - default
+print("Drop any ROWS with missing value: ")
+print(data.dropna(), "\n")
+
+# Drop only ROWS that are all NA
+print("Drop only ROWS that are all NA:")
+print(data.dropna(how="all"), "\n")
+
+# Drop columns
+print("Adding a new column with NA and dropping it: ")
+data[4] = np.nan
+print(data)
+print(data.dropna(axis="columns", how="all"), "\n") # drop only columns that are all NA
+
+
+```
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Preserve some rows with missing values, do not drop all of them
+
+# Sample data and set some NA values
+df = pd.DataFrame(np.random.standard_normal((7, 3)))
+df.iloc[:4, 1] = np.nan
+df.iloc[:2, 2] = np.nan
+print("Original data: ")
+print(df, "\n")
+
+# Drop any rows with missing value
+print("Drop any rows with missing value:")
+print(df.dropna(), "\n")
+
+# Drop any rows with missing values, but keep the row with certain number of NAs.
+print("Drop any rows with missing values, but preserve if NAs < 2: ")
+print(df.dropna(thresh=2), "\n")
+
+```
+
+### 1.2 Filling In Missing Data
+
+Rather than dropping out missing data(potentially discarding other data along with it), you may want to fill in the "holes" in ways. - `fillna()`
+
+```{python}
+# Filling in missing data
+
+import pandas as pd
+import numpy as np
+
+# Sample data and set some NA values
+df = pd.DataFrame(np.random.standard_normal((7, 3)))
+df.iloc[:4, 1] = np.nan
+df.iloc[:2, 2] = np.nan
+print("Original data: ")
+print(df, "\n")
+
+# Fill NA with some value
+print("Filling NA with number 0: ")
+print(df.fillna(0), "\n")  # filling NA with 0
+
+print("Filling NA with different values for columns")
+# Fill NA with different fill value columns
+print(df.fillna({1: 0.5, 2:0}), "\n") # 0.5 for col1, 0 for 
+
+# Fill NA with more meaningful values for imputation
+# Sample data frame and setting some NA values
+df = pd.DataFrame(np.random.standard_normal((8, 3)))
+df.iloc[2:7, 1] = np.nan
+df.iloc[4:, 2] = np.nan
+print("Original data:")
+print(df, "\n")
+
+# Fill NA using 'forward fill' method, do only for n consecutive NAs
+print("Fill NA using 'forward fill' method, do only for 3 consecutive NAs")
+print(df.fillna(method='ffill', limit=3)) # using the previous non-NA value
+print(df.fillna(method='bfill', limit=3)) # using the non-NA value behind
+
+
+
+
+```
+
+```{python}
+# Data imputation using fillna()
+
+import pandas as pd
+import numpy as np
+
+# Sample data
+data = pd.Series([1., np.nan, 3.5, np.nan, 7])
+print("Original data: ")
+print(data, "\n")
+
+# Fill NAs with mean / median value of the data set
+print("Fill NAs with mean value: ")
+print(data.fillna(data.mean()), "\n")
+print("Fill Nas with median value: ")
+print(data.fillna(data.median()), "\n")
+```
+
+`fillna` function arguments
+
+| Argument | Description                                                                                           |
+|:---------------|:-------------------------------------------------------|
+| `value`  | Scalar value or dictionary-like object to use to fill missing values                                  |
+| `method` | Interpolation method: one of `"bfill"` (backward fill) or `"ffill"` (forward fill); default is `None` |
+| `axis`   | Axis to fill on (`"index"` or `"columns"`); default is `axis="index"`                                 |
+| `limit`  | For forward and backward filling, maximum number of consecutive periods to fill                       |
+
+## 2. Data Transformation
+
+Filtering, cleaning and other transformations
+
+### 2.1 Removing Duplicates
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Sample data frame
+data = pd.DataFrame({"k1": ["one", "two"] * 3 + ["two"], 
+                     "k2": [1, 1, 2, 3, 3, 4, 4]})
+print("Original data:")
+print(data, "\n")
+
+# Boolean Series for duplicate check
+print("Boolean flagas for duplicate rows:")
+print(data.duplicated())
+print("Duplicated rows(s):")
+print(data[data.duplicated()])
+
+# Drop duplicated rows
+print("Dropping duplicated rows:")
+print(data.drop_duplicates(), "\n")
+
+# Drop duplicates only on specific column(s).
+data["v1"] = range(7)  # add a new column
+print(data)
+print("Drop duplicates only on specific column(s).")
+print(data.drop_duplicates(subset=["k1"]))
+```
+
+`duplicated`, `drop_duplicated` keeps the first observed value combo. `keep="last"` returns the last one instead.
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Sample data frame
+data = pd.DataFrame({"k1": ["one", "two"] * 3 + ["two"], 
+                     "k2": [1, 1, 2, 3, 3, 4, 4],
+                     "v1": range(7)})
+print("Preserve the last observed value of duplicates.")
+print(data)
+print(data.drop_duplicates(["k1", "k2"], keep="last")) # dropping row#5, preserving row#6
+```
+
+### 2.2 Transforming Using a Function or Mapping
+
+The `map` method on a Series accepts a function or dictionary-like object containing a mapping to do the transformation of values. Convenient way to element-wise transformations and other data cleaning-related operations.
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Sample dataset
+data = pd.DataFrame({
+  "food": ["bacon", "pulled pork", "bacon",
+           "pastrami", "corned beef", "bacon",
+           "pastrami", "honey ham", "nova lox"],
+  "ounces": [4, 3, 12, 6, 7.5, 8, 3, 5, 6]
+})
+data
+
+# Dictionary to define key-value with meat and animal
+meat_to_animal = {
+  "bacon": "pig",
+  "pulled pork": "pig",
+  "pastrami": "cow",
+  "corned beef": "cow",
+  "honey ham": "pig",
+  "nova lox": "salmon"
+}
+# Add a animal category column using map method and dictionary-like object
+data["animal"] = data["food"].map(meat_to_animal)
+data
+
+# Add a animal category column using map method with a function objecdt
+def get_animal(x):
+  return meat_to_animal[x]
+
+data["animal_cat"] = data["food"].map(get_animal)
+data
+```
+
+### 2.3 Replacing Values
+
+`fillna` method is a special case of more general value replacement. `map` can be used to modify a subset of values in an object. `replace` is simpler and more flexible
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Replace specific value(s) with replacment(s)
+data = pd.Series([1., -999., 2., -999., -1000., 3., "Brown Fox"])
+data
+data.replace({-999: np.nan, -1000:0, "Brown Fox": "Red Fox"})  # multiple replacements using dictionary
+
+```
+
+### 2.4 Renaming Axies Indexes
+
+Using `map` method in axis indexes to modify axis labels *in place*, like `map` method in Series object. `rename` method of data frame creates new object with transformation
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Sample data
+data = pd.DataFrame(np.arange(12).reshape((3, 4)),
+                    index=["ohio", "colorado", "new york"],
+                    columns=["one", "two", "three", "four"])
+print("Original some states data frame: \n", data)
+
+# Transforming axis index labels in place
+def transform(x):
+  return x[:4].upper()
+print("\nTransforming index labels in place:  \n", data)
+data.index = data.index.map(transform)  # transformation of index labels
+
+# Transforming axis index labels in a new data frame, passing functions / dictionary
+print("Transforming axis index labels in a new data frame, passing functions, dictionary..")
+data.rename(index=str.title, columns=str.upper)  # passing string methods to titlecase / upper case the index and columns
+data.rename(index={"OHIO": "INDIANA"},
+            columns={"three": "peekaboo"})
+print("\nCurrent state data: \n", data)
+```
+
+### 2.5 Discretization and Binning
+
+Discretization and binning refer to the process of converting continuous numerical data into discrete internals and bins. In data analysis, discretization and binning are often required to simplify the data, make it more manageable, and faciliate analysis. `pandas.cut`:
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Sample age bucket data
+ages = [20, 22, 25, 27, 21, 23, 37, 31, 61, 45, 41, 32]
+
+# Binning the data - 18-25, 26-35, 36-60, 61+
+bins = [18, 25, 35, 60, 100]
+age_categories = pd.cut(ages, bins)
+
+age_categories.codes
+age_categories.categories
+age_categories.categories[0]
+pd.value_counts(age_categories)
+```
+
+```{python}
+import pandas as pd
+import numpy as np
+
+data = np.random.uniform(size=20)
+data
+pd.cut(data, 4, precision=2)  # 4 of equal-length bins
+```
+
+Binning with quartiles: `pandas.qcut`
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# 1000 random float64 numbers in standard normal dist.
+data = np.random.standard_normal(1000)
+quartiles = pd.qcut(data, 4, precision=2)  # 4 bins using quantile info of data
+print(quartiles, type(quartiles))
+pd.value_counts(quartiles)
+
+print("Binning with custom quantiles between 0 - 1:")
+pd.qcut(data, [0, 0.1, 0.5, 0.9, 1.]).value_counts()
+
+```
+
+### 2.6 Detecting and Filtering Outliers
+
+Largely a matter of applying array operations.
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Describe the sample data frame in 1000 x 4 shape
+data = pd.DataFrame(np.random.standard_normal((1000, 4)))
+print("--- Original sample data frame of 1000 x 4: \n", data)
+print("--- Describe the sample data frame in 1000 x 4 shape: \n", data.describe())
+
+# Filtering elements in column '2' with absolute value > 3:
+col = data[2] # colum 2
+print("--- Display heads of column '2': \n", col.head())
+print("--- Filtering elements with absolute value > 3: \n", col[col.abs() > 3]) # filtering
+
+# Select ALL ROWS with any element containing absolute value > 3
+print("--- Select ALL ROWS with any element containing absolute value > 3: ")
+print(data[(data.abs() > 3).any(axis="columns")])  # Set axis parameter to columns to make row-based filtering
+data.tail(30)
+data
+```
+
+```{python}
+
+# Data capping - Transfrom DataFrame by capping data range to certain values
+
+data2 = pd.DataFrame(np.random.standard_normal((1000, 4)))
+DATA_CAP = 3
+print("Creating sample DF with 1000 x 4 dimension, standard normal dist.: \n", data2)
+
+print("--- Describe the original data : \n", data2.describe())
+data2[data2.abs() > DATA_CAP] = np.sign(data2) * DATA_CAP  # Change in place, set the off limit element to DATA_CAP
+print("--- Data transformed with DATA_CAP applied: \n", data2)
+print("--- Describe the transformed data : \n", data2.describe())
+```
+
+### 2.7 Permutation and Random Sampling
+
+Permutation and random sampling are techniques used in data analysis for different purposes. Understanding these techniques is crucial for ensuring the reliability and generalizability of statistical analyses and making informed decisions based on data.
+
+**Permutation:** Permutation refers to the arrangement of elements in a specific order. In Data Analysis,permutation is often used in permutation tests or resampling methods. Permutation tests involve randomly reordering the observed data to create a null distribution under the assumption that there is no effect or difference.
+
+**Common Use Cases:**
+
+-   Comparing two groups to assess if the observed difference is statistically significant.
+-   Testing hypotheses when assumptions of traditional statistical tests are not met.
+
+**Random Sampling:** Random sampling involves selecting a subset of data points from a larger dataset in a way that each data point has an equal chance of being chosen. In Data Analysis: Random sampling is fundamental in creating representative samples from a population, and it is commonly used in inferential statistics to make predictions or inferences about a population based on a sample.
+
+**Common Use Cases:**
+
+-   Conducting surveys to gather opinions from a diverse population.
+-   Estimating population parameters using a sample.
+
+**Importance:**
+
+-   **Statistical Validity:** Both permutation and random sampling contribute to the statistical validity of analyses. Permutation tests provide a non-parametric approach to hypothesis testing, while random sampling ensures that collected samples are unbiased representations of the population.
+-   **Robustness:** Permutation tests can be more robust in certain situations, especially when assumptions of parametric tests are violated.
+-   **Generalization:** Random sampling allows for generalizing insights from a sample to a larger population, making statistical analyses more applicable in real-world scenarios.
+
+```{python}
+
+import pandas as pd
+import numpy as np
+
+# Create a sample DF with integers, dimension of 5 x 7
+df = pd.DataFrame(np.arange(5 * 7).reshape((5, 7)))
+print("Original DF: \n", df)
+sampler = np.random.permutation(5)
+print("Array of new row index info. for permuting 5 rows: ", sampler)
+
+# Reorder of row index using take()
+print("Reordering using take() : \n", df.take(sampler)) # row index reordered
+
+# Reorder of row index using iloc[]
+print("Reordering using iloc: ", df.iloc[sampler])
+
+column_sampler = np.random.permutation(7)
+print("New orders: ", column_sampler, type(column_sampler))
+# Reorder of column index
+print("Reordering columns with axis info: \n", df.take(column_sampler, axis="columns"))
+
+
+```
+
+```{python}
+
+# random subset without replacement - same row cannot appear twice
+df = pd.DataFrame(np.arange(5 * 7).reshape((5, 7)))
+print("--- Original sample DF: \n", df)
+print("--- Random sampling of N rows, Must N < total rows: ")
+df.sample(n=3)  # random selection of n rows in random order, n must be less than the number of rows
+
+# random subset with replacement - allow repeat choices
+choices = pd.Series([5, 7, -1, 6, 4])
+print("--- Original Series data. \n", choices)  # allow repeated selections
+print("--- Random sampling of N, repeating allowed.")
+choices.sample(n=10, replace=True)
+
+
+```
+
+### 2.8 Computing Indicator/Dummy Variables
+
+Common type of transformation for machine learning applications / statistical modeling, converting a categorical variable into a dummy/indicator matrix. Convert a columsn with number of distinct values: `k` into a data frame with `k` columns with 1s and 0s. `pandas.get_dummies`
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Sample data frame
+df = pd.DataFrame({"key": ["b", "b", "a", "c", "a", "b"],
+                   "data1": range(6)})
+print("-- Sample data frame: \n", df)
+
+# Get a matrix of dummy variables for the distinct values in column "key"
+print("-- A matrix of dummy variables for column \"key\": ")
+dummies = pd.get_dummies(df["key"], prefix="key")  # adding prefix to the columns in matrix
+print(dummies)
+
+# Merge with another / original data frame
+df_with_dummy = df[["data1"]].join(dummies)  # df[["data1"]].shape()
+print("-- Data frame merge: ")
+df_with_dummy
+```
+
+Handling rows belong to multiple categpries
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# MovieLens 1M dataset
+
+# Read general delimited files into DF
+mnames = ["movie_id", "title", "genres"]
+movies = pd.read_table("../data/movielens/movies.dat",
+                       sep="::",
+                       header=None,
+                       names=mnames,
+                       engine="python")  
+print("-- Some movie data.. ")
+movies[:10]
+
+# Get dummy variables on a column with multiple categorical values
+print("-- Some dummy variables on Series 'genre', using str.get_dummies:")
+dummies = movies["genres"].str.get_dummies("|")
+dummies.iloc[:10, :6]
+
+# Merge dummy variables with original data 
+movies_windic = movies.join(dummies.add_prefix("Genre_"))
+print("-- Movie data merged with dummy variables:")
+movies_windic.head()
+print("-- Single movie data row:")
+movies_windic.iloc[0]
+```
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Create uniform sample data (repeatable)
+np.random.seed(12345)
+values = np.random.uniform(size=10)  # All values are equally likely to be generated.
+print("-- Sample random values in uniform distribution: \n", values, type(values))
+
+# Binning the values
+bins = [0, 0.2, 0.4, 0.6, 0.8, 1]  # bin edges to cut the values into
+values_bins = pd.cut(values, bins)  # categorical value mapping 
+print("-- Value - bin: \n", values_bins, type(values_bins))
+
+# Get dummy variabels for the categorical bins
+print("-- Dummy variables of the categorical bins with sample values: \n", pd.get_dummies(values_bins))
+```
+
+Pandas Extended Data Types
+
+```{python}
+
+import pandas as pd
+
+# category Data Type
+
+# Create a DataFrame with a categorical column
+df = pd.DataFrame({'Category': ['A', 'B', 'A', 'C']})
+print("-- Origianl sample data: \n", df)
+df['Category']
+print("-- Convert to type - category on Category column: \n")
+df['Category'] = df['Category'].astype('category')
+df['Category']
+
+# Nullable Integer Data Types, to allow and handle missing values NaN
+
+# Create a DataFrame with a nullable integer column
+df = pd.DataFrame({'IntegerColumn': [1, 2, None, 4],
+                   'AnotherColumn': ['A', 'B', 'C', 'D']})
+print("-- Original sample DF: \n", df)
+print("df['IntegerColumn]: \n", df['IntegerColumn'])  # With None, converts to float64 and NaN
+print("-- IntegerColumn astype Int64: ")
+df['IntegerColumn'] = df['IntegerColumn'].astype('Int64')  # Keep integers and change None to <NA>
+df['IntegerColumn']
+
+# StringDtype, allowing string data and missing data within string columns.
+
+# DF with a string colum
+df = pd.DataFrame({'StringColumn': ['apple', 'banana', None, 'oragne']})
+print("-- Original DF: \n", df)
+print("StringColumn: \n", df['StringColumn'], type(df['StringColumn']))
+df['StringColumn'] = df['StringColumn'].astype('string')
+print("StringColumn with astype(string): \n", df)
+```
+
+Helper functions.
+
+```{python}
+# Helper functions
+
+import pandas as pd
+import numpy as np
+
+# Helper function to transform data frame with capped value
+
+def data_cap(data, condition, cap_value):
+  data[condition] = np.sign(data) * cap_value
+  
+data = pd.DataFrame(np.random.standard_normal((100, 4)))
+print("--- Creating sample DF with 100 x 4 dimension, standard normal dist.: \n", data)
+print("--- Describing the original data : \n", data.describe())
+DATA_CAP_VALUE = 1.0
+data_cap(data, data.abs() > DATA_CAP_VALUE, DATA_CAP_VALUE)
+print("--- Display and describing the transformed data with capped value: \n", data, "\n", data.describe())
+```

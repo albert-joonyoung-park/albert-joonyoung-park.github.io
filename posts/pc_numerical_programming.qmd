@@ -1,0 +1,146 @@
+---
+title: "Numerical Programming"
+subtitle: ""
+date: '2023-10-28'
+categories: ['Python', 'pandas', 'analaysis', 'numpy']
+description: ""
+image: data.jpg
+format:
+  html:
+    code-fold: false
+jupyter: python3
+---
+
+# Numerical Programming in Python
+
+```{python}
+# Hinton diagram using NumPy and Matplotlib
+
+from sys import getsizeof as size
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Function to create a Hinton diagram
+
+
+def hinton(matrix, max_weight=None, ax=None):
+    if ax is None:
+        ax = plt.gca()
+
+    if not max_weight:
+        max_weight = 2**np.ceil(np.log(np.abs(matrix).max()) / np.log(2))
+        print("max_weight: ", max_weight)
+
+    ax.patch.set_facecolor('darkgray')
+    ax.set_aspect('equal', 'box')
+    ax.xaxis.set_major_locator(plt.NullLocator())
+    ax.yaxis.set_major_locator(plt.NullLocator())
+
+    for (x, y), w in np.ndenumerate(matrix):
+        color = 'green' if w > 0 else 'red'
+        size = np.sqrt(np.abs(w) / max_weight)
+        rect = plt.Rectangle([x - size / 2, y - size / 2], size, size,
+                             facecolor=color, edgecolor=color)
+        ax.add_patch(rect)
+
+    ax.autoscale_view()
+    ax.invert_yaxis()
+
+
+# Create a random 14x20 matrix
+random_matrix = np.random.randn(20, 14)
+
+# Create a Hinton diagram for the random matrix
+plt.figure(figsize=(6, 8))
+hinton(random_matrix, max_weight=2)
+plt.show()
+
+```
+
+```{python}
+# Utility functions
+
+
+def print_tl(x=None, title=""):
+    if x is not None:
+        print(title)
+        print(x, "\n", type(x), "\n", "-" * 42)
+    elif title == "":
+        print(x, "\n", type(x), "\n", "-" * 42)
+    else:
+        print("-" * 42)
+
+```
+
+```{python}
+# Convert temps in Celsius to Fahrenheit using scalar multiplication with a numpy array
+
+
+# Set random see if reproducibility required
+np.random.seed(42)
+
+# Generate some random real numbers within a range
+temps_c = np.random.uniform(low=-20, high=45, size=7).round(1)
+print_tl(temps_c, "Random temperatures in C: ")
+
+# Convert to Farenheit
+temps_f = temps_c * 9 / 5 + 32
+print_tl(temps_f, "Temps converted to F: ")
+
+```
+
+```{python}
+# Simple plot using a numpy array
+
+
+plt.clf()
+plt.plot(temps_c)
+plt.show()
+```
+
+```{python}
+# Memory Consumption: ndarray vs list
+
+# Calculate memory consumption
+
+
+lst = [24, 12, 57]
+
+size_of_list_object = size(lst)  # size of list object itself
+size_of_elements = size(lst[0]) * len(lst)
+total_list_size = size_of_list_object + size_of_elements
+
+print("List: ", lst)
+print("Size without the size of the elements: ", size_of_list_object)
+print("Size of all the elements: ", size_of_elements)
+print("Total size of list, including elements: ", total_list_size)
+print_tl()
+
+print("List with four elements...")
+lst = [24, 12, 57, 42]
+print(lst)
+size(lst)
+size_of_elements = len(lst) * size(lst[0])
+size_of_elements
+total_list_size = size_of_list_object + size_of_elements
+print("Size without the size of the elements: ", size_of_list_object)
+print("Size of all the elements: ", size_of_elements)
+print("Total size of list, including elements: ", total_list_size)
+
+# numpy arrary
+a = np.array([24, 12, 57])
+print(size(a))
+```
+
+```{python}
+# Calculate memory usage of numpy array
+
+from sys import getsizeof as size
+import numpy as np
+
+a = np.array([24, 12, 57])
+print_tl(a, "Numpy array:")
+print_tl(size(a), "Array size: ")
+print_tl(size(np.array([])), "Empty array size: ")
+
+```

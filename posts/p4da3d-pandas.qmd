@@ -315,11 +315,12 @@ print(df)
 
 # Field + Type: (ID, Name, Age)
 
-data = np.array(\[(100, 'Alice', 25), (200, 'Bob', 30), (300, 'Charlie', 29)\], dtype=\[('ID', int), ('Name', 'U10'), ('Age', int)\])
+data = np.array([(100, 'Alice', 25), (200, 'Bob', 30), (300, 'Charlie', 29)], dtype=[('ID', int), ('Name', 'U10'), ('Age', int)])
 
 # Create a DataFrame from the structued array
 
-df = pd.DataFrame(data) print(df)
+df = pd.DataFrame(data) 
+print(df)
 
 ```
 
@@ -329,15 +330,23 @@ df = pd.DataFrame(data) print(df)
 
 # Create a list of dictionaries
 
-data_dict = \[ {'Name': 'Alice', 'Age': 25, 'City': 'New York'}, {'Name': 'Bob', 'Age': 30, 'City': 'San Francisco'}, {'Name': 'Charlie', 'Age': 28, 'City': 'Los Angeles'}\]
+data_dict = [ {'Name': 'Alice', 'Age': 25, 'City': 'New York'}, {'Name': 'Bob', 'Age': 30, 'City': 'San Francisco'}, {'Name': 'Charlie', 'Age': 28, 'City': 'Los Angeles'}]
 
 # Create a list of Series
 
-name_series = pd.Series(\['Alice', 'Bob', 'Charlie'\], name='Name') age_series = pd.Series(\[25, 30, 28\], name='Age') city_series = pd.Series( \['New York', 'San Francisco', 'Los Angeles'\], name='City')
+name_series = pd.Series(['Alice', 'Bob', 'Charlie'], name='Name') 
+age_series = pd.Series([25, 30, 28], name='Age') 
+city_series = pd.Series( ['New York', 'San Francisco', 'Los Angeles'], name='City')
 
 # Create a DataFrame from the list of dictionaries
 
-df1 = pd.DataFrame(data_dict) print(df1) print("-" \* 50) \# Create a DataFrame from the list of Series df2 = pd.DataFrame({'Name': name_series, 'Age': age_series, 'City': city_series}) print(df2)
+df1 = pd.DataFrame(data_dict) 
+print(df1) 
+print("-"* 50) 
+
+# Create a DataFrame from the list of Series 
+df2 = pd.DataFrame({'Name': name_series, 'Age': age_series, 'City': city_series}) 
+print(df2)
 
 ```
 
@@ -380,17 +389,26 @@ print(df)
 ```{python}
 # Create the original DataFrame
 
-data = { 'Name': \['Alice', 'Bob', 'Charlie'\], 'Age': \[25, 30, 28\], 'City': \['New York', 'San Francisco', 'Los Angeles'\] }
+data = { 'Name': ['Alice', 'Bob', 'Charlie'], 'Age': [25, 30, 28], 'City': ['New York', 'San Francisco', 'Los Angeles'] }
 
-original_df = pd.DataFrame(data) print(original_df) print("-" \* 50)
+original_df = pd.DataFrame(data) 
+print(original_df) 
+print("-" * 50)
 
 # Create a new DataFrame based on the original DataFrame
 
-copy_original_df = original_df.copy() copy_original_df.columns = \['\_name', '\_age', '\_city'\] print(copy_original_df) print("-" \* 50)
+copy_original_df = original_df.copy() 
+copy_original_df.columns = ['\_name', '\_age', '\_city'] 
+print(copy_original_df) 
+print("-" * 50)
 
-new_df = pd.DataFrame(original_df) print(new_df) print("-" \* 50)
+new_df = pd.DataFrame(original_df) 
+print(new_df) 
+print("-" * 50)
 
-print(id(original_df)) print(id(copy_original_df)) print(id(new_df))
+print(id(original_df)) 
+print(id(copy_original_df)) 
+print(id(new_df))
 ```
 
 **Q. Create a DataFrame from a dictionary, then convert it to a NumPy array.**
@@ -525,11 +543,11 @@ print(result)
 ```{python}
 # Create an Index object
 
-index = pd.Index(\[1, 2, 3, 4, 5\])
+index = pd.Index([1, 2, 3, 4, 5])
 
 # Create a collection of values to check for containment
 
-collection = \[3, 5, 7\]
+collection = [3, 5, 7]
 
 # Use the isin() method to check for containment
 
@@ -1042,9 +1060,6 @@ def my_format(x):
 frame.applymap(my_format)  # applymap() for DF
 print("-"*40)
 frame["e"].map(my_format) # map() for Series
-
-
-
 ```
 
 ##### Sorting and Ranking
@@ -1069,7 +1084,4 @@ print("-"*40)
 frame.sort_index()
 print("-"*40)
 frame.sort_index(axis="columns", ascending=False)
-
-
-
 ```

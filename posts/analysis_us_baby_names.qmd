@@ -1,0 +1,491 @@
+---
+title: "US Baby Names 1880-2022"
+subtitle: "Analysis techniques using pandas - Python for Data Analysis, 3E by Wes McKinney"
+date: '2023-10-26'
+categories: ['Python', 'pandas', 'analaysis', 'MovieLens']
+description: "Learning notes - Python for Data Analysis, 3E - Wes McKinney"
+image: data.jpg
+format:
+  html:
+    code-fold: false
+jupyter: python3
+---
+
+------------------------------------------------------------------------
+
+# US Baby Names 1880-2022
+
+Data source: The United States Social Security Administration (SSA)
+
+Visualize the proportion of babies given a particular name over time
+
+Determine the relative rank of a name
+
+Determine the most popular names in each year or the names whose poularity has advanced or declined the most
+
+Analyze trends in namesL vowels, consonants, length, overall diveristy, changes in spelling, first and last letters
+
+Analyze external sources of trends: biblical names, celebrities, demographics
+
+## 1. Check downloaded data source files
+
+```{python}
+
+# Display directories and files for the downloaded data files
+
+import os
+
+# Path to inspect
+directory_path = "../data/babynames"
+
+# List all items in the path, print
+items = os.listdir(directory_path)
+for item in items:
+  item_path = os.path.join(directory_path, item)
+  if os.path.isdir(item_path):
+    print(f"[DIR] {item}")
+  else:
+    print(item)
+  
+```
+
+## 2. Import data files
+
+```{python}
+import pandas as pd
+import numpy as np
+import os
+
+# Straight import
+directory_path = "../data/babynames"
+item = "yob1880.txt"
+data_source = os.path.join(directory_path, item)
+
+names1880 = pd.read_csv(data_source,
+                        names=["name", "sex","births"])
+names1880.info()
+names1880.describe()
+names1880
+```
+
+## 3. Analysis
+
+### 3.1 Total number of births from one data file
+
+```{python}
+# Get total number of births for the year
+# - Sum of the births column by sex
+names1880.groupby("sex")["births"].sum()  # total births per sex
+names1880["births"].sum() # total births
+```
+
+### 3.2 Consolidate all data files
+
+```{python}
+import pandas as pd
+import numpy as np
+import os
+
+# yearly data file ending with year number, year 1880 - 2022
+pieces = []
+directory_path = "../data/babynames"
+for year in range(1880, 2023):
+  # Set up file path and name
+  path = f"{directory_path}/yob{year}.txt"
+  frame = pd.read_csv(path, names=["name", "sex", "births"])
+  
+  # Add a column for the year
+  frame["year"] = year
+  pieces.append(frame)
+
+# Concatenate each DataFrame into a single DataFrame
+names = pd.concat(pieces, ignore_index=True)
+names  # [2085158 rows x 4 columns]
+```
+
+### 3.3 Data aggregation: total births by sex and year
+
+```{python}
+
+import matplotlib.pyplot as plt
+
+# Aggregation using groupby() or pivot_table()
+
+# total births
+total_births = names.pivot_table("births", index="year", columns="sex", aggfunc=sum)
+total_births.tail() # total births per sex for the last 5 years
+
+# Plot Total Births
+total_births.plot(title="Total births by sex and year")
+plt.show()
+```
+
+### 3.4 Process data -
+
+```{python}
+# Insert a new column 'prop' with fraction of babies given each name relative to the total number of births
+# - Insert to each group of year and sex
+
+
+def add_prop(group):
+  """
+  print("Processing group......")
+  print(group)
+  print("group[\"births\"] is.....")
+  print(group["births"])
+  print("Total births per group: group[\"births\"].sum() is......")
+  print(group["births"].sum())
+  """
+  group["prop"] = group["births"] / group["births"].sum()  # Seroes / scalar
+  return group
+
+names
+print("---------------------------------")
+print("Update names data frame with a calculated column of proportion...")
+names = names.groupby(["year", "sex"], group_keys=False).apply(add_prop)
+print("---------------------------------")
+names
+
+```
+
+```{python}
+# Sanity check, Prop in each group must add up to 1.
+
+names.groupby(["year", "sex"])["prop"].sum()
+```
+
+### Analysis - Top 1000 names for each sex/year combination
+
+```{python}
+
+# Another group operation for top 1000 names
+def get_top1000(group):
+  return group.sort_values("births", ascending=False)[:1000]
+
+grouped = names.groupby(["year","sex"])
+top1000 = grouped.apply(get_top1000)
+top1000.head(12)
+```
+
+```{python}
+# top1000 dataset does not need the group index
+top1000 = top1000.reset_index(drop=True)
+top1000.head(12)
+```
+
+### Analysis - Naming Trends
+
+```{python}
+# Split top1000 into boy and girl portion
+
+boys = top1000[top1000["sex"] == "M"]
+girls = top1000[top1000["sex"] == "F"]
+boys
+girls
+```
+
+```{python}
+# Simple time serires for names
+
+# Pivot table
+total_births = top1000.pivot_table("births", index="year", columns="name", aggfunc=sum)
+total_births
+```
+
+```{python}
+# plot the pivot table for a few names
+total_births.info()
+subset = total_births[["John", "Harry", "Mary", "Marilyn"]]
+subset.plot(subplots=True, figsize=(12, 10), title="Number of births per year")
+plt.show()
+```
+
+### Analysis - Measure the increase in naming diversity
+
+The decrease in plots above is that fewer parents are choosing the common names for their children. Explore and confirm in the data for this hypothesis. - Proportion of births represented by the top 1000 most popular names by year and sex
+
+```{python}
+
+table = top1000.pivot_table("prop", index="year", columns="sex", aggfunc=sum)
+table
+
+fig, ax = plt.subplots()
+ax = table.plot(title="Sum of table1000.prop by year and sex", yticks=np.linspace(0, 1.2, 13))
+description = "Proportion of births represented in top one thousand names by sex"
+fig.text(0.1, 0.01, description, fontsize=10, ha="left")
+plt.show()
+```
+
+> Indeed, there is a noticeable trend of rising diversity in names, accompanied by a declining overall proprtion within the top one thousand.
+
+### Analysis - Number of distinct names, by popularity in the top 50% of births
+
+```{python}
+# With boys data from year 2010
+df = boys[boys["year"] == 2010]
+prop_cumsum = df["prop"].sort_values(ascending=False).cumsum() # To find the position where prop == 0.5
+print("Top 10 prop sorted:")
+print(prop_cumsum[:10], type(prop_cumsum))
+
+print("Indices where prop == 0.5:")
+prop_cumsum.searchsorted(0.5) + 1 # Indices for prop == 0.5, sort maintained, 1 added due to zero-based index
+
+# With the data from year 1900
+df = boys[boys.year == 1900]
+in1900 = df.sort_values("prop", ascending=False).prop.cumsum()
+in1900.searchsorted(0.5) + 1
+```
+
+```{python}
+# Apply the operation to each group of sex/year combination from top1000
+
+top1000
+def get_quantile_count(group, q=0.5):
+  group = group.sort_values("prop", ascending=False)
+  return group.prop.cumsum().searchsorted(q) + 1
+
+diversity = top1000.groupby(["year", "sex"])
+
+# Check some data from the grouped df.
+type(diversity)
+selected_group = diversity.get_group((2000, 'F'))
+print("Selected group - 2000 F: ")
+print(selected_group)
+
+# Get quantile count fpr prop==0.5 for each group
+diversity = top1000.groupby(["year", "sex"]).apply(get_quantile_count)
+diversity
+type(diversity)  # Series
+diversity = diversity.unstack()  # unstack, Series --> DF
+type(diversity)
+```
+
+```{python}
+# Plot the Number of popular names in top 50%
+print(diversity)
+diversity.plot(title="Number of popular names in top 50%")
+plt.show()
+```
+
+The plot displays that girl names, and they have only become more so over time. Further analysis of what exactly is driving the diversity, .ike the increase of alternative spellings, is lfet to the reader.
+
+### Analysis - The "last letter" revolution
+
+In 2007, baby name researcher Laura Wattenberg pointed out that the distribution of boy names by final letter has changed significantly over the last 100 years
+
+```{python}
+# Verify the analysis of Lauren Wattenberg
+# boy names, last 100 years, final letter
+
+# Aggregate dataset by year, sex and final letter
+print(names)
+print(names["name"])
+
+def get_last_letter(x):
+  return x[-1]
+
+last_letters = names["name"].map(get_last_letter)
+last_letters  # New Series :name" with last letter of names 
+last_letters.name = "last_letter" # Change Series name tp "last_letter"
+last_letters
+
+table = names.pivot_table("births", index=last_letters, columns=["sex", "year"], aggfunc=sum)  # Turn names df into a pivot table by last letter with sex/year combo, total births for each last letter
+table
+
+# Pick three years to represent 100 years over time, and review some rows. table df has multiple column index of "sex" and "year"
+subtable = table.reindex(columns=[1910, 1960, 2010], level="year")
+subtable.head()
+
+# Normalize the table by total births. To compute a new table containing the proprtion of toral births for each sex ending in each letter
+subtable.sum()
+type(subtable)  # DF 
+type(subtable.sum())  # Series
+
+# Compute last_letter_proportion for each letter grouped by sex and year fpr the three time points
+letter_prop = subtable / subtable.sum()  # DF / Series
+letter_prop
+
+```
+
+```{python}
+# Bar plots for each sex, broken down by year
+import matplotlib.pyplot as plt
+
+letter_prop.head()  # review the data to plot
+
+fig, axes = plt.subplots(2, 1, figsize=(10,8))
+plt.subplots_adjust(hspace=0.7)  # Adjust he spacing between subplots
+
+# Male data on the first plot, Female data on the second plot
+letter_prop["M"].plot(kind="bar", rot=0, ax=axes[0], title="Male")
+letter_prop["F"].plot(kind="bar", rot=0, ax=axes[1], title="Female",legend=False)
+plt.show()
+```
+
+Boy names ending in n have experienced significatn growth since the 1960s.
+
+```{python}
+table   # original table
+type(table)
+table.index
+s = table.sum()  # Normalized Series, sum of births for all letters per sex/year combo
+s.index
+s
+
+letter_group = table / table.sum()  # DF / Serieis 
+letter_group
+
+dny_ts = letter_group.loc[["d","n","y"], "M"].T  # Transpose
+type(dny_ts)
+dny_ts
+```
+
+```{python}
+# Plot with three ending letters over time - d, n, y
+plt.clf()
+dny_ts.plot()
+plt.show()
+```
+
+### Analysis - Boy names that became girl names (and vice versa)
+
+Examine the trend of popular names with one gender eariler but have become preferred as a name for the other gender over time. - i.e Lesley / Leslie
+
+```{python}
+
+# Work with top1000 DF, name starting with "Lesl"
+
+# Review top1000
+top1000
+
+# Compute a list of names occurring in the dataset starting with "Lesl"
+all_names = pd.Series(top1000["name"].unique())  # Series of unique names
+all_names
+lesley_like = all_names[all_names.str.contains("Lesl")]
+lesley_like
+
+# Filter the top1000 to the list of narrowed names, total count for each name
+filtered = top1000[top1000["name"].isin(lesley_like)]
+filtered
+filtered.groupby("name")["births"].sum()
+
+# Aggregate by sex and year
+table = filtered.pivot_table("births", index="year", columns="sex", aggfunc="sum")
+table
+
+# Then normalize the aggregated data (row-wise normalization)
+table.sum(axis="columns") # row sum
+table = table.div(table.sum(axis="columns"), axis="index") # divide each element in a row by its corresponding row sum
+table
+```
+
+### Data Normalization
+
+Normalization in the context of data typically refers to the process of scaling and transforming data into a standard formt, making it more consistent and comparable. This is crucial in data analysis and machine learning for several reasons:
+
+1.  Scale Consistency:
+
+    Normalization ensures that all variables have the ame scale. It is important when working with algorithms that are sensitive to the scale of the input features, such as gradient-based optimization algorithms in machine leraning
+
+2.  Comparability:
+
+    Normalizing data allows for meaninful comparisons between different variables.
+
+3.  Convergene Speed:
+
+    Some optimization algorithms converge faster when the input features are on a similar scale. Normalzation ca speed up the convergence of iterative optimization algorithms.
+
+4.  Interpretability:
+
+    Normalized data is often easeir to interpret. The coefficients in linear models, for example, represetn the change in the dependent variable for a one-unit change in the independent variable. Normalization ensures that this change is consistent across variables.
+
+5.  Handling Outliers:
+
+    Normalization can mitigate the ipact of outliers. When data has extreme values, normalization techiques can make the analysis less sensitive to these outliers.
+
+-   **Min-Max Scaling**: Scake the data to a specific range(e.g. between 0 and 1)
+
+```{python}
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
+
+# Sample data
+data = {'feature1': [10, 20, 30, 40, 50]}
+df = pd.DataFrame(data)
+
+# Min-Max Scaling
+scaler = MinMaxScaler()
+normalized_data = scaler.fit_transform(df)
+df_normalized = pd.DataFrame(normalized_data, columns=df.columns)
+
+print("Original Data:")
+print(df)
+print("\nMin-Max Scaled Data:")
+print(df_normalized)
+
+```
+
+-   **Z-score Standardization**: Scales the data to have a mean of 0 and a standard deviation of
+
+```{python}
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+
+# Sample data
+data = {'feature1': [10, 20, 30, 40, 50]}
+df = pd.DataFrame(data)
+
+# Z-score Standardization
+scaler = StandardScaler()
+standardized_data = scaler.fit_transform(df)
+df_standardized = pd.DataFrame(standardized_data, columns=df.columns)
+
+print("Original Data:")
+print(df)
+print("\nZ-score Standardized Data:")
+print(df_standardized)
+
+```
+
+-   **Decimal Scaling**: Shift the decimal point of values to achieve normalization.
+
+```{python}
+import pandas as pd
+
+# Sample data
+data = {'feature1': [10, 20, 30, 40, 50]}
+df = pd.DataFrame(data)
+
+# Decimal Scaling
+df['feature1'].max()
+-len(str(df['feature1'].max()))
+10**(-len(str(df['feature1'].max())))
+decimal_scaling_factor = 10**(-len(str(df['feature1'].max())))
+df_decimal_scaled = df * decimal_scaling_factor
+
+print("Original Data:")
+print(df)
+print("\nDecimal Scaled Data:")
+print(df_decimal_scaled)
+
+```
+
+-   Log Transformation: Applies the logarithmic function to reduce the impact of large values.
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Sample data
+data = {'feature1': [10, 20, 30, 40, 50]}
+df = pd.DataFrame(data)
+
+# Log Transformation (applies natural logarithm (base e) to each elementin the df after adding 1 to each element, technique avoiding issues with talking the logarithm of zero.)
+df_log_transformed = np.log1p(df)
+
+print("Original Data:")
+print(df)
+print("\nLog Transformed Data:")
+print(df_log_transformed)
+
+```

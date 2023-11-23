@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2023-10-25">
+<meta name="description" content="Learning notes - Python for Data Analysis, 3E - Wes McKinney">
+
+<title>Albert Joonyoung Park - Bilty Data from 1.USA.gov</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Albert Joonyoung Park</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html" rel="" target="">
+ <span class="menu-text">HOME</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../projects.html" rel="" target="">
+ <span class="menu-text">PROJECTS</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../blog.html" rel="" target="">
+ <span class="menu-text">BLOG</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html" rel="" target="">
+ <span class="menu-text">ABOUT</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+    <a href="https://github.com/albert-joonyoung-park" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-linkedin"></i></a>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Bilty Data from 1.USA.gov</h1>
+<p class="subtitle lead">Analysis techniques using pandas - Python for Data Analysis, 3E by Wes McKinney</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">pandas</div>
+    <div class="quarto-category">analaysis</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Learning notes - Python for Data Analysis, 3E - Wes McKinney
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 25, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<hr>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Set path to data file and check data content</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> <span class="st">"../data/bitly_usagov/example.txt"</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(path) <span class="im">as</span> f:</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(f.readline())</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert json data to a list of dictionaries</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(path) <span class="im">as</span> f:</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  records <span class="op">=</span> [json.loads(line) <span class="cf">for</span> line <span class="kw">in</span> f]</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>records[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{ "a": "Mozilla\/5.0 (Windows NT 6.1; WOW64) AppleWebKit\/535.11 (KHTML, like Gecko) Chrome\/17.0.963.78 Safari\/535.11", "c": "US", "nk": 1, "tz": "America\/New_York", "gr": "MA", "g": "A6qOVH", "h": "wfLQtf", "l": "orofrog", "al": "en-US,en;q=0.8", "hh": "1.usa.gov", "r": "http:\/\/www.facebook.com\/l\/7AQEFzjSi\/1.usa.gov\/wfLQtf", "u": "http:\/\/www.ncbi.nlm.nih.gov\/pubmed\/22415991", "t": 1331923247, "hc": 1331822918, "cy": "Danvers", "ll": [ 42.576698, -70.954903 ] }
+</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>{'a': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.78 Safari/535.11',
+ 'c': 'US',
+ 'nk': 1,
+ 'tz': 'America/New_York',
+ 'gr': 'MA',
+ 'g': 'A6qOVH',
+ 'h': 'wfLQtf',
+ 'l': 'orofrog',
+ 'al': 'en-US,en;q=0.8',
+ 'hh': '1.usa.gov',
+ 'r': 'http://www.facebook.com/l/7AQEFzjSi/1.usa.gov/wfLQtf',
+ 'u': 'http://www.ncbi.nlm.nih.gov/pubmed/22415991',
+ 't': 1331923247,
+ 'hc': 1331822918,
+ 'cy': 'Danvers',
+ 'll': [42.576698, -70.954903]}</code></pre>
+</div>
+</div>
+<section id="count-time-zones---tz-field-using-standard-libraries" class="level6">
+<h6 class="anchored" data-anchor-id="count-time-zones---tz-field-using-standard-libraries">Count Time Zones - ‘<code>tz</code>’ field using Standard libraries</h6>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of dictionary items in the list</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Number of entries from records: "</span> <span class="op">+</span> <span class="bu">str</span>(<span class="bu">len</span>(records)))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Unique time zones (tz) from the list</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#time_zones = [rec["tz"] for rec in records] # KeyError, Not all record has 'tz' field</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>time_zones <span class="op">=</span> [rec[<span class="st">"tz"</span>] <span class="cf">for</span> rec <span class="kw">in</span> records <span class="cf">if</span> <span class="st">"tz"</span> <span class="kw">in</span> rec]</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>time_zones[:<span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of entries from records: 3560</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>['America/New_York',
+ 'America/Denver',
+ 'America/New_York',
+ 'America/Sao_Paulo',
+ 'America/New_York',
+ 'America/New_York',
+ 'Europe/Warsaw',
+ '',
+ '',
+ '']</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get count of time zone using a function</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_counts(sequence):</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  counts <span class="op">=</span> {}</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> x <span class="kw">in</span> sequence:</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> x <span class="kw">in</span> counts:</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      counts[x] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      counts[x] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> counts</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Get count of time zone using tools in Python standard library</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> defaultdict</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_counts2(sequence):</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  counts <span class="op">=</span> defaultdict(<span class="bu">int</span>) <span class="co"># init to 0 by default for new key</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> x <span class="kw">in</span> sequence:</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    counts[x] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> counts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get 'tz' count using the functions</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>counts <span class="op">=</span> get_counts(time_zones)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#counts</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>counts[<span class="st">"America/New_York"</span>]</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(time_zones)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>3440</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function to list of top 10 time zones in tuples by (count, timezone) and sort it</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> top_counts(count_dict, n<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  value_key_pairs <span class="op">=</span> [(count, tz) <span class="cf">for</span> tz, count <span class="kw">in</span> count_dict.items()]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  value_key_pairs.sort()</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> value_key_pairs[<span class="op">-</span>n:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#counts</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>top_counts(counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>[(33, 'America/Sao_Paulo'),
+ (35, 'Europe/Madrid'),
+ (36, 'Pacific/Honolulu'),
+ (37, 'Asia/Tokyo'),
+ (74, 'Europe/London'),
+ (191, 'America/Denver'),
+ (382, 'America/Los_Angeles'),
+ (400, 'America/Chicago'),
+ (521, ''),
+ (1251, 'America/New_York')]</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simpler using collections.Counter class</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#time_zones</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>counts <span class="op">=</span> Counter(time_zones)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>counts.most_common(<span class="dv">10</span>) <span class="co"># top 10 occurences</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>[('America/New_York', 1251),
+ ('', 521),
+ ('America/Chicago', 400),
+ ('America/Los_Angeles', 382),
+ ('America/Denver', 191),
+ ('Europe/London', 74),
+ ('Asia/Tokyo', 37),
+ ('Pacific/Honolulu', 36),
+ ('Europe/Madrid', 35),
+ ('America/Sao_Paulo', 33)]</code></pre>
+</div>
+</div>
+</section>
+<section id="count-time-zones---tz-field-using-pandas" class="level6">
+<h6 class="anchored" data-anchor-id="count-time-zones---tz-field-using-pandas">Count Time Zones - ‘<code>tz</code>’ field using pandas</h6>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a DataFrame with the json data amd summary view</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>frame <span class="op">=</span> pd.DataFrame(records)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>frame.info()</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># First 5 of 'tz'</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>frame[<span class="st">"tz"</span>].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 3560 entries, 0 to 3559
+Data columns (total 18 columns):
+ #   Column       Non-Null Count  Dtype  
+---  ------       --------------  -----  
+ 0   a            3440 non-null   object 
+ 1   c            2919 non-null   object 
+ 2   nk           3440 non-null   float64
+ 3   tz           3440 non-null   object 
+ 4   gr           2919 non-null   object 
+ 5   g            3440 non-null   object 
+ 6   h            3440 non-null   object 
+ 7   l            3440 non-null   object 
+ 8   al           3094 non-null   object 
+ 9   hh           3440 non-null   object 
+ 10  r            3440 non-null   object 
+ 11  u            3440 non-null   object 
+ 12  t            3440 non-null   float64
+ 13  hc           3440 non-null   float64
+ 14  cy           2919 non-null   object 
+ 15  ll           2919 non-null   object 
+ 16  _heartbeat_  120 non-null    float64
+ 17  kw           93 non-null     object 
+dtypes: float64(4), object(14)
+memory usage: 500.8+ KB</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>0     America/New_York
+1       America/Denver
+2     America/New_York
+3    America/Sao_Paulo
+4     America/New_York
+Name: tz, dtype: object</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># counts using value_counts()</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>tz_counts <span class="op">=</span> frame[<span class="st">"tz"</span>].value_counts()</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>tz_counts.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>America/New_York       1251
+                        521
+America/Chicago         400
+America/Los_Angeles     382
+America/Denver          191
+Name: tz, dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Substitue empty strings or missing data in "tz", get ready for visualization</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>clean_tz <span class="op">=</span> frame[<span class="st">"tz"</span>].fillna(<span class="st">"Missing"</span>) <span class="co"># substitue missing data</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>clean_tz[clean_tz <span class="op">==</span> <span class="st">""</span>] <span class="op">=</span> <span class="st">"Unknown"</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>tz_counts <span class="op">=</span> clean_tz.value_counts()</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>tz_counts.head(<span class="dv">12</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>tz_counts.tail(<span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>Asia/Yekaterinburg           1
+Asia/Manila                  1
+America/Caracas              1
+Asia/Riyadh                  1
+America/Montevideo           1
+America/Argentina/Mendoza    1
+America/Mazatlan             1
+Europe/Uzhgorod              1
+Australia/Queensland         1
+Europe/Sofia                 1
+America/Costa_Rica           1
+America/Tegucigalpa          1
+Name: tz, dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the tz count data</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>plt.clf()</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>subset <span class="op">=</span> tz_counts.head(<span class="dv">7</span>)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>sns.barplot(y<span class="op">=</span>subset.index, x<span class="op">=</span>subset.to_numpy())</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, v <span class="kw">in</span> <span class="bu">enumerate</span>(subset.to_numpy()):</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    plt.text(v, i, <span class="bu">str</span>(v), va<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">10</span>, color<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_bitly_data_files/figure-html/cell-12-output-1.png" width="700" height="411"></p>
+</div>
+</div>
+</section>
+<section id="the-a-field-the-user-agent-string-information-about-the-browser-device-or-application-used-to-perform-the-url-shortening-service-with-bitly" class="level5">
+<h5 class="anchored" data-anchor-id="the-a-field-the-user-agent-string-information-about-the-browser-device-or-application-used-to-perform-the-url-shortening-service-with-bitly">The “a” field, the user agent string: Information about the browser, device, or application used to perform the URL shortening service with Bitly</h5>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>frame.info()</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>frame[<span class="st">"a"</span>]     <span class="co"># all entries under "a" field</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>frame[<span class="st">"a"</span>][<span class="dv">1</span>]  <span class="co"># second entry in "a" field</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>frame[<span class="st">"a"</span>][<span class="dv">50</span>] <span class="co"># 51th entry in "a" field</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>frame[<span class="st">"a"</span>][<span class="dv">51</span>] <span class="co"># 52nd very long entry in "a" field</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>frame[<span class="st">"a"</span>][<span class="dv">51</span>][:<span class="dv">50</span>]  <span class="co"># 50 characters only for the 52nd entry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 3560 entries, 0 to 3559
+Data columns (total 18 columns):
+ #   Column       Non-Null Count  Dtype  
+---  ------       --------------  -----  
+ 0   a            3440 non-null   object 
+ 1   c            2919 non-null   object 
+ 2   nk           3440 non-null   float64
+ 3   tz           3440 non-null   object 
+ 4   gr           2919 non-null   object 
+ 5   g            3440 non-null   object 
+ 6   h            3440 non-null   object 
+ 7   l            3440 non-null   object 
+ 8   al           3094 non-null   object 
+ 9   hh           3440 non-null   object 
+ 10  r            3440 non-null   object 
+ 11  u            3440 non-null   object 
+ 12  t            3440 non-null   float64
+ 13  hc           3440 non-null   float64
+ 14  cy           2919 non-null   object 
+ 15  ll           2919 non-null   object 
+ 16  _heartbeat_  120 non-null    float64
+ 17  kw           93 non-null     object 
+dtypes: float64(4), object(14)
+memory usage: 500.8+ KB</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>'Mozilla/5.0 (Linux; U; Android 2.2.2; en-us; LG-P9'</code></pre>
+</div>
+</div>
+</section>
+<section id="effective-parsing-and-new-dataset-for-analysis" class="level5">
+<h5 class="anchored" data-anchor-id="effective-parsing-and-new-dataset-for-analysis">Effective parsing and new dataset for analysis</h5>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Split off the first token of the string to the use agent information and make another summary of the new dataset</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a Series with first tokens only from the target string</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> pd.Series([x.split()[<span class="dv">0</span>] <span class="cf">for</span> x <span class="kw">in</span> frame[<span class="st">"a"</span>].dropna()], name<span class="op">=</span><span class="st">"user_agents"</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>results.head(<span class="dv">12</span>)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span><span class="op">*</span><span class="dv">40</span>)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>results.value_counts().head(<span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>----------------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>Mozilla/5.0                 2594
+Mozilla/4.0                  601
+GoogleMaps/RochesterNY       121
+Opera/9.80                    34
+TEST_INTERNET_AGENT           24
+GoogleProducer                21
+Mozilla/6.0                    5
+BlackBerry8520/5.0.0.681       4
+BlackBerry8520/5.0.0.592       3
+Dalvik/1.4.0                   3
+Goldfire                       2
+Acoon                          2
+Name: user_agents, dtype: int64</code></pre>
+</div>
+</div>
+</section>
+<section id="further-decompostiion" class="level5">
+<h5 class="anchored" data-anchor-id="further-decompostiion">Further decompostiion</h5>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Decompose the top time zones into Windows and non-Windws users</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new DF by excluding the entries missing agents info.</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>cframe <span class="op">=</span> frame[frame[<span class="st">"a"</span>].notna()].copy()</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>cframe.info()</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>cframe.head()</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute on each entry for the containment of string "Windows", and create a column 'os' to identify the result.</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>cframe[<span class="st">"os"</span>] <span class="op">=</span> np.where(cframe[<span class="st">"a"</span>].<span class="bu">str</span>.contains(<span class="st">"Windows"</span>), <span class="st">"Windows"</span>, <span class="st">"Not Windows"</span>)</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>cframe[<span class="st">"os"</span>].head(<span class="dv">5</span>) </span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Group the data by "tz" and "os", and get counts</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>by_tz_os <span class="op">=</span> cframe.groupby([<span class="st">"tz"</span>, <span class="st">"os"</span>])</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>agg_counts <span class="op">=</span> by_tz_os.size().unstack().fillna(<span class="dv">0</span>) <span class="co"># anlogous to value_counts()</span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>agg_counts.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+Int64Index: 3440 entries, 0 to 3559
+Data columns (total 18 columns):
+ #   Column       Non-Null Count  Dtype  
+---  ------       --------------  -----  
+ 0   a            3440 non-null   object 
+ 1   c            2919 non-null   object 
+ 2   nk           3440 non-null   float64
+ 3   tz           3440 non-null   object 
+ 4   gr           2919 non-null   object 
+ 5   g            3440 non-null   object 
+ 6   h            3440 non-null   object 
+ 7   l            3440 non-null   object 
+ 8   al           3094 non-null   object 
+ 9   hh           3440 non-null   object 
+ 10  r            3440 non-null   object 
+ 11  u            3440 non-null   object 
+ 12  t            3440 non-null   float64
+ 13  hc           3440 non-null   float64
+ 14  cy           2919 non-null   object 
+ 15  ll           2919 non-null   object 
+ 16  _heartbeat_  0 non-null      float64
+ 17  kw           93 non-null     object 
+dtypes: float64(4), object(14)
+memory usage: 510.6+ KB</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">os</th>
+<th data-quarto-table-cell-role="th">Not Windows</th>
+<th data-quarto-table-cell-role="th">Windows</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">tz</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th"></td>
+<td>245.0</td>
+<td>276.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Africa/Cairo</td>
+<td>0.0</td>
+<td>3.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Africa/Casablanca</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Africa/Ceuta</td>
+<td>0.0</td>
+<td>2.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Africa/Johannesburg</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select top overall time zones</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Get counts on across columns and sorted indices for the rows</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>sorted_indices <span class="op">=</span> agg_counts.<span class="bu">sum</span>(<span class="st">"columns"</span>).argsort()  <span class="co"># total across columns and get sorted indices for sorting later</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>sorted_indices.values[:<span class="dv">10</span>]  <span class="co"># check the first 10 sorted indices in an array</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the largest 10 rows in total of Not Windows + Windows</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>count_subset <span class="op">=</span> agg_counts.take(sorted_indices[<span class="op">-</span><span class="dv">10</span>:])  <span class="co"># Extract using indices</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Or use pandas nlargest</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>agg_counts.<span class="bu">sum</span>(axis<span class="op">=</span><span class="st">"columns"</span>).nlargest(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>tz
+America/New_York       1251.0
+                        521.0
+America/Chicago         400.0
+America/Los_Angeles     382.0
+America/Denver          191.0
+Europe/London            74.0
+Asia/Tokyo               37.0
+Pacific/Honolulu         36.0
+Europe/Madrid            35.0
+America/Sao_Paulo        33.0
+dtype: float64</code></pre>
+</div>
+</div>
+</section>
+<section id="plot-the-result-with-grouped-barplot-using-seaborn" class="level5">
+<h5 class="anchored" data-anchor-id="plot-the-result-with-grouped-barplot-using-seaborn">Plot the result with grouped barplot using seaborn</h5>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> print_tl(x):</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(x, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>, <span class="bu">type</span>(x), <span class="st">"</span><span class="ch">\"\n</span><span class="st">--------------------------------"</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Reset the index for the final DF to rearrange the data for better compatibility with seabon</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>count_subset <span class="op">=</span> count_subset.stack()  <span class="co"># Series by reshaping DF from wide to long format, pivoting the columns, also creating multiindex</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>print_tl(count_subset)</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>count_subset.name <span class="op">=</span> <span class="st">"total"</span>  <span class="co"># Name the Series obj</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>print_tl(count_subset)</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>count_subset <span class="op">=</span> count_subset.reset_index()  <span class="co"># 'tz' not an index anymore, Series to DF</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>print_tl(count_subset)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>count_subset.head(<span class="dv">10</span>)</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>count_subset.info()</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a><span class="co"># plot stacked barplot</span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>plt.clf()</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>sns.barplot(x<span class="op">=</span><span class="st">"total"</span>, y<span class="op">=</span><span class="st">"tz"</span>, hue<span class="op">=</span><span class="st">"os"</span>,  data<span class="op">=</span>count_subset)</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tz                   os         
+America/Sao_Paulo    Not Windows     13.0
+                     Windows         20.0
+Europe/Madrid        Not Windows     16.0
+                     Windows         19.0
+Pacific/Honolulu     Not Windows      0.0
+                     Windows         36.0
+Asia/Tokyo           Not Windows      2.0
+                     Windows         35.0
+Europe/London        Not Windows     43.0
+                     Windows         31.0
+America/Denver       Not Windows    132.0
+                     Windows         59.0
+America/Los_Angeles  Not Windows    130.0
+                     Windows        252.0
+America/Chicago      Not Windows    115.0
+                     Windows        285.0
+                     Not Windows    245.0
+                     Windows        276.0
+America/New_York     Not Windows    339.0
+                     Windows        912.0
+dtype: float64 
+ &lt;class 'pandas.core.series.Series'&gt; "
+--------------------------------
+tz                   os         
+America/Sao_Paulo    Not Windows     13.0
+                     Windows         20.0
+Europe/Madrid        Not Windows     16.0
+                     Windows         19.0
+Pacific/Honolulu     Not Windows      0.0
+                     Windows         36.0
+Asia/Tokyo           Not Windows      2.0
+                     Windows         35.0
+Europe/London        Not Windows     43.0
+                     Windows         31.0
+America/Denver       Not Windows    132.0
+                     Windows         59.0
+America/Los_Angeles  Not Windows    130.0
+                     Windows        252.0
+America/Chicago      Not Windows    115.0
+                     Windows        285.0
+                     Not Windows    245.0
+                     Windows        276.0
+America/New_York     Not Windows    339.0
+                     Windows        912.0
+Name: total, dtype: float64 
+ &lt;class 'pandas.core.series.Series'&gt; "
+--------------------------------
+                     tz           os  total
+0     America/Sao_Paulo  Not Windows   13.0
+1     America/Sao_Paulo      Windows   20.0
+2         Europe/Madrid  Not Windows   16.0
+3         Europe/Madrid      Windows   19.0
+4      Pacific/Honolulu  Not Windows    0.0
+5      Pacific/Honolulu      Windows   36.0
+6            Asia/Tokyo  Not Windows    2.0
+7            Asia/Tokyo      Windows   35.0
+8         Europe/London  Not Windows   43.0
+9         Europe/London      Windows   31.0
+10       America/Denver  Not Windows  132.0
+11       America/Denver      Windows   59.0
+12  America/Los_Angeles  Not Windows  130.0
+13  America/Los_Angeles      Windows  252.0
+14      America/Chicago  Not Windows  115.0
+15      America/Chicago      Windows  285.0
+16                       Not Windows  245.0
+17                           Windows  276.0
+18     America/New_York  Not Windows  339.0
+19     America/New_York      Windows  912.0 
+ &lt;class 'pandas.core.frame.DataFrame'&gt; "
+--------------------------------
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 20 entries, 0 to 19
+Data columns (total 3 columns):
+ #   Column  Non-Null Count  Dtype  
+---  ------  --------------  -----  
+ 0   tz      20 non-null     object 
+ 1   os      20 non-null     object 
+ 2   total   20 non-null     float64
+dtypes: float64(1), object(2)
+memory usage: 612.0+ bytes</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_bitly_data_files/figure-html/cell-17-output-2.png" width="709" height="429"></p>
+</div>
+</div>
+</section>
+<section id="improve-the-plot-for-better-comparison-in-relative-percentage-of-windows-users-in-the-smaller-groups" class="level5">
+<h5 class="anchored" data-anchor-id="improve-the-plot-for-better-comparison-in-relative-percentage-of-windows-users-in-the-smaller-groups">Improve the plot for better comparison in relative percentage of Windows users in the smaller groups</h5>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Change the plot to improve the visuals for easier comparison in samller groups of Windows users</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> print_tl(x<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> x <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st"> -----------------------------"</span>)</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span>:</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(x, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>, <span class="bu">type</span>(x), <span class="st">"</span><span class="ch">\n</span><span class="st"> -----------------------------"</span>)</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Funcion to calculate and add normalize the group percentage, group sum to 1</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> norm_total(group):</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>  group[<span class="st">"normed_total"</span>] <span class="op">=</span> group[<span class="st">"total"</span>] <span class="op">/</span> group[<span class="st">"total"</span>].<span class="bu">sum</span>()</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> group</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a Df normalized by the function</span></span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>print_tl(count_subset)</span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>grouped_by_tz <span class="op">=</span> count_subset.groupby(<span class="st">"tz"</span>)</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Iterate the grouped data</span></span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> group_name, group_data <span class="kw">in</span> grouped_by_tz:</span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(<span class="ss">f"Group Name: </span><span class="sc">{</span>group_name<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(group_data)</span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a>print_tl()</span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply normalization to each group in tz (time zone)</span></span>
+<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> count_subset.groupby(<span class="st">"tz"</span>, group_keys<span class="op">=</span><span class="va">False</span>).<span class="bu">apply</span>(norm_total)</span>
+<span id="cb35-27"><a href="#cb35-27" aria-hidden="true" tabindex="-1"></a>print_tl(results)</span>
+<span id="cb35-28"><a href="#cb35-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-29"><a href="#cb35-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Another approach using pandas aggregation and broadcasting method</span></span>
+<span id="cb35-30"><a href="#cb35-30" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> count_subset.groupby(<span class="st">"tz"</span>)</span>
+<span id="cb35-31"><a href="#cb35-31" aria-hidden="true" tabindex="-1"></a>results2 <span class="op">=</span> count_subset[<span class="st">"total"</span>] <span class="op">/</span> g[<span class="st">"total"</span>].transform(<span class="st">"sum"</span>)</span>
+<span id="cb35-32"><a href="#cb35-32" aria-hidden="true" tabindex="-1"></a>print_tl(results2)</span>
+<span id="cb35-33"><a href="#cb35-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-34"><a href="#cb35-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot barplot with normalized count data</span></span>
+<span id="cb35-35"><a href="#cb35-35" aria-hidden="true" tabindex="-1"></a>plt.clf()</span>
+<span id="cb35-36"><a href="#cb35-36" aria-hidden="true" tabindex="-1"></a>sns.barplot(x<span class="op">=</span><span class="st">"normed_total"</span>, y<span class="op">=</span><span class="st">"tz"</span>, hue<span class="op">=</span><span class="st">"os"</span>, data<span class="op">=</span>results)</span>
+<span id="cb35-37"><a href="#cb35-37" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                     tz           os  total
+0     America/Sao_Paulo  Not Windows   13.0
+1     America/Sao_Paulo      Windows   20.0
+2         Europe/Madrid  Not Windows   16.0
+3         Europe/Madrid      Windows   19.0
+4      Pacific/Honolulu  Not Windows    0.0
+5      Pacific/Honolulu      Windows   36.0
+6            Asia/Tokyo  Not Windows    2.0
+7            Asia/Tokyo      Windows   35.0
+8         Europe/London  Not Windows   43.0
+9         Europe/London      Windows   31.0
+10       America/Denver  Not Windows  132.0
+11       America/Denver      Windows   59.0
+12  America/Los_Angeles  Not Windows  130.0
+13  America/Los_Angeles      Windows  252.0
+14      America/Chicago  Not Windows  115.0
+15      America/Chicago      Windows  285.0
+16                       Not Windows  245.0
+17                           Windows  276.0
+18     America/New_York  Not Windows  339.0
+19     America/New_York      Windows  912.0 
+ &lt;class 'pandas.core.frame.DataFrame'&gt; 
+ -----------------------------
+Group Name: 
+   tz           os  total
+16     Not Windows  245.0
+17         Windows  276.0
+Group Name: America/Chicago
+                 tz           os  total
+14  America/Chicago  Not Windows  115.0
+15  America/Chicago      Windows  285.0
+Group Name: America/Denver
+                tz           os  total
+10  America/Denver  Not Windows  132.0
+11  America/Denver      Windows   59.0
+Group Name: America/Los_Angeles
+                     tz           os  total
+12  America/Los_Angeles  Not Windows  130.0
+13  America/Los_Angeles      Windows  252.0
+Group Name: America/New_York
+                  tz           os  total
+18  America/New_York  Not Windows  339.0
+19  America/New_York      Windows  912.0
+Group Name: America/Sao_Paulo
+                  tz           os  total
+0  America/Sao_Paulo  Not Windows   13.0
+1  America/Sao_Paulo      Windows   20.0
+Group Name: Asia/Tokyo
+           tz           os  total
+6  Asia/Tokyo  Not Windows    2.0
+7  Asia/Tokyo      Windows   35.0
+Group Name: Europe/London
+              tz           os  total
+8  Europe/London  Not Windows   43.0
+9  Europe/London      Windows   31.0
+Group Name: Europe/Madrid
+              tz           os  total
+2  Europe/Madrid  Not Windows   16.0
+3  Europe/Madrid      Windows   19.0
+Group Name: Pacific/Honolulu
+                 tz           os  total
+4  Pacific/Honolulu  Not Windows    0.0
+5  Pacific/Honolulu      Windows   36.0
+
+ -----------------------------
+                     tz           os  total  normed_total
+0     America/Sao_Paulo  Not Windows   13.0      0.393939
+1     America/Sao_Paulo      Windows   20.0      0.606061
+2         Europe/Madrid  Not Windows   16.0      0.457143
+3         Europe/Madrid      Windows   19.0      0.542857
+4      Pacific/Honolulu  Not Windows    0.0      0.000000
+5      Pacific/Honolulu      Windows   36.0      1.000000
+6            Asia/Tokyo  Not Windows    2.0      0.054054
+7            Asia/Tokyo      Windows   35.0      0.945946
+8         Europe/London  Not Windows   43.0      0.581081
+9         Europe/London      Windows   31.0      0.418919
+10       America/Denver  Not Windows  132.0      0.691099
+11       America/Denver      Windows   59.0      0.308901
+12  America/Los_Angeles  Not Windows  130.0      0.340314
+13  America/Los_Angeles      Windows  252.0      0.659686
+14      America/Chicago  Not Windows  115.0      0.287500
+15      America/Chicago      Windows  285.0      0.712500
+16                       Not Windows  245.0      0.470250
+17                           Windows  276.0      0.529750
+18     America/New_York  Not Windows  339.0      0.270983
+19     America/New_York      Windows  912.0      0.729017 
+ &lt;class 'pandas.core.frame.DataFrame'&gt; 
+ -----------------------------
+0     0.393939
+1     0.606061
+2     0.457143
+3     0.542857
+4     0.000000
+5     1.000000
+6     0.054054
+7     0.945946
+8     0.581081
+9     0.418919
+10    0.691099
+11    0.308901
+12    0.340314
+13    0.659686
+14    0.287500
+15    0.712500
+16    0.470250
+17    0.529750
+18    0.270983
+19    0.729017
+Name: total, dtype: float64 
+ &lt;class 'pandas.core.series.Series'&gt; 
+ -----------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_bitly_data_files/figure-html/cell-18-output-2.png" width="709" height="429"></p>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Copyright 2023, Albert Joonyoung Park.</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/">
+      <i class="bi bi-twitter" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
