@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2023-11-23">
+<meta name="description" content="Learning notes - Python for Data Analysis, 3E - Wes McKinney">
+
+<title>Albert Joonyoung Park - String Manipulation With Pandas for Data Cleaning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Albert Joonyoung Park</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html" rel="" target="">
+ <span class="menu-text">HOME</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../projects.html" rel="" target="">
+ <span class="menu-text">PROJECTS</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../blog.html" rel="" target="">
+ <span class="menu-text">BLOG</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html" rel="" target="">
+ <span class="menu-text">ABOUT</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+    <a href="https://github.com/albert-joonyoung-park" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/in/albertjoonpark" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-linkedin"></i></a>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#string-manipulation-with-pandas" id="toc-string-manipulation-with-pandas" class="nav-link active" data-scroll-target="#string-manipulation-with-pandas">String Manipulation With Pandas</a>
+  <ul class="collapse">
+  <li><a href="#python-built-in-string-object-methods" id="toc-python-built-in-string-object-methods" class="nav-link" data-scroll-target="#python-built-in-string-object-methods">1. Python Built-In String Object Methods</a></li>
+  <li><a href="#regular-expressions" id="toc-regular-expressions" class="nav-link" data-scroll-target="#regular-expressions">2. Regular Expressions</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">String Manipulation With Pandas for Data Cleaning</h1>
+<p class="subtitle lead">Analysis techniques using pandas - Python for Data Analysis, 3E by Wes McKinney</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">pandas</div>
+    <div class="quarto-category">data cleaning</div>
+    <div class="quarto-category">data preparation</div>
+    <div class="quarto-category">string manipulation</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Learning notes - Python for Data Analysis, 3E - Wes McKinney
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 23, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<hr>
+<section id="string-manipulation-with-pandas" class="level2">
+<h2 class="anchored" data-anchor-id="string-manipulation-with-pandas">String Manipulation With Pandas</h2>
+<p><code>String object's built-in methods</code> for most text text operations</p>
+<p><code>Regular expressions</code> - Complex pattern matching and text manipulations</p>
+<p><code>Pandas</code> - Apply string and regular expressions on whole arrays of data, handling missing data</p>
+<section id="python-built-in-string-object-methods" class="level3">
+<h3 class="anchored" data-anchor-id="python-built-in-string-object-methods">1. Python Built-In String Object Methods</h3>
+<p><code>split</code>, <code>strip</code>, <code>join</code>,<code>index</code>,<code>find</code>,<code>count</code>, <code>replace</code>,</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># String split</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>val <span class="op">=</span> <span class="st">"a,b,   guido"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-- Original string: "</span>, val)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-- String splitted by </span><span class="ch">\'</span><span class="st">,</span><span class="ch">\'</span><span class="st">: "</span>, val.split(<span class="st">","</span>))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Trim whitespace, including line breaks</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>pieces <span class="op">=</span> [x.strip() <span class="cf">for</span> x <span class="kw">in</span> val.split(<span class="st">","</span>)]</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-- Each string trimmed: "</span>, pieces)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Join the processed each string</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>separator <span class="op">=</span> <span class="st">"::"</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-- Joining the processed each string: "</span>, separator.join(pieces))</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Substring</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"-- Is </span><span class="ch">\'</span><span class="ss">guido</span><span class="ch">\'</span><span class="ss"> in </span><span class="sc">{</span>val<span class="sc">}</span><span class="ss">?"</span>, <span class="st">"guido"</span> <span class="kw">in</span> val)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"-- Substring </span><span class="ch">\'</span><span class="ss">,</span><span class="ch">\'</span><span class="ss"> is located at index: </span><span class="sc">{</span>val<span class="sc">.</span>index(<span class="st">','</span>)<span class="sc">}</span><span class="ss"> of string: </span><span class="sc">{</span>val<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"-- The find result of searching ':' is: </span><span class="sc">{</span>val<span class="sc">.</span>find(<span class="st">':'</span>)<span class="sc">}</span><span class="ss">"</span>)  <span class="co"># -1 if substring not found</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"-- The substring ',' occurred </span><span class="sc">{</span>val<span class="sc">.</span>count(<span class="st">','</span>)<span class="sc">}</span><span class="ss"> number of times in the string."</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace or delete the substring</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"-- Replacing ',' with '::' in </span><span class="sc">{</span>val<span class="sc">}</span><span class="ss"> -&gt; </span><span class="sc">{</span>val<span class="sc">.</span>replace(<span class="st">','</span>, <span class="st">'::'</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"-- Removing ',' in </span><span class="sc">{</span>val<span class="sc">}</span><span class="ss"> -&gt; </span><span class="sc">{</span>val<span class="sc">.</span>replace(<span class="st">','</span>, <span class="st">''</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-- Original string:  a,b,   guido
+-- String splitted by ',':  ['a', 'b', '   guido']
+-- Each string trimmed:  ['a', 'b', 'guido']
+-- Joining the processed each string:  a::b::guido
+-- Is 'guido' in a,b,   guido? True
+-- Substring ',' is located at index: 1 of string: a,b,   guido
+-- The find result of searching ':' is: -1
+-- The substring ',' occurred 2 number of times in the string.
+-- Replacing ',' with '::' in a,b,   guido -&gt; a::b::   guido
+-- Removing ',' in a,b,   guido -&gt; ab   guido</code></pre>
+</div>
+</div>
+<p>Python built-in string methods.</p>
+<table class="table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 75%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>count</code></td>
+<td style="text-align: left;">Return the number of nonoverlapping occurrences of substring in the string</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>endswith</code></td>
+<td style="text-align: left;">Return <code>True</code> if string ends with suffix</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>startswith</code></td>
+<td style="text-align: left;">Return <code>True</code> if string starts with prefix</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>join</code></td>
+<td style="text-align: left;">Use string as delimiter for concatenating a sequence of other strings</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>index</code></td>
+<td style="text-align: left;">Return starting index of the first occurrence of passed substring if found in the string; otherwise, raises <code>ValueError</code> if not found</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>find</code></td>
+<td style="text-align: left;">Return position of first character of <em>first</em> occurrence of substring in the string; like <code>index</code>, but returns –1 if not found</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>rfind</code></td>
+<td style="text-align: left;">Return position of first character of <em>last</em> occurrence of substring in the string; returns –1 if not found</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>replace</code></td>
+<td style="text-align: left;">Replace occurrences of string with another string</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>strip, rstrip, lstrip</code></td>
+<td style="text-align: left;">Trim whitespace, including newlines on both sides, on the right side, or on the left side, respectively</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>split</code></td>
+<td style="text-align: left;">Break string into list of substrings using passed delimiter</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>lower</code></td>
+<td style="text-align: left;">Convert alphabet characters to lowercase</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>upper</code></td>
+<td style="text-align: left;">Convert alphabet characters to uppercase</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>casefold</code></td>
+<td style="text-align: left;">Convert characters to lowercase, and convert any region-specific variable character combinations to a common comparable form</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>ljust, rjust</code></td>
+<td style="text-align: left;">Left justify or right justify, respectively; pad opposite side of string with spaces (or some other fill character) to return a string with a minimum width</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="regular-expressions" class="level3">
+<h3 class="anchored" data-anchor-id="regular-expressions">2. Regular Expressions</h3>
+<p>Flexible way to search or match, often more complex, string patterns in text. the built0in <code>re</code> module from Python, A single expression - <em>regex</em>, is a string formed according to the regular expression language, re falls into three categories - <u>pattern matching,</u> <u>substitution</u>, <u>splitting</u></p>
+<p>split, compile, match, search, findall, search, match</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># regex: \s+ </span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># one or more whitespace characters</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> <span class="st">"foo    bar</span><span class="ch">\t</span><span class="st"> baz    </span><span class="ch">\t</span><span class="st">qux"</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>pattern <span class="op">=</span> <span class="vs">r"\s+"</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"-- Original text with whitespaces:</span><span class="ch">\n</span><span class="ss"> </span><span class="sc">{</span>text<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"-- Split the text using raw string: </span><span class="sc">{</span>re<span class="sc">.</span>split(pattern, text)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>regex <span class="op">=</span> re.<span class="bu">compile</span>(pattern)  <span class="co"># Obtain re.Pattern object</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"-- Another way using compiled regex: </span><span class="sc">{</span>regex<span class="sc">.</span>split(text)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-- Original text with whitespaces:
+ foo    bar  baz        qux
+-- Split the text using raw string: ['foo', 'bar', 'baz', 'qux']
+-- Another way using compiled regex: ['foo', 'bar', 'baz', 'qux']</code></pre>
+</div>
+</div>
+<p>Regular expression identifying most email addresses:</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>text_emails <span class="op">=</span> <span class="st">"""Dave dave@google.com</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">Steve steve@gmail.com</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">Rob rob@gmail.com</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">Ryan ryan@yahoo.com"""</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>pattern <span class="op">=</span> <span class="vs">r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}"</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Make the regex case insensitive</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>regex <span class="op">=</span> re.<span class="bu">compile</span>(pattern, flags<span class="op">=</span>re.IGNORECASE)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"-- Original text: </span><span class="ch">\n</span><span class="ss"> </span><span class="sc">{</span>text_emails<span class="sc">}</span><span class="ss"> </span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"-- Find all matching patterns: </span><span class="ch">\n</span><span class="ss"> </span><span class="sc">{</span>regex<span class="sc">.</span>findall(text_emails)<span class="sc">}</span><span class="ss"> </span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> regex.search(text_emails)  <span class="co"># re.Match object for the first match</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"-- re.Match object from search(): </span><span class="ch">\n</span><span class="ss">  </span><span class="sc">{</span>m<span class="sc">}</span><span class="ss"> </span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"-- The first match sliced using start and end: </span><span class="sc">{</span>text_emails[m.start():m.end()]<span class="sc">}</span><span class="ss"> </span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"-- regex.match None if not found at the beginning: </span><span class="sc">{</span>regex<span class="sc">.</span>match(text_emails)<span class="sc">}</span><span class="ss"> </span><span class="ch">\n</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-- Original text: 
+ Dave dave@google.com
+Steve steve@gmail.com
+Rob rob@gmail.com
+Ryan ryan@yahoo.com 
+
+-- Find all matching patterns: 
+ ['dave@google.com', 'steve@gmail.com', 'rob@gmail.com', 'ryan@yahoo.com'] 
+
+-- re.Match object from search(): 
+  &lt;re.Match object; span=(5, 20), match='dave@google.com'&gt; 
+
+-- The first match sliced using start and end: dave@google.com 
+
+-- regex.match None if not found at the beginning: None 
+</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>The given regular expression is used to match email addresses. Here’s a breakdown of the pattern:</p>
+<p><strong>[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}</strong></p>
+<ol type="1">
+<li><strong><code>[A-Z0-9._%+-]+</code></strong>: Matches one or more uppercase letters (<strong><code>A-Z</code></strong>), digits (<strong><code>0-9</code></strong>), dots (<strong><code>.</code></strong>), underscores (<strong><code>_</code></strong>), percent signs (<strong><code>%</code></strong>), plus signs (<strong><code>+</code></strong>), or hyphens (<strong><code>-</code></strong>) before the <strong><code>@</code></strong> symbol.</li>
+<li><strong><code>@</code></strong>: Matches the literal <strong><code>@</code></strong> symbol.</li>
+<li><strong><code>[A-Z0-9.-]+</code></strong>: Matches one or more uppercase letters (<strong><code>A-Z</code></strong>), digits (<strong><code>0-9</code></strong>), dots (<strong><code>.</code></strong>), or hyphens (<strong><code>-</code></strong>) after the <strong><code>@</code></strong> symbol.</li>
+<li><strong><code>\.</code></strong>: Matches the literal dot (<strong><code>.</code></strong>) before the top-level domain.</li>
+<li><strong><code>[A-Z]{2,4}</code></strong>: Matches between 2 and 4 uppercase letters, representing the top-level domain (TLD). This assumes that TLDs consist of 2 to 4 uppercase letters.</li>
+</ol>
+</blockquote>
+<table class="table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 75%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>Regular expression methods</td>
+</tr>
+<tr class="even">
+<td>Method</td>
+<td>Description</td>
+</tr>
+<tr class="odd">
+<td><code>findall</code></td>
+<td>Return all nonoverlapping matching patterns in a string as a list</td>
+</tr>
+<tr class="even">
+<td><code>finditer</code></td>
+<td>Like <code>findall</code>, but returns an iterator</td>
+</tr>
+<tr class="odd">
+<td><code>match</code></td>
+<td>Match pattern at start of string and optionally segment pattern components into groups; if the pattern matches, return a match object, and otherwise <code>None</code></td>
+</tr>
+<tr class="even">
+<td><code>search</code></td>
+<td>Scan string for match to pattern, returning a match object if so; unlike <code>match</code>, the match can be anywhere in the string as opposed to only at the beginning</td>
+</tr>
+<tr class="odd">
+<td><code>split</code></td>
+<td>Break string into pieces at each occurrence of pattern</td>
+</tr>
+<tr class="even">
+<td><code>sub, subn</code></td>
+<td>Replace all (<code>sub</code>) or first <code>n</code> occurrences (<code>subn</code>) of pattern in string with replacement expression; use symbols <code>\1, \2, ...</code> to refer to match group elements in the replacement string</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><em>Some helper functions.</em></p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper functions</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper function to transform data frame with capped value</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> data_cap(data, condition, cap_value):</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  data[condition] <span class="op">=</span> np.sign(data) <span class="op">*</span> cap_value</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.DataFrame(np.random.standard_normal((<span class="dv">100</span>, <span class="dv">4</span>)))</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Creating sample DF with 100 x 4 dimension, standard normal dist.: </span><span class="ch">\n</span><span class="st">"</span>, data)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Describing the original data : </span><span class="ch">\n</span><span class="st">"</span>, data.describe())</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>DATA_CAP_VALUE <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>data_cap(data, data.<span class="bu">abs</span>() <span class="op">&gt;</span> DATA_CAP_VALUE, DATA_CAP_VALUE)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Display and describing the transformed data with capped value: </span><span class="ch">\n</span><span class="st">"</span>, data, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>, data.describe())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Creating sample DF with 100 x 4 dimension, standard normal dist.: 
+            0         1         2         3
+0  -0.851300 -0.943117  0.843919  0.305096
+1  -0.661551 -1.632883 -1.202953  0.005750
+2   0.307540 -1.015924 -0.296076  1.417378
+3   0.401902 -0.613521 -1.285720  1.893644
+4  -0.263717  1.259402 -0.590540 -1.918216
+..       ...       ...       ...       ...
+95  0.256288  1.142146 -0.305756 -1.829447
+96  2.026530 -0.120681  0.666976  0.275554
+97  1.009816 -0.226762  0.957665  2.206610
+98 -1.812273  1.030437 -1.953916  0.055606
+99  0.957391  0.137980 -1.191253  0.740856
+
+[100 rows x 4 columns]
+--- Describing the original data : 
+                 0           1           2           3
+count  100.000000  100.000000  100.000000  100.000000
+mean     0.010967   -0.034240   -0.034131   -0.078290
+std      1.054654    0.945279    1.006121    1.079299
+min     -2.279767   -2.261108   -2.825501   -2.449481
+25%     -0.763914   -0.605671   -0.516906   -0.761703
+50%      0.081517   -0.095490    0.084738   -0.064425
+75%      0.564726    0.658063    0.564655    0.616289
+max      3.651657    2.452139    2.585030    2.290802
+--- Display and describing the transformed data with capped value: 
+            0         1         2         3
+0  -0.851300 -0.943117  0.843919  0.305096
+1  -0.661551 -1.000000 -1.000000  0.005750
+2   0.307540 -1.000000 -0.296076  1.000000
+3   0.401902 -0.613521 -1.000000  1.000000
+4  -0.263717  1.000000 -0.590540 -1.000000
+..       ...       ...       ...       ...
+95  0.256288  1.000000 -0.305756 -1.000000
+96  1.000000 -0.120681  0.666976  0.275554
+97  1.000000 -0.226762  0.957665  1.000000
+98 -1.000000  1.000000 -1.000000  0.055606
+99  0.957391  0.137980 -1.000000  0.740856
+
+[100 rows x 4 columns] 
+                 0           1           2           3
+count  100.000000  100.000000  100.000000  100.000000
+mean    -0.005189   -0.016279    0.020482   -0.040783
+std      0.736400    0.702990    0.688840    0.730719
+min     -1.000000   -1.000000   -1.000000   -1.000000
+25%     -0.763914   -0.605671   -0.516906   -0.761703
+50%      0.081517   -0.095490    0.084738   -0.064425
+75%      0.564726    0.658063    0.564655    0.616289
+max      1.000000    1.000000    1.000000    1.000000</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Copyright 2024, Albert Joonyoung Park.</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/albert-joonyoung-park">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/albertjoonpark">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

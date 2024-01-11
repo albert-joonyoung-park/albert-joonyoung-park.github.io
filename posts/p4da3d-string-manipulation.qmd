@@ -1,0 +1,159 @@
+---
+title: "String Manipulation With Pandas for Data Cleaning"
+subtitle: "Analysis techniques using pandas - Python for Data Analysis, 3E by Wes McKinney"
+date: '2023-11-23'
+categories: ['Python', 'pandas', 'data cleaning', 'data preparation', 'string manipulation']
+description: "Learning notes - Python for Data Analysis, 3E - Wes McKinney"
+image: data.jpg
+format:
+  html:
+    code-fold: false
+jupyter: python3
+---
+
+------------------------------------------------------------------------
+
+## String Manipulation With Pandas
+
+`String object's built-in methods` for most text text operations
+
+`Regular expressions` - Complex pattern matching and text manipulations
+
+`Pandas` - Apply string and regular expressions on whole arrays of data, handling missing data
+
+### 1. Python Built-In String Object Methods
+
+`split`, `strip`, `join`,`index`,`find`,`count`, `replace`,
+
+```{python}
+
+# String split
+val = "a,b,   guido"
+print("-- Original string: ", val)
+print("-- String splitted by \',\': ", val.split(","))
+
+# Trim whitespace, including line breaks
+pieces = [x.strip() for x in val.split(",")]
+print("-- Each string trimmed: ", pieces)
+
+# Join the processed each string
+separator = "::"
+print("-- Joining the processed each string: ", separator.join(pieces))
+
+# Substring
+print(f"-- Is \'guido\' in {val}?", "guido" in val)
+print(f"-- Substring \',\' is located at index: {val.index(',')} of string: {val}")
+print(f"-- The find result of searching ':' is: {val.find(':')}")  # -1 if substring not found
+print(f"-- The substring ',' occurred {val.count(',')} number of times in the string.")
+
+# Replace or delete the substring
+print(f"-- Replacing ',' with '::' in {val} -> {val.replace(',', '::')}")
+print(f"-- Removing ',' in {val} -> {val.replace(',', '')}")
+```
+
+Python built-in string methods.
+
+| Method                  | Description                                                                                                                                                 |
+|:-----------------|:-----------------------------------------------------|
+| `count`                 | Return the number of nonoverlapping occurrences of substring in the string                                                                                  |
+| `endswith`              | Return `True` if string ends with suffix                                                                                                                    |
+| `startswith`            | Return `True` if string starts with prefix                                                                                                                  |
+| `join`                  | Use string as delimiter for concatenating a sequence of other strings                                                                                       |
+| `index`                 | Return starting index of the first occurrence of passed substring if found in the string; otherwise, raises `ValueError` if not found                       |
+| `find`                  | Return position of first character of *first* occurrence of substring in the string; like `index`, but returns --1 if not found                             |
+| `rfind`                 | Return position of first character of *last* occurrence of substring in the string; returns --1 if not found                                                |
+| `replace`               | Replace occurrences of string with another string                                                                                                           |
+| `strip, rstrip, lstrip` | Trim whitespace, including newlines on both sides, on the right side, or on the left side, respectively                                                     |
+| `split`                 | Break string into list of substrings using passed delimiter                                                                                                 |
+| `lower`                 | Convert alphabet characters to lowercase                                                                                                                    |
+| `upper`                 | Convert alphabet characters to uppercase                                                                                                                    |
+| `casefold`              | Convert characters to lowercase, and convert any region-specific variable character combinations to a common comparable form                                |
+| `ljust, rjust`          | Left justify or right justify, respectively; pad opposite side of string with spaces (or some other fill character) to return a string with a minimum width |
+
+### 2. Regular Expressions
+
+Flexible way to search or match, often more complex, string patterns in text. the built0in `re` module from Python, A single expression - *regex*, is a string formed according to the regular expression language, re falls into three categories - [pattern matching,]{.underline} [substitution]{.underline}, [splitting]{.underline}
+
+split, compile, match, search, findall, search, match
+
+```{python}
+# regex: \s+ 
+# one or more whitespace characters
+
+import re
+
+text = "foo    bar\t baz    \tqux"
+pattern = r"\s+"
+print(f"-- Original text with whitespaces:\n {text}")
+print(f"-- Split the text using raw string: {re.split(pattern, text)}")
+
+regex = re.compile(pattern)  # Obtain re.Pattern object
+print(f"-- Another way using compiled regex: {regex.split(text)}")
+```
+
+Regular expression identifying most email addresses:
+
+```{python}
+import re
+
+text_emails = """Dave dave@google.com
+Steve steve@gmail.com
+Rob rob@gmail.com
+Ryan ryan@yahoo.com"""
+
+pattern = r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}"
+# Make the regex case insensitive
+regex = re.compile(pattern, flags=re.IGNORECASE)
+
+print(f"-- Original text: \n {text_emails} \n")
+print(f"-- Find all matching patterns: \n {regex.findall(text_emails)} \n")
+
+m = regex.search(text_emails)  # re.Match object for the first match
+print(f"-- re.Match object from search(): \n  {m} \n")
+print(f"-- The first match sliced using start and end: {text_emails[m.start():m.end()]} \n")
+print(f"-- regex.match None if not found at the beginning: {regex.match(text_emails)} \n")
+```
+
+> The given regular expression is used to match email addresses. Here's a breakdown of the pattern:
+>
+> **\[A-Z0-9.\_%+-\]+\@\[A-Z0-9.-\]+\\.\[A-Z\]{2,4}**
+>
+> 1.  **`[A-Z0-9._%+-]+`**: Matches one or more uppercase letters (**`A-Z`**), digits (**`0-9`**), dots (**`.`**), underscores (**`_`**), percent signs (**`%`**), plus signs (**`+`**), or hyphens (**`-`**) before the **`@`** symbol.
+> 2.  **`@`**: Matches the literal **`@`** symbol.
+> 3.  **`[A-Z0-9.-]+`**: Matches one or more uppercase letters (**`A-Z`**), digits (**`0-9`**), dots (**`.`**), or hyphens (**`-`**) after the **`@`** symbol.
+> 4.  **`\.`**: Matches the literal dot (**`.`**) before the top-level domain.
+> 5.  **`[A-Z]{2,4}`**: Matches between 2 and 4 uppercase letters, representing the top-level domain (TLD). This assumes that TLDs consist of 2 to 4 uppercase letters.
+
+|             |                                                                                                                                                                                              |
+|------------------|------------------------------------------------------|
+|             | Regular expression methods                                                                                                                                                                   |
+| Method      | Description                                                                                                                                                                                  |
+| `findall`   | Return all nonoverlapping matching patterns in a string as a list                                                                                                                            |
+| `finditer`  | Like `findall`, but returns an iterator                                                                                                                                                      |
+| `match`     | Match pattern at start of string and optionally segment pattern components into groups; if the pattern matches, return a match object, and otherwise `None`                                  |
+| `search`    | Scan string for match to pattern, returning a match object if so; unlike `match`, the match can be anywhere in the string as opposed to only at the beginning                                |
+| `split`     | Break string into pieces at each occurrence of pattern                                                                                                                                       |
+| `sub, subn` | Replace all (`sub`) or first `n` occurrences (`subn`) of pattern in string with replacement expression; use symbols `\1, \2, ...` to refer to match group elements in the replacement string |
+
+------------------------------------------------------------------------
+
+*Some helper functions.*
+
+```{python}
+# Helper functions
+
+import pandas as pd
+import numpy as np
+
+# Helper function to transform data frame with capped value
+
+def data_cap(data, condition, cap_value):
+  data[condition] = np.sign(data) * cap_value
+  
+data = pd.DataFrame(np.random.standard_normal((100, 4)))
+print("--- Creating sample DF with 100 x 4 dimension, standard normal dist.: \n", data)
+print("--- Describing the original data : \n", data.describe())
+DATA_CAP_VALUE = 1.0
+data_cap(data, data.abs() > DATA_CAP_VALUE, DATA_CAP_VALUE)
+print("--- Display and describing the transformed data with capped value: \n", data, "\n", data.describe())
+```

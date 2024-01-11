@@ -4,14 +4,20 @@ image: profile.jpg
 about:
   id: hero-heading
   template: trestles
-  image-width: 12em
+  image-width: 14em
   links:
-    - icon: twitter
-      text: twitter
-      href: https://twitter.com
+    - icon: linkedin
+      text: linkedin
+      href: https://www.linkedin.com/in/albertjoonpark
     - icon: github
       text: Github
-      href: https://github.com
+      href: https://github.com/albert-joonyoung-park
 ---
+I'm Albert Joonyoung Park, an independent Data Analyst.  
+  
+I specialize in weaving a narrative across various industries, such as entrepreneurship, e-commerce, manufacturing operations, and database application development. My primary commitment is to unearth meaningful insights by collaborating intimately with clients to distill valuable information from rich tapestries of datasets.  
+  
+My passion lies in utilizing my data skills to empower individuals in making well-informed decisions, including mortgage selection suitable to their unique needs. I find immense satisfaction in aiding and empowering clients as they navigate their dynamic business landscapes with the utmost precision.  
+  
+Apart from my work, I enjoy various activities such as spending time with my family, exploring the nuances of data science, lending my voice to the church choir, and rekindling my love for piano playing. I am on a journey to rediscover the artistry of playing the piano. I invite you to join me on this odyssey where the language of data converges with the symphony of life's pursuits.  
 
-Albert Joonyoung Park is an aspiring and dedicated independent data analyst with a diverse background spanning entrepreneurship, eCommerce, manufacturing operations, and database application development. With a strong focus on delivering valuable insights, he collaborates closely with clients to extract meaningful information from diverse datasets across various industries. Additionally, Albert has recently ventured into mortgage brokering, aiming to leverage his data skills to assist individuals in identifying optimal financial solutions tailored to their specific needs. Beyond his professional pursuits, Albert finds joy in spending quality time with his spouse, continuously expanding his expertise in data science, actively participating in the church choir, and honing his piano-playing skills.

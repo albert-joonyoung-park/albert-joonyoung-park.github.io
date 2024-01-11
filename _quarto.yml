@@ -21,13 +21,14 @@ website:
       - icon: github
         href: https://github.com/albert-joonyoung-park
       - icon: linkedin
+        href: https://www.linkedin.com/in/albertjoonpark
   page-footer: 
-    left: "Copyright 2023, Albert Joonyoung Park."
+    left: "Copyright 2024, Albert Joonyoung Park."
     right: 
       - icon: github
-        href: https://github.com/
-      - icon: twitter 
-        href: https://twitter.com/ 
+        href: https://github.com/albert-joonyoung-park
+      - icon: linkedin 
+        href: https://www.linkedin.com/in/albertjoonpark
     background: dark
 
 format:
@@ -35,7 +36,7 @@ format:
     theme: flatly
     css: styles.css
     toc: true
-    fontsize: 1.0em
+    fontsize: 1.2em
     html-math-method: katex
 
 editor: visual

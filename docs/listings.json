@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/posts/p4da3d-string-manipulation.html",
       "/posts/p4da3d-data-cleaning_prep.html",
       "/posts/pc_numerical_programming.html",
       "/posts/analysis_movielens.html",

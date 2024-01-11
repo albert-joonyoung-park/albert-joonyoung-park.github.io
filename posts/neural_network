@@ -1,0 +1,13 @@
+// Neural Network
+digraph {
+	rankdir=LR
+	size="8,5"
+	"Input Layer" [shape=plaintext]
+	"Hidden Layer 1" [shape=circle]
+	"Hidden Layer 2" [shape=circle]
+	"Output Layer" [shape=circle]
+	"Input Layer" -> "Hidden Layer 1" [label=Weight]
+	"Input Layer" -> "Hidden Layer 2" [label=Weight]
+	"Hidden Layer 1" -> "Output Layer" [label=Weight]
+	"Hidden Layer 2" -> "Output Layer" [label=Weight]
+}
