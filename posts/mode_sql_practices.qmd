@@ -1,0 +1,68 @@
+---
+title: "MODE App SQL Pracitce Solutions"
+subtitle: "Solutions for SQL practice questions from Mode App."
+date: '2024-01-15'
+categories: ['Python', 'SQL', 'SQLAlchemy', 'SQL Server']
+description: "MODe App SQL Practice Solutions using SQLAlchemy."
+image: data.jpg
+format:
+  html:
+    code-fold: false
+jupyter: python3
+execute: 
+  output: true
+---
+
+### Mode App: A Data Odyssey
+Mode App is an intuitive SQL editor transforms queries into exploration, collaborative workspaces foster collective wisdom, and rich visualizations unveil hidden mysteries. Dynamic dashboards, collaborative notebooks, and robust data governance complete this seamless journey, ensuring your data storytelling reaches new heights.
+
+### Using SQL Alchemy with Python
+**1. Install via pip**
+
+```{python}
+#| output: false
+
+# install SQLAlchemy if required
+!pip install SQLAlchemy
+```
+
+```{python}
+# check SQLAlchemy version
+import sqlalchemy
+sqlalchemy.__version__
+```
+
+**2. Connecting local sql server**
+```{python}
+import sqlalchemy as db
+from sqlalchemy import text
+
+# SQL Server connection parameters
+sql_server_host = 'ALIEN300\SQLEXPRESS01'
+sql_server_database = 'tutorial'
+
+# Create an sql server engine using Windows Authentication connection mode
+engine = db.create_engine(
+    f'mssql+pyodbc://@{sql_server_host}/{sql_server_database}?trusted_connection=yes&driver=ODBC+Driver+17+for+SQL+Server')
+
+# Connect to sql server and verify connection.
+query = "SELECT 1"
+with engine.connect() as cnn:
+    result = cnn.execute(text(query))
+    if result.fetchone():
+        print('Connection successful\n')
+        print(result.fetchall())
+    else:
+        print('Connection failed')
+
+    result.close()
+```
+
+
+### Solutions for SQL Practice questions
+
+#### Basic
+
+#### Intermediate
+
+#### Advanced

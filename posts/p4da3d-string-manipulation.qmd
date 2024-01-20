@@ -54,7 +54,7 @@ print(f"-- Removing ',' in {val} -> {val.replace(',', '')}")
 Python built-in string methods.
 
 | Method                  | Description                                                                                                                                                 |
-|:-----------------|:-----------------------------------------------------|
+|:------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `count`                 | Return the number of nonoverlapping occurrences of substring in the string                                                                                  |
 | `endswith`              | Return `True` if string ends with suffix                                                                                                                    |
 | `startswith`            | Return `True` if string starts with prefix                                                                                                                  |
@@ -125,7 +125,7 @@ print(f"-- regex.match None if not found at the beginning: {regex.match(text_ema
 > 5.  **`[A-Z]{2,4}`**: Matches between 2 and 4 uppercase letters, representing the top-level domain (TLD). This assumes that TLDs consist of 2 to 4 uppercase letters.
 
 |             |                                                                                                                                                                                              |
-|------------------|------------------------------------------------------|
+|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |             | Regular expression methods                                                                                                                                                                   |
 | Method      | Description                                                                                                                                                                                  |
 | `findall`   | Return all nonoverlapping matching patterns in a string as a list                                                                                                                            |

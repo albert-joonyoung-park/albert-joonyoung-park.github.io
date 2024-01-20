@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/posts/mode_sql_practices.html",
       "/posts/p4da3d-string-manipulation.html",
       "/posts/p4da3d-data-cleaning_prep.html",
       "/posts/pc_numerical_programming.html",
