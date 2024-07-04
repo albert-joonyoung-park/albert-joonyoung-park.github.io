@@ -1,0 +1,19 @@
+---
+title: "Greetings..."
+---
+
+```{=html}
+<div>
+<figure>
+  <blockquote class="blockquote">
+    <p>Welcome to my personal website, where I share my selected projects and blogs on data analysis.</p>
+    <p>This website is to share my enriching journey in data analysis, and its multitude of benefits. When data is harnessed and interpreted in the right way, it has the remarkable ability to reveal concealed paths that guide decision-making, be it in our personal lives or the business world.</p>
+    <p>To fully unlock its potential, I invite you to don your"Curiosity Hat" and explore the stories that lie within the data. Brace yourself, for the results have the potential to transcend mere significance—they possess the inherent power to shape and transform.</p>
+  
+  </blockquote>
+  <figcaption class="blockquote-footer">
+    Albert Joonyoung Park
+  </figcaption>
+</figure>
+</div>
+```
