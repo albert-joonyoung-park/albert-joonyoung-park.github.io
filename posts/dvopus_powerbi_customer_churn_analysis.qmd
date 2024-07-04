@@ -1,0 +1,22 @@
+---
+title: "Customer Churn Analysis"
+subtitle: "Power BI Reports Data Visualization"
+date: '2024-07-04'
+categories: ['Power BI', 'Data Visualization']
+description: "Customer churn analaysis of telecommunicaiton company using Power BI reports."
+image: data.jpg
+format:
+  html:
+    code-fold: false
+jupyter: python3
+execute: 
+  output: true
+---
+
+### Customer Churn Analysis
+
+This data visualization include reports created with Power BI.
+
+```{=html}
+<iframe title="Case_Study_Customer_Churn_ Analysis_JOONP" width="800" height="500" src="https://app.powerbi.com/view?r=eyJrIjoiNGM4NmJhOGEtZDFhZC00MTI5LWJmZWItZGU4YjQ0MDk2MDBhIiwidCI6ImNiZDYwZTkwLTE4ODQtNDM3My1iMTI2LTBkMDBlMWEzYmM0MSJ9&pageName=ReportSectioncab835f540e3d7345c06" frameborder="0" allowFullScreen="true"></iframe>
+```
