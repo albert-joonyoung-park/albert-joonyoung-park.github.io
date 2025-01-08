@@ -18,5 +18,5 @@ execute:
 This data visualization include reports created with Power BI.
 
 ```{=html}
-<iframe title="Case_Study_Customer_Churn_ Analysis_JOONP" width="800" height="500" src="https://app.powerbi.com/view?r=eyJrIjoiN2YwMjFmOTctMjllNS00ZGY5LTk3MTEtOWE2MDgwNDk1Mjk3IiwidCI6ImQ5MGRjZTA1LTA2M2QtNDE0Zi1hZWZlLWMyOTJmZjE4ZDhiMCJ9&pageName=ReportSectiond0de7d0709b00165210e" frameborder="0" allowFullScreen="true"></iframe>
+<iframe title="Case_Study_Customer_Churn_ Analysis_JOONP" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiN2YwMjFmOTctMjllNS00ZGY5LTk3MTEtOWE2MDgwNDk1Mjk3IiwidCI6ImQ5MGRjZTA1LTA2M2QtNDE0Zi1hZWZlLWMyOTJmZjE4ZDhiMCJ9&pageName=ReportSectiond0de7d0709b00165210e" frameborder="0" allowFullScreen="true"></iframe>
 ```
